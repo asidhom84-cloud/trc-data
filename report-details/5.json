@@ -6,8 +6,8 @@
   "frequency": "weekly",
   "is_automated": true,
   "template_type": "alarm_dashboard",
-  "created_at": "2026-04-02T17:56:28Z",
-  "updated_at": "2026-04-02T17:56:28Z",
+  "created_at": "2026-04-02T17:59:15Z",
+  "updated_at": "2026-04-02T17:59:15Z",
   "team": {
     "id": 1,
     "name": "Energy Operations",
@@ -30,9 +30,9 @@
       "excel_url": null,
       "uploaded_by": "TRC System",
       "processing_started_at": null,
-      "processing_finished_at": "2026-04-02T17:56:28Z",
+      "processing_finished_at": "2026-04-02T17:59:15Z",
       "generation_log": null,
-      "created_at": "2026-04-02T17:56:28Z"
+      "created_at": "2026-04-02T17:59:15Z"
     }
   ]
 }

@@ -1,13 +1,13 @@
 {
   "id": 3,
-  "title": "NetEco Weekly Report",
-  "slug": "energy-neteco-weekly",
-  "description": "Weekly NetEco power report covering disconnect sites and energy efficiency.",
+  "title": "Power Outage Area Summary",
+  "slug": "energy-power-outage",
+  "description": "AGLI / HGLI / NGLI split — HTML preview, Excel download, 2025 vs 2026 comparison.",
   "frequency": "weekly",
-  "is_automated": true,
-  "template_type": "neteco",
-  "created_at": "2026-04-02T17:56:28Z",
-  "updated_at": "2026-04-02T17:56:28Z",
+  "is_automated": false,
+  "template_type": "static_files",
+  "created_at": "2026-04-02T17:59:15Z",
+  "updated_at": "2026-04-02T17:59:15Z",
   "team": {
     "id": 1,
     "name": "Energy Operations",
@@ -22,31 +22,17 @@
   "versions": [
     {
       "id": 1,
-      "version_number": 2,
-      "period_label": "2026-03-16 - 2026-03-22",
-      "status": "ready",
-      "original_filename": "Neteco_all_in_one_Week_2026-03-16_2026-03-22_20260326173507.xlsx",
-      "html_url": "https://asidhom84-cloud.github.io/trc-data/files/neteco_weekly/NetEco_Energy_Dashboard_2026-03-16_2026-03-22.html",
-      "excel_url": "https://asidhom84-cloud.github.io/trc-data/files/neteco_weekly/NetEco_Energy_Report_2026-03-16_2026-03-22.xlsx",
-      "uploaded_by": "TRC System",
-      "processing_started_at": null,
-      "processing_finished_at": "2026-03-26 17:38:45",
-      "generation_log": null,
-      "created_at": "2026-03-26 17:38:45"
-    },
-    {
-      "id": 2,
       "version_number": 1,
-      "period_label": "2026-03-09 - 2026-03-15",
+      "period_label": "2026 YTD",
       "status": "ready",
-      "original_filename": "Neteco_all_in_one_Week_2026-03-09_2026-03-15_20260319131935.xlsx",
-      "html_url": "https://asidhom84-cloud.github.io/trc-data/files/neteco_weekly/NetEco_Energy_Dashboard_2026-03-09_2026-03-15.html",
-      "excel_url": "https://asidhom84-cloud.github.io/trc-data/files/neteco_weekly/NetEco_Energy_Report_2026-03-09_2026-03-15.xlsx",
+      "original_filename": null,
+      "html_url": "https://asidhom84-cloud.github.io/trc-data/files/power_outage_area/Power_Cuts_2026_Area_Summary.html",
+      "excel_url": "https://asidhom84-cloud.github.io/trc-data/files/power_outage_area/Power_Cuts_2026_Area_Summary.xlsx",
       "uploaded_by": "TRC System",
       "processing_started_at": null,
-      "processing_finished_at": "2026-03-19 15:03:02",
+      "processing_finished_at": "2026-04-01 18:15:13",
       "generation_log": null,
-      "created_at": "2026-03-19 15:03:02"
+      "created_at": "2026-04-01 18:15:13"
     }
   ]
 }
