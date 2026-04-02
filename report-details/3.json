@@ -1,23 +1,52 @@
 {
   "id": 3,
-  "title": "Transmission Capacity Report",
-  "slug": "transmission-capacity",
-  "description": "Monthly utilization analysis of microwave and fiber links. Highlights congested links and capacity planning gaps.",
-  "frequency": "monthly",
+  "title": "NetEco Weekly Report",
+  "slug": "energy-neteco-weekly",
+  "description": "Weekly NetEco power report covering disconnect sites and energy efficiency.",
+  "frequency": "weekly",
   "is_automated": true,
-  "template_type": "capacity_report",
-  "created_at": "2026-03-10 11:47:05.270422",
-  "updated_at": "2026-03-10 11:47:05.270422",
+  "template_type": "neteco",
+  "created_at": "2026-04-02T17:18:56Z",
+  "updated_at": "2026-04-02T17:18:56Z",
   "team": {
-    "id": 2,
-    "name": "Microwave Transmission",
-    "slug": "microwave-transmission",
-    "contact_email": "mw-tx@trc.internal"
+    "id": 1,
+    "name": "Energy Operations",
+    "slug": "energy-operations",
+    "contact_email": null
   },
   "department": {
-    "id": 2,
-    "name": "Transmission",
-    "slug": "transmission"
+    "id": 1,
+    "name": "Energy",
+    "slug": "energy"
   },
-  "versions": []
+  "versions": [
+    {
+      "id": 1,
+      "version_number": 2,
+      "period_label": "2026-03-16 - 2026-03-22",
+      "status": "ready",
+      "original_filename": "Neteco_all_in_one_Week_2026-03-16_2026-03-22_20260326173507.xlsx",
+      "html_url": "http://127.0.0.1:8000/outputs/neteco_weekly/NetEco_Energy_Dashboard_2026-03-16_2026-03-22.html",
+      "excel_url": "http://127.0.0.1:8000/outputs/neteco_weekly/NetEco_Energy_Report_2026-03-16_2026-03-22.xlsx",
+      "uploaded_by": "TRC System",
+      "processing_started_at": null,
+      "processing_finished_at": "2026-03-26 17:38:45",
+      "generation_log": null,
+      "created_at": "2026-03-26 17:38:45"
+    },
+    {
+      "id": 2,
+      "version_number": 1,
+      "period_label": "2026-03-09 - 2026-03-15",
+      "status": "ready",
+      "original_filename": "Neteco_all_in_one_Week_2026-03-09_2026-03-15_20260319131935.xlsx",
+      "html_url": "http://127.0.0.1:8000/outputs/neteco_weekly/NetEco_Energy_Dashboard_2026-03-09_2026-03-15.html",
+      "excel_url": "http://127.0.0.1:8000/outputs/neteco_weekly/NetEco_Energy_Report_2026-03-09_2026-03-15.xlsx",
+      "uploaded_by": "TRC System",
+      "processing_started_at": null,
+      "processing_finished_at": "2026-03-19 15:03:02",
+      "generation_log": null,
+      "created_at": "2026-03-19 15:03:02"
+    }
+  ]
 }

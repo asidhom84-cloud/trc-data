@@ -1,207 +1,111 @@
 [
   {
-    "id": 7,
-    "title": "Core Network Signaling Report",
-    "slug": "core-network-signaling",
-    "description": "Monitoring of SCCP, ISUP, and SIP signaling load across MSC, MGW, and IMS nodes. Highlights congestion events and errors.",
+    "id": 1,
+    "title": "Weekly Power Report",
+    "slug": "energy-weekly",
+    "description": "Weekly power alarms (Power, HT, Down) — Huawei + Nokia combined across all areas.",
     "frequency": "weekly",
-    "is_automated": false,
+    "is_automated": true,
     "team": {
-      "id": 4,
-      "name": "Core Network",
-      "slug": "core-network"
+      "id": 1,
+      "name": "Energy Operations",
+      "slug": "energy-operations"
     },
     "latest_version": {
-      "id": null,
-      "version_number": null,
-      "period_label": null,
-      "status": null,
+      "id": 1,
+      "version_number": 13,
+      "period_label": "W13-2026",
+      "status": "ready",
       "html_url": null,
-      "excel_url": null,
-      "uploaded_by": null,
-      "created_at": null
+      "excel_url": "http://127.0.0.1:8000/outputs/weekly/Weekly W13-2026.xlsx",
+      "uploaded_by": "TRC System",
+      "created_at": ""
     },
-    "last_updated": null
+    "last_updated": ""
   },
   {
     "id": 2,
-    "title": "Generator Fuel Consumption Report",
-    "slug": "generator-fuel-consumption",
-    "description": "Monthly fuel usage statistics per site and region. Identifies overconsumption trends and recommends optimization actions.",
-    "frequency": "monthly",
+    "title": "Daily Power Report",
+    "slug": "energy-daily",
+    "description": "Daily power alarm breakdown per area — auto-generated from weekly source data.",
+    "frequency": "daily",
     "is_automated": true,
     "team": {
       "id": 1,
-      "name": "Power Operations",
-      "slug": "power-operations"
+      "name": "Energy Operations",
+      "slug": "energy-operations"
     },
     "latest_version": {
-      "id": null,
-      "version_number": null,
-      "period_label": null,
-      "status": null,
-      "html_url": null,
-      "excel_url": null,
-      "uploaded_by": null,
-      "created_at": null
+      "id": 1,
+      "version_number": 13,
+      "period_label": "W13-2026",
+      "status": "ready",
+      "html_url": "http://127.0.0.1:8000/outputs/daily/Daily_W13-2026.html",
+      "excel_url": "http://127.0.0.1:8000/outputs/daily/Daily_W13-2026.xlsx",
+      "uploaded_by": "TRC System",
+      "created_at": "2026-03-29 15:15:28"
     },
-    "last_updated": null
+    "last_updated": "2026-03-29 15:15:28"
+  },
+  {
+    "id": 3,
+    "title": "NetEco Weekly Report",
+    "slug": "energy-neteco-weekly",
+    "description": "Weekly NetEco power report covering disconnect sites and energy efficiency.",
+    "frequency": "weekly",
+    "is_automated": true,
+    "team": {
+      "id": 1,
+      "name": "Energy Operations",
+      "slug": "energy-operations"
+    },
+    "latest_version": {
+      "id": 1,
+      "version_number": 2,
+      "period_label": "2026-03-16 - 2026-03-22",
+      "status": "ready",
+      "html_url": "http://127.0.0.1:8000/outputs/neteco_weekly/NetEco_Energy_Dashboard_2026-03-16_2026-03-22.html",
+      "excel_url": "http://127.0.0.1:8000/outputs/neteco_weekly/NetEco_Energy_Report_2026-03-16_2026-03-22.xlsx",
+      "uploaded_by": "TRC System",
+      "created_at": "2026-03-26 17:38:45"
+    },
+    "last_updated": "2026-03-26 17:38:45"
   },
   {
     "id": 4,
-    "title": "Link Availability & Quality Report",
-    "slug": "link-availability-quality",
-    "description": "Weekly summary of link availability percentages, degradation events, and Adaptive Modulation activity.",
-    "frequency": "weekly",
-    "is_automated": true,
-    "team": {
-      "id": 2,
-      "name": "Microwave Transmission",
-      "slug": "microwave-transmission"
-    },
-    "latest_version": {
-      "id": null,
-      "version_number": null,
-      "period_label": null,
-      "status": null,
-      "html_url": null,
-      "excel_url": null,
-      "uploaded_by": null,
-      "created_at": null
-    },
-    "last_updated": null
-  },
-  {
-    "id": 12,
-    "title": "Major Incident Summary Report",
-    "slug": "major-incident-summary",
-    "description": "Post-incident review of P1/P2 outages: timeline, impacted services, root causes, and preventive measures taken.",
-    "frequency": "monthly",
-    "is_automated": false,
-    "team": {
-      "id": 7,
-      "name": "Network Operations Center",
-      "slug": "noc-team"
-    },
-    "latest_version": {
-      "id": null,
-      "version_number": null,
-      "period_label": null,
-      "status": null,
-      "html_url": null,
-      "excel_url": null,
-      "uploaded_by": null,
-      "created_at": null
-    },
-    "last_updated": null
-  },
-  {
-    "id": 10,
-    "title": "Monthly Energy Consumption Report",
-    "slug": "monthly-energy-consumption",
-    "description": "Site-level electricity consumption in kWh, PUE values, and cost breakdown. Highlights energy-saving opportunities.",
+    "title": "Energy Dashboard",
+    "slug": "energy-dashboard",
+    "description": "Monthly KPIs — DG fuel, offline sites, power meters, ZTE X25.",
     "frequency": "monthly",
     "is_automated": true,
     "team": {
-      "id": 6,
-      "name": "Energy Efficiency",
-      "slug": "energy-efficiency"
+      "id": 1,
+      "name": "Energy Operations",
+      "slug": "energy-operations"
     },
     "latest_version": {
-      "id": null,
-      "version_number": null,
-      "period_label": null,
-      "status": null,
+      "id": 1,
+      "version_number": 1,
+      "period_label": "March 2026",
+      "status": "ready",
       "html_url": null,
-      "excel_url": null,
-      "uploaded_by": null,
-      "created_at": null
+      "excel_url": "http://127.0.0.1:8000/outputs/energy_dashboard/energy_dashboard_March_2026.xlsx",
+      "uploaded_by": "TRC System",
+      "created_at": "2026-04-01 23:44:47"
     },
-    "last_updated": null
+    "last_updated": "2026-04-01 23:44:47"
   },
   {
-    "id": 11,
-    "title": "NOC Daily Shift Report",
-    "slug": "noc-daily-shift",
-    "description": "Compiled daily shift handover report aggregating critical alarms, escalations, planned maintenance windows, and pending actions for the NOC team.",
-    "frequency": "daily",
-    "is_automated": false,
-    "team": {
-      "id": 7,
-      "name": "Network Operations Center",
-      "slug": "noc-team"
-    },
-    "latest_version": {
-      "id": null,
-      "version_number": null,
-      "period_label": null,
-      "status": null,
-      "html_url": null,
-      "excel_url": null,
-      "uploaded_by": null,
-      "created_at": null
-    },
-    "last_updated": null
-  },
-  {
-    "id": 9,
-    "title": "Network SLA Compliance Report",
-    "slug": "network-sla-compliance",
-    "description": "Monthly SLA compliance scorecard by service type and customer segment. Includes breach analysis and corrective roadmap.",
-    "frequency": "monthly",
-    "is_automated": false,
-    "team": {
-      "id": 5,
-      "name": "Performance Management",
-      "slug": "performance-management"
-    },
-    "latest_version": {
-      "id": null,
-      "version_number": null,
-      "period_label": null,
-      "status": null,
-      "html_url": null,
-      "excel_url": null,
-      "uploaded_by": null,
-      "created_at": null
-    },
-    "last_updated": null
-  },
-  {
-    "id": 1,
-    "title": "Power Weekly Alarm Report",
-    "slug": "power-weekly-alarm",
-    "description": "Weekly analysis of power system alarms, outage events, and corrective actions. Includes priority alarms by site and resolution timelines.",
+    "id": 5,
+    "title": "Alarm Dashboard",
+    "slug": "energy-alarm-dashboard",
+    "description": "All-weeks trend view — KPI charts and area breakdown for power alarms.",
     "frequency": "weekly",
     "is_automated": true,
     "team": {
       "id": 1,
-      "name": "Power Operations",
-      "slug": "power-operations"
-    },
-    "latest_version": {
-      "id": null,
-      "version_number": null,
-      "period_label": null,
-      "status": null,
-      "html_url": null,
-      "excel_url": null,
-      "uploaded_by": null,
-      "created_at": null
-    },
-    "last_updated": null
-  },
-  {
-    "id": 5,
-    "title": "RF Performance KPI Report",
-    "slug": "rf-performance-kpi",
-    "description": "Comprehensive RF KPI tracking including CSSR, CDR, HOSR, and data throughput per technology (2G/3G/4G/5G). Identifies degraded cells for immediate action.",
-    "frequency": "weekly",
-    "is_automated": true,
-    "team": {
-      "id": 3,
-      "name": "RF Optimization",
-      "slug": "rf-optimization"
+      "name": "Energy Operations",
+      "slug": "energy-operations"
     },
     "latest_version": {
       "id": null,
@@ -217,15 +121,15 @@
   },
   {
     "id": 6,
-    "title": "Top Degraded Cells Report",
-    "slug": "top-degraded-cells",
-    "description": "Ranked list of worst-performing cells with root cause tags, ticket status, and estimated impact on subscriber experience.",
+    "title": "Power Outage Area Summary",
+    "slug": "energy-power-outage",
+    "description": "AGLI / HGLI / NGLI split — HTML preview, Excel download, 2025 vs 2026 comparison.",
     "frequency": "weekly",
-    "is_automated": true,
+    "is_automated": false,
     "team": {
-      "id": 3,
-      "name": "RF Optimization",
-      "slug": "rf-optimization"
+      "id": 1,
+      "name": "Energy Operations",
+      "slug": "energy-operations"
     },
     "latest_version": {
       "id": null,
@@ -240,16 +144,16 @@
     "last_updated": null
   },
   {
-    "id": 3,
-    "title": "Transmission Capacity Report",
-    "slug": "transmission-capacity",
-    "description": "Monthly utilization analysis of microwave and fiber links. Highlights congested links and capacity planning gaps.",
-    "frequency": "monthly",
+    "id": 7,
+    "title": "Autin Energy Alarms",
+    "slug": "energy-autin-ows",
+    "description": "Real-time alarm rule violations from Huawei OWS.",
+    "frequency": "daily",
     "is_automated": true,
     "team": {
-      "id": 2,
-      "name": "Microwave Transmission",
-      "slug": "microwave-transmission"
+      "id": 1,
+      "name": "Energy Operations",
+      "slug": "energy-operations"
     },
     "latest_version": {
       "id": null,
@@ -265,26 +169,26 @@
   },
   {
     "id": 8,
-    "title": "Weekly Performance Summary",
-    "slug": "weekly-performance-summary",
-    "description": "Cross-domain weekly snapshot of network health: RAN, core, and transport KPIs in a single executive-ready view.",
-    "frequency": "weekly",
+    "title": "L1 Statistics Report",
+    "slug": "rqa-l1stats",
+    "description": "Monthly L1 statistics and performance summary.",
+    "frequency": "monthly",
     "is_automated": true,
     "team": {
-      "id": 5,
-      "name": "Performance Management",
-      "slug": "performance-management"
+      "id": 2,
+      "name": "RQA Operations",
+      "slug": "rqa-operations"
     },
     "latest_version": {
-      "id": null,
-      "version_number": null,
-      "period_label": null,
-      "status": null,
-      "html_url": null,
+      "id": 1,
+      "version_number": 2,
+      "period_label": "2",
+      "status": "ready",
+      "html_url": "http://127.0.0.1:8000/outputs/l1stats/2026_L1_Statistics_dashboard.html",
       "excel_url": null,
-      "uploaded_by": null,
-      "created_at": null
+      "uploaded_by": "TRC System",
+      "created_at": "2026-03-28 18:32:36"
     },
-    "last_updated": null
+    "last_updated": "2026-03-28 18:32:36"
   }
 ]

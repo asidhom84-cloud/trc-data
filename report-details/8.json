@@ -1,23 +1,52 @@
 {
   "id": 8,
-  "title": "Weekly Performance Summary",
-  "slug": "weekly-performance-summary",
-  "description": "Cross-domain weekly snapshot of network health: RAN, core, and transport KPIs in a single executive-ready view.",
-  "frequency": "weekly",
+  "title": "L1 Statistics Report",
+  "slug": "rqa-l1stats",
+  "description": "Monthly L1 statistics and performance summary.",
+  "frequency": "monthly",
   "is_automated": true,
-  "template_type": "kpi_table",
-  "created_at": "2026-03-10 11:47:05.286046",
-  "updated_at": "2026-03-10 11:47:05.286046",
+  "template_type": "l1stats",
+  "created_at": "2026-04-02T17:18:56Z",
+  "updated_at": "2026-04-02T17:18:56Z",
   "team": {
-    "id": 5,
-    "name": "Performance Management",
-    "slug": "performance-management",
-    "contact_email": "perf-mgmt@trc.internal"
+    "id": 2,
+    "name": "RQA Operations",
+    "slug": "rqa-operations",
+    "contact_email": null
   },
   "department": {
-    "id": 5,
-    "name": "Performance",
-    "slug": "performance"
+    "id": 2,
+    "name": "RQA",
+    "slug": "rqa"
   },
-  "versions": []
+  "versions": [
+    {
+      "id": 1,
+      "version_number": 2,
+      "period_label": "2",
+      "status": "ready",
+      "original_filename": "2026_L1_Statistics.xls",
+      "html_url": "http://127.0.0.1:8000/outputs/l1stats/2026_L1_Statistics_dashboard.html",
+      "excel_url": null,
+      "uploaded_by": "TRC System",
+      "processing_started_at": null,
+      "processing_finished_at": "2026-03-28 18:32:36",
+      "generation_log": null,
+      "created_at": "2026-03-28 18:32:36"
+    },
+    {
+      "id": 2,
+      "version_number": 1,
+      "period_label": "12",
+      "status": "ready",
+      "original_filename": "2025_L1_Statistics.xlsx",
+      "html_url": "http://127.0.0.1:8000/outputs/l1stats/2025_L1_Statistics_dashboard.html",
+      "excel_url": null,
+      "uploaded_by": "TRC System",
+      "processing_started_at": null,
+      "processing_finished_at": "2026-03-24 13:06:41",
+      "generation_log": null,
+      "created_at": "2026-03-24 13:06:41"
+    }
+  ]
 }

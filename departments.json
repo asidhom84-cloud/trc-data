@@ -1,58 +1,18 @@
 [
   {
     "id": 1,
-    "name": "Power",
-    "slug": "power",
+    "name": "Energy",
+    "slug": "energy",
     "description": "Power infrastructure availability, alarms, and energy performance.",
     "sort_order": 1,
-    "report_count": 2
+    "report_count": 7
   },
   {
     "id": 2,
-    "name": "Transmission",
-    "slug": "transmission",
-    "description": "Microwave and fiber link capacity, availability, and fault analysis.",
+    "name": "RQA",
+    "slug": "rqa",
+    "description": "Radio quality assurance — L1 statistics and performance.",
     "sort_order": 2,
-    "report_count": 2
-  },
-  {
-    "id": 3,
-    "name": "RF",
-    "slug": "rf",
-    "description": "Radio frequency optimization, KPIs, coverage, and interference reports.",
-    "sort_order": 3,
-    "report_count": 2
-  },
-  {
-    "id": 4,
-    "name": "Core",
-    "slug": "core",
-    "description": "Core network signaling, data traffic, and VoLTE quality reports.",
-    "sort_order": 4,
     "report_count": 1
-  },
-  {
-    "id": 5,
-    "name": "Performance",
-    "slug": "performance",
-    "description": "End-to-end network performance, SLA compliance, and QoE tracking.",
-    "sort_order": 5,
-    "report_count": 2
-  },
-  {
-    "id": 6,
-    "name": "Energy",
-    "slug": "energy",
-    "description": "Energy consumption, PUE, carbon footprint, and efficiency reports.",
-    "sort_order": 6,
-    "report_count": 1
-  },
-  {
-    "id": 7,
-    "name": "NOC / Supervision",
-    "slug": "noc",
-    "description": "Network Operations Center shift reports and major incident reviews.",
-    "sort_order": 7,
-    "report_count": 2
   }
 ]

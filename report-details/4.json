@@ -1,23 +1,38 @@
 {
   "id": 4,
-  "title": "Link Availability & Quality Report",
-  "slug": "link-availability-quality",
-  "description": "Weekly summary of link availability percentages, degradation events, and Adaptive Modulation activity.",
-  "frequency": "weekly",
+  "title": "Energy Dashboard",
+  "slug": "energy-dashboard",
+  "description": "Monthly KPIs — DG fuel, offline sites, power meters, ZTE X25.",
+  "frequency": "monthly",
   "is_automated": true,
-  "template_type": "kpi_table",
-  "created_at": "2026-03-10 11:47:05.270422",
-  "updated_at": "2026-03-10 11:47:05.270422",
+  "template_type": "dashboard",
+  "created_at": "2026-04-02T17:18:56Z",
+  "updated_at": "2026-04-02T17:18:56Z",
   "team": {
-    "id": 2,
-    "name": "Microwave Transmission",
-    "slug": "microwave-transmission",
-    "contact_email": "mw-tx@trc.internal"
+    "id": 1,
+    "name": "Energy Operations",
+    "slug": "energy-operations",
+    "contact_email": null
   },
   "department": {
-    "id": 2,
-    "name": "Transmission",
-    "slug": "transmission"
+    "id": 1,
+    "name": "Energy",
+    "slug": "energy"
   },
-  "versions": []
+  "versions": [
+    {
+      "id": 1,
+      "version_number": 1,
+      "period_label": "March 2026",
+      "status": "ready",
+      "original_filename": null,
+      "html_url": null,
+      "excel_url": "http://127.0.0.1:8000/outputs/energy_dashboard/energy_dashboard_March_2026.xlsx",
+      "uploaded_by": "TRC System",
+      "processing_started_at": null,
+      "processing_finished_at": "2026-04-01 23:44:47",
+      "generation_log": null,
+      "created_at": "2026-04-01 23:44:47"
+    }
+  ]
 }
