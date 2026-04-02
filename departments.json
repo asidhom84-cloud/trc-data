@@ -1,0 +1,9 @@
+[
+  {"id":1,"name":"Power","slug":"power","description":"Power infrastructure — alarms, outages, DG runtime.","sort_order":1,"report_count":3},
+  {"id":2,"name":"Transmission","slug":"transmission","description":"Microwave and fibre link capacity and availability.","sort_order":2,"report_count":2},
+  {"id":3,"name":"RF","slug":"rf","description":"Radio frequency KPIs, coverage, and degraded cells.","sort_order":3,"report_count":2},
+  {"id":4,"name":"Core","slug":"core","description":"Core network signalling, VoLTE, and SLA compliance.","sort_order":4,"report_count":1},
+  {"id":5,"name":"Performance","slug":"performance","description":"End-to-end SLA and QoE performance dashboards.","sort_order":5,"report_count":1},
+  {"id":6,"name":"Energy","slug":"energy","description":"Energy consumption, PUE, and efficiency metrics.","sort_order":6,"report_count":1},
+  {"id":7,"name":"NOC / Supervision","slug":"noc","description":"Shift handover reports and major incident summaries.","sort_order":7,"report_count":1}
+]

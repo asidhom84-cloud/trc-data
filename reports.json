@@ -1,0 +1,90 @@
+[
+  {
+    "id":1,"title":"Power Weekly Alarm Report","slug":"power-weekly-alarm",
+    "description":"Weekly aggregation of power alarms from Huawei iMaster NetEco. Covers all regions with site-level breakdown.",
+    "frequency":"weekly","is_automated":true,
+    "team":{"id":1,"name":"Power Operations","slug":"power-operations"},
+    "latest_version":{"id":7,"version_number":7,"period_label":"Week 14 – April 2026","status":"ready","html_url":null,"excel_url":null,"uploaded_by":"Ahmed K.","created_at":"2026-04-02T10:00:00Z"},
+    "last_updated":"2026-04-02T10:00:00Z"
+  },
+  {
+    "id":2,"title":"Generator Fuel Consumption","slug":"generator-fuel",
+    "description":"Monthly generator run hours and fuel consumption by region.",
+    "frequency":"monthly","is_automated":true,
+    "team":{"id":1,"name":"Power Operations","slug":"power-operations"},
+    "latest_version":{"id":3,"version_number":3,"period_label":"March 2026","status":"ready","html_url":null,"excel_url":null,"uploaded_by":"Ahmed K.","created_at":"2026-04-01T09:00:00Z"},
+    "last_updated":"2026-04-01T09:00:00Z"
+  },
+  {
+    "id":3,"title":"Down Sites Tracker","slug":"power-down-sites",
+    "description":"Sites currently out of service with power-related root cause.",
+    "frequency":"weekly","is_automated":false,
+    "team":{"id":1,"name":"Power Operations","slug":"power-operations"},
+    "latest_version":{"id":12,"version_number":12,"period_label":"Week 14 – April 2026","status":"ready","html_url":null,"excel_url":null,"uploaded_by":"Sara M.","created_at":"2026-04-02T10:00:00Z"},
+    "last_updated":"2026-04-02T10:00:00Z"
+  },
+  {
+    "id":4,"title":"Transmission Capacity Report","slug":"transmission-capacity",
+    "description":"Link utilisation and capacity headroom across all microwave hops.",
+    "frequency":"monthly","is_automated":true,
+    "team":{"id":2,"name":"Transmission Engineering","slug":"transmission-engineering"},
+    "latest_version":{"id":4,"version_number":4,"period_label":"March 2026","status":"ready","html_url":null,"excel_url":null,"uploaded_by":"Khaled R.","created_at":"2026-04-02T11:30:00Z"},
+    "last_updated":"2026-04-02T11:30:00Z"
+  },
+  {
+    "id":5,"title":"L1 Statistics Dashboard","slug":"l1-stats",
+    "description":"Monthly L1 layer statistics dashboard.",
+    "frequency":"monthly","is_automated":true,
+    "team":{"id":2,"name":"Transmission Engineering","slug":"transmission-engineering"},
+    "latest_version":{"id":2,"version_number":2,"period_label":"March 2026","status":"ready","html_url":null,"excel_url":null,"uploaded_by":"Khaled R.","created_at":"2026-04-03T14:00:00Z"},
+    "last_updated":"2026-04-03T14:00:00Z"
+  },
+  {
+    "id":6,"title":"RF Performance KPI Report","slug":"rf-performance-kpi",
+    "description":"Weekly CSSR, CDR, HOSR, and data throughput KPIs.",
+    "frequency":"weekly","is_automated":true,
+    "team":{"id":3,"name":"RF Engineering","slug":"rf-engineering"},
+    "latest_version":{"id":9,"version_number":9,"period_label":"Week 14 – April 2026","status":"ready","html_url":null,"excel_url":null,"uploaded_by":"Dina F.","created_at":"2026-04-02T10:00:00Z"},
+    "last_updated":"2026-04-02T10:00:00Z"
+  },
+  {
+    "id":7,"title":"Top Degraded Cells","slug":"top-degraded-cells",
+    "description":"Worst performing cells ranked by composite degradation score.",
+    "frequency":"weekly","is_automated":true,
+    "team":{"id":3,"name":"RF Engineering","slug":"rf-engineering"},
+    "latest_version":{"id":6,"version_number":6,"period_label":"Week 14 – April 2026","status":"ready","html_url":null,"excel_url":null,"uploaded_by":"Dina F.","created_at":"2026-04-02T10:00:00Z"},
+    "last_updated":"2026-04-02T10:00:00Z"
+  },
+  {
+    "id":8,"title":"Core Network KPIs","slug":"core-kpis",
+    "description":"Core network signalling and VoLTE KPIs.",
+    "frequency":"monthly","is_automated":false,
+    "team":{"id":4,"name":"Core Engineering","slug":"core-engineering"},
+    "latest_version":{"id":null,"version_number":null,"period_label":null,"status":null,"html_url":null,"excel_url":null,"uploaded_by":null,"created_at":null},
+    "last_updated":null
+  },
+  {
+    "id":9,"title":"Weekly Performance Summary","slug":"weekly-perf-summary",
+    "description":"Cross-domain performance summary for management review.",
+    "frequency":"weekly","is_automated":true,
+    "team":{"id":5,"name":"Performance Management","slug":"performance-management"},
+    "latest_version":{"id":14,"version_number":14,"period_label":"Week 14 – April 2026","status":"ready","html_url":null,"excel_url":null,"uploaded_by":"Omar S.","created_at":"2026-04-02T10:00:00Z"},
+    "last_updated":"2026-04-02T10:00:00Z"
+  },
+  {
+    "id":10,"title":"Monthly Energy Consumption","slug":"energy-monthly",
+    "description":"Energy consumption by zone with PUE and efficiency trends.",
+    "frequency":"monthly","is_automated":true,
+    "team":{"id":6,"name":"Energy Management","slug":"energy-management"},
+    "latest_version":{"id":3,"version_number":3,"period_label":"March 2026","status":"ready","html_url":null,"excel_url":null,"uploaded_by":"Mona H.","created_at":"2026-04-01T08:00:00Z"},
+    "last_updated":"2026-04-01T08:00:00Z"
+  },
+  {
+    "id":11,"title":"NOC Daily Shift Report","slug":"noc-daily-shift",
+    "description":"Daily NOC shift handover including major events and actions taken.",
+    "frequency":"daily","is_automated":false,
+    "team":{"id":7,"name":"NOC Operations","slug":"noc-operations"},
+    "latest_version":{"id":28,"version_number":28,"period_label":"02 April 2026","status":"ready","html_url":null,"excel_url":null,"uploaded_by":"NOC Team","created_at":"2026-04-02T10:00:00Z"},
+    "last_updated":"2026-04-02T10:00:00Z"
+  }
+]
