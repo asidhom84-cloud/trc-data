@@ -96,6 +96,30 @@
     "last_updated": "2026-04-01 23:44:47"
   },
   {
+    "id": 5,
+    "title": "Alarm Dashboard",
+    "slug": "energy-alarm-dashboard",
+    "description": "All-weeks trend view — KPI charts and area breakdown for power alarms.",
+    "frequency": "weekly",
+    "is_automated": true,
+    "team": {
+      "id": 1,
+      "name": "Energy Operations",
+      "slug": "energy-operations"
+    },
+    "latest_version": {
+      "id": 1,
+      "version_number": 1,
+      "period_label": "W01-W13",
+      "status": "ready",
+      "html_url": "https://asidhom84-cloud.github.io/trc-data/files/alarm_dashboard/Weekly_Alarm_Dashboard_W01-W13_TRC.html",
+      "excel_url": null,
+      "uploaded_by": "TRC System",
+      "created_at": "2026-04-02T17:56:04Z"
+    },
+    "last_updated": "2026-04-02T17:56:04Z"
+  },
+  {
     "id": 8,
     "title": "L1 Statistics Report",
     "slug": "rqa-l1stats",

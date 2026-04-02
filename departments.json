@@ -5,7 +5,7 @@
     "slug": "energy",
     "description": "Power infrastructure availability, alarms, and energy performance.",
     "sort_order": 1,
-    "report_count": 4
+    "report_count": 5
   },
   {
     "id": 2,
