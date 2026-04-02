@@ -1,0 +1,23 @@
+{
+  "id": 6,
+  "title": "Top Degraded Cells Report",
+  "slug": "top-degraded-cells",
+  "description": "Ranked list of worst-performing cells with root cause tags, ticket status, and estimated impact on subscriber experience.",
+  "frequency": "weekly",
+  "is_automated": true,
+  "template_type": "alarm_report",
+  "created_at": "2026-03-10 11:47:05.286046",
+  "updated_at": "2026-03-10 11:47:05.286046",
+  "team": {
+    "id": 3,
+    "name": "RF Optimization",
+    "slug": "rf-optimization",
+    "contact_email": "rf-opt@trc.internal"
+  },
+  "department": {
+    "id": 3,
+    "name": "RF",
+    "slug": "rf"
+  },
+  "versions": []
+}

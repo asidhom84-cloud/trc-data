@@ -1,0 +1,23 @@
+{
+  "id": 10,
+  "title": "Monthly Energy Consumption Report",
+  "slug": "monthly-energy-consumption",
+  "description": "Site-level electricity consumption in kWh, PUE values, and cost breakdown. Highlights energy-saving opportunities.",
+  "frequency": "monthly",
+  "is_automated": true,
+  "template_type": "kpi_table",
+  "created_at": "2026-03-10 11:47:05.301672",
+  "updated_at": "2026-03-10 11:47:05.301672",
+  "team": {
+    "id": 6,
+    "name": "Energy Efficiency",
+    "slug": "energy-efficiency",
+    "contact_email": "energy@trc.internal"
+  },
+  "department": {
+    "id": 6,
+    "name": "Energy",
+    "slug": "energy"
+  },
+  "versions": []
+}

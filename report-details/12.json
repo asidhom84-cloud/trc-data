@@ -1,0 +1,23 @@
+{
+  "id": 12,
+  "title": "Major Incident Summary Report",
+  "slug": "major-incident-summary",
+  "description": "Post-incident review of P1/P2 outages: timeline, impacted services, root causes, and preventive measures taken.",
+  "frequency": "monthly",
+  "is_automated": false,
+  "template_type": null,
+  "created_at": "2026-03-10 11:47:05.301672",
+  "updated_at": "2026-03-10 11:47:05.301672",
+  "team": {
+    "id": 7,
+    "name": "Network Operations Center",
+    "slug": "noc-team",
+    "contact_email": "noc@trc.internal"
+  },
+  "department": {
+    "id": 7,
+    "name": "NOC / Supervision",
+    "slug": "noc"
+  },
+  "versions": []
+}

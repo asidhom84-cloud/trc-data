@@ -1,33 +1,23 @@
 {
-  "id":1,"title":"Power Weekly Alarm Report","slug":"power-weekly-alarm",
-  "description":"Weekly aggregation of power alarms from Huawei iMaster NetEco. Covers all regions with full site-level breakdown and duration analysis.",
-  "frequency":"weekly","is_automated":true,"template_type":"alarm_report",
-  "created_at":"2026-01-15T10:00:00Z","updated_at":"2026-04-02T10:00:00Z",
-  "team":{"id":1,"name":"Power Operations","slug":"power-operations","contact_email":"power-ops@trc.internal"},
-  "department":{"id":1,"name":"Power","slug":"power"},
-  "versions":[
-    {
-      "id":7,"version_number":7,"period_label":"Week 14 – April 2026","status":"ready",
-      "original_filename":"Power_Alarms_Week14.xlsx",
-      "html_url":null,"excel_url":null,"uploaded_by":"Ahmed K.",
-      "processing_started_at":"2026-04-02T10:00:00Z","processing_finished_at":"2026-04-02T10:00:45Z",
-      "generation_log":"Processing complete. 312 alarms processed. 8 regions summarised. Duration: 45s.",
-      "created_at":"2026-04-02T10:00:00Z"
-    },
-    {
-      "id":6,"version_number":6,"period_label":"Week 13 – March 2026","status":"ready",
-      "original_filename":"Power_Alarms_Week13.xlsx",
-      "html_url":null,"excel_url":null,"uploaded_by":"Ahmed K.",
-      "processing_started_at":"2026-03-26T09:15:00Z","processing_finished_at":"2026-03-26T09:15:38Z",
-      "generation_log":"Processing complete. 287 alarms processed. 8 regions summarised.",
-      "created_at":"2026-03-26T09:15:00Z"
-    },
-    {
-      "id":5,"version_number":5,"period_label":"Week 12 – March 2026","status":"archived",
-      "original_filename":"Power_Alarms_Week12.xlsx",
-      "html_url":null,"excel_url":null,"uploaded_by":"Ahmed K.",
-      "processing_started_at":"2026-03-19T11:00:00Z","processing_finished_at":"2026-03-19T11:00:42Z",
-      "generation_log":null,"created_at":"2026-03-19T11:00:00Z"
-    }
-  ]
+  "id": 1,
+  "title": "Power Weekly Alarm Report",
+  "slug": "power-weekly-alarm",
+  "description": "Weekly analysis of power system alarms, outage events, and corrective actions. Includes priority alarms by site and resolution timelines.",
+  "frequency": "weekly",
+  "is_automated": true,
+  "template_type": "alarm_report",
+  "created_at": "2026-03-10 11:47:05.254796",
+  "updated_at": "2026-03-10 11:47:05.254796",
+  "team": {
+    "id": 1,
+    "name": "Power Operations",
+    "slug": "power-operations",
+    "contact_email": "power-ops@trc.internal"
+  },
+  "department": {
+    "id": 1,
+    "name": "Power",
+    "slug": "power"
+  },
+  "versions": []
 }

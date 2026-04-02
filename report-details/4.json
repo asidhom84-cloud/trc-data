@@ -1,0 +1,23 @@
+{
+  "id": 4,
+  "title": "Link Availability & Quality Report",
+  "slug": "link-availability-quality",
+  "description": "Weekly summary of link availability percentages, degradation events, and Adaptive Modulation activity.",
+  "frequency": "weekly",
+  "is_automated": true,
+  "template_type": "kpi_table",
+  "created_at": "2026-03-10 11:47:05.270422",
+  "updated_at": "2026-03-10 11:47:05.270422",
+  "team": {
+    "id": 2,
+    "name": "Microwave Transmission",
+    "slug": "microwave-transmission",
+    "contact_email": "mw-tx@trc.internal"
+  },
+  "department": {
+    "id": 2,
+    "name": "Transmission",
+    "slug": "transmission"
+  },
+  "versions": []
+}

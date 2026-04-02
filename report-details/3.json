@@ -1,0 +1,23 @@
+{
+  "id": 3,
+  "title": "Transmission Capacity Report",
+  "slug": "transmission-capacity",
+  "description": "Monthly utilization analysis of microwave and fiber links. Highlights congested links and capacity planning gaps.",
+  "frequency": "monthly",
+  "is_automated": true,
+  "template_type": "capacity_report",
+  "created_at": "2026-03-10 11:47:05.270422",
+  "updated_at": "2026-03-10 11:47:05.270422",
+  "team": {
+    "id": 2,
+    "name": "Microwave Transmission",
+    "slug": "microwave-transmission",
+    "contact_email": "mw-tx@trc.internal"
+  },
+  "department": {
+    "id": 2,
+    "name": "Transmission",
+    "slug": "transmission"
+  },
+  "versions": []
+}
