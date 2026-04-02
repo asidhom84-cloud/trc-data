@@ -1,0 +1,598 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NetEco Weekly Energy Report – 2026-03-16 - 2026-03-22</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Segoe UI', Arial, sans-serif; background: #F4F6F9; color: #2C3E50; font-size: 13px; }
+  .page { max-width: 1280px; margin: 0 auto; padding: 20px; }
+
+  /* Header */
+  .report-header { background: linear-gradient(135deg, #1A1A2E 0%, #16213E 60%, #0F3460 100%);
+    color: white; padding: 24px 32px; border-radius: 12px; margin-bottom: 20px;
+    display: flex; justify-content: space-between; align-items: center; }
+  .header-left .logo { background: #FF7900; color: white; font-size: 18px; font-weight: 800;
+    padding: 4px 14px; border-radius: 4px; display: inline-block; margin-bottom: 8px; letter-spacing: 1px; }
+  .header-left h1 { font-size: 20px; font-weight: 600; margin-bottom: 4px; }
+  .header-left .subtitle { font-size: 12px; color: #aaa; }
+  .header-right { text-align: right; }
+  .week-badge { background: #FF7900; color: white; padding: 6px 16px;
+    border-radius: 20px; font-size: 12px; font-weight: 600; display: inline-block; margin-bottom: 6px; }
+  .header-right .meta { font-size: 11px; color: #aaa; }
+
+  /* Section titles */
+  .section-title { font-size: 14px; font-weight: 700; color: #FF7900;
+    border-left: 4px solid #FF7900; padding-left: 10px; margin: 20px 0 12px; }
+
+  /* KPI Cards */
+  .kpi-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-bottom: 20px; }
+  .kpi-card { background: white; border-radius: 10px; padding: 16px 18px;
+    border-top: 3px solid #FF7900; box-shadow: 0 1px 6px rgba(0,0,0,0.07); }
+  .kpi-card.danger  { border-top-color: #C0392B; }
+  .kpi-card.warning { border-top-color: #F39C12; }
+  .kpi-card.success { border-top-color: #27AE60; }
+  .kpi-card.info    { border-top-color: #2980B9; }
+  .kpi-label { font-size: 11px; color: #888; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 6px; }
+  .kpi-value { font-size: 26px; font-weight: 700; color: #1A1A2E; line-height: 1; }
+  .kpi-value.orange { color: #FF7900; }
+  .kpi-value.danger  { color: #C0392B; }
+  .kpi-value.warning { color: #F39C12; }
+  .kpi-value.success { color: #27AE60; }
+  .kpi-sub { font-size: 11px; color: #aaa; margin-top: 4px; }
+
+  /* Avail bar */
+  .avail-bar-wrap { background: white; border-radius: 10px; padding: 16px 20px;
+    margin-bottom: 20px; box-shadow: 0 1px 6px rgba(0,0,0,0.07); }
+  .avail-bar-track { height: 24px; background: #EEE; border-radius: 12px; overflow: hidden; margin: 8px 0; }
+  .avail-bar-fill { height: 100%; border-radius: 12px; display: flex; align-items: center;
+    padding-left: 12px; font-size: 12px; font-weight: 700; color: white;
+    transition: width 1s ease; }
+  .avail-label { font-size: 12px; color: #666; display: flex; justify-content: space-between; }
+
+  /* Charts row */
+  .charts-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 20px; }
+  .chart-card { background: white; border-radius: 10px; padding: 16px;
+    box-shadow: 0 1px 6px rgba(0,0,0,0.07); }
+  .chart-card h3 { font-size: 12px; color: #888; text-transform: uppercase;
+    letter-spacing: 0.5px; margin-bottom: 12px; }
+  .chart-card canvas { max-height: 220px; }
+
+  /* Tables */
+  .table-card { background: white; border-radius: 10px; padding: 16px 20px;
+    margin-bottom: 20px; box-shadow: 0 1px 6px rgba(0,0,0,0.07); overflow-x: auto; }
+  table { width: 100%; border-collapse: collapse; font-size: 12px; }
+  thead th { background: #1A1A2E; color: white; padding: 9px 10px;
+    text-align: center; font-weight: 600; font-size: 11px; white-space: nowrap; }
+  tbody tr:nth-child(even) { background: #F8F9FA; }
+  tbody tr:hover { background: #FFF3E6; }
+  tbody td { padding: 8px 10px; text-align: center; border-bottom: 1px solid #EEE; }
+  .site-id { font-weight: 700; color: #2C3E50; font-size: 11px; }
+  .site-name { text-align: left; max-width: 160px; overflow: hidden;
+    text-overflow: ellipsis; white-space: nowrap; }
+
+  /* Badges */
+  .grade-badge { padding: 2px 8px; border-radius: 10px; font-size: 10px; font-weight: 700; }
+  .grade-gold   { background: #FFF3CD; color: #856404; }
+  .grade-silver { background: #E8E8E8; color: #555; }
+  .grade-bronze { background: #FCE8D5; color: #7D3C0F; }
+  .badge { padding: 2px 8px; border-radius: 10px; font-size: 10px; font-weight: 600;
+    display: inline-block; margin: 1px; }
+  .badge-danger  { background: #FADBD8; color: #C0392B; }
+  .badge-warning { background: #FDEBD0; color: #D35400; }
+
+  /* Availability coloring */
+  .avail-ok   { color: #27AE60; font-weight: 700; }
+  .avail-warn { color: #F39C12; font-weight: 700; }
+  .avail-bad  { color: #C0392B; font-weight: 700; }
+  .text-danger { color: #C0392B; font-weight: 700; }
+
+  /* Footer */
+  .report-footer { text-align: center; color: #aaa; font-size: 11px;
+    padding: 20px; margin-top: 10px; }
+  .trc-badge { color: #FF7900; font-weight: 700; }
+
+  @media print {
+    body { background: white; }
+    .page { padding: 10px; }
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <!-- HEADER -->
+  <div class="report-header">
+    <div class="header-left">
+      <div class="logo">orange</div>
+      <h1>NetEco Weekly Energy Report</h1>
+      <div class="subtitle">Energy Operations · Technology Report Center (TRC)</div>
+    </div>
+    <div class="header-right">
+      <div class="week-badge">📅 2026-03-16 - 2026-03-22</div>
+      <div class="meta">Generated: 2026-03-26 17:38</div>
+      <div class="meta">Export: 2026-03-26 17:35:10</div>
+    </div>
+  </div>
+
+  <!-- NETWORK AVAILABILITY BAR -->
+  <div class="avail-bar-wrap">
+    <div style="font-size:13px;font-weight:600;color:#1A1A2E;">Network Mains Availability</div>
+    <div class="avail-bar-track">
+      <div class="avail-bar-fill" style="width:84.276%;background:#C0392B;">
+        84.276%
+      </div>
+    </div>
+    <div class="avail-label">
+      <span>0%</span>
+      <span style="color:#C0392B;font-weight:700;">84.276% Network Availability  (4887.4h total outage)</span>
+      <span>100%</span>
+    </div>
+  </div>
+
+  <!-- KPI CARDS ROW 1 -->
+  <div class="section-title">🔌 Mains & Outage</div>
+  <div class="kpi-grid">
+    <div class="kpi-card">
+      <div class="kpi-label">Total Sites</div>
+      <div class="kpi-value orange">4,379</div>
+    </div>
+    <div class="kpi-card danger">
+      <div class="kpi-label">Sites with Outage</div>
+      <div class="kpi-value danger">1,301</div>
+      <div class="kpi-sub">29.7% of network</div>
+    </div>
+    <div class="kpi-card danger">
+      <div class="kpi-label">Full Week Outage (168h)</div>
+      <div class="kpi-value danger">14</div>
+    </div>
+    <div class="kpi-card danger">
+      <div class="kpi-label">No Recorded Backup During Outage</div>
+      <div class="kpi-value danger">603</div>
+      <div class="kpi-sub">No DG + No Battery</div>
+    </div>
+  </div>
+
+  <!-- KPI CARDS ROW 2 -->
+  <div class="kpi-grid" style="grid-template-columns: repeat(4,1fr)">
+    <div class="kpi-card info">
+      <div class="kpi-label">DG Activations</div>
+      <div class="kpi-value" style="color:#2980B9;">2,168</div>
+      <div class="kpi-sub">83 sites</div>
+    </div>
+    <div class="kpi-card warning">
+      <div class="kpi-label">Fuel Consumed</div>
+      <div class="kpi-value warning">6,340.9 L</div>
+      <div class="kpi-sub">Refueled: 8,334.9 L</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-label">Battery Discharges</div>
+      <div class="kpi-value orange">209,177</div>
+      <div class="kpi-sub">1063 sites · 16603.2h total</div>
+    </div>
+    <div class="kpi-card success">
+      <div class="kpi-label">Solar Supply</div>
+      <div class="kpi-value success">2,755.8 kWh</div>
+      <div class="kpi-sub">19 solar sites</div>
+    </div>
+  </div>
+
+  <!-- CHARTS -->
+  <div class="charts-row">
+    <div class="chart-card">
+      <h3>Mains Availability % by Region</h3>
+      <canvas id="availChart"></canvas>
+    </div>
+    <div class="chart-card">
+      <h3>DG Starts &amp; Battery Discharges by Region</h3>
+      <canvas id="activityChart"></canvas>
+    </div>
+  </div>
+  <div class="charts-row">
+    <div class="chart-card">
+      <h3>Sites with Outage by Region</h3>
+      <canvas id="outageChart"></canvas>
+    </div>
+    <div class="chart-card">
+      <h3>Fuel Consumed by Region (L)</h3>
+      <canvas id="fuelChart"></canvas>
+    </div>
+  </div>
+
+  <!-- REGION TABLE -->
+  <div class="section-title">🗺 Region Breakdown</div>
+  <div class="table-card">
+    <table>
+      <thead>
+        <tr>
+          <th>Region</th><th>Sites</th><th>w/ Outage</th>
+          <th>Availability %</th><th>Full Outage</th>
+          <th>DG Starts</th><th>Bat. Discharges</th>
+          <th>Fuel (L)</th><th>Solar (kWh)</th><th>No Recorded Backup</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Cairo</strong></td>
+          <td>1801</td>
+          <td>391</td>
+          <td class="avail-bad">86.9%</td>
+          <td>6</td>
+          <td>372</td>
+          <td>21079</td>
+          <td>2337.8 L</td>
+          <td>0.0 kWh</td>
+          <td class="text-danger">218</td>
+        </tr>
+        <tr>
+          <td><strong>Alex</strong></td>
+          <td>656</td>
+          <td>247</td>
+          <td class="avail-bad">85.35%</td>
+          <td>3</td>
+          <td>8</td>
+          <td>54944</td>
+          <td>0.0 L</td>
+          <td>1429.3 kWh</td>
+          <td class="text-danger">90</td>
+        </tr>
+        <tr>
+          <td><strong>Delta</strong></td>
+          <td>690</td>
+          <td>298</td>
+          <td class="avail-bad">86.35%</td>
+          <td>0</td>
+          <td>2</td>
+          <td>99538</td>
+          <td>0.0 L</td>
+          <td>0.0 kWh</td>
+          <td class="text-danger">114</td>
+        </tr>
+        <tr>
+          <td><strong>Upper Egypt</strong></td>
+          <td>520</td>
+          <td>192</td>
+          <td class="avail-bad">77.74%</td>
+          <td>1</td>
+          <td>724</td>
+          <td>20138</td>
+          <td>730.6 L</td>
+          <td>0.0 kWh</td>
+          <td class="text-danger">84</td>
+        </tr>
+        <tr>
+          <td><strong>Sinai</strong></td>
+          <td>209</td>
+          <td>61</td>
+          <td class="avail-bad">80.84%</td>
+          <td>1</td>
+          <td>389</td>
+          <td>6627</td>
+          <td>704.8 L</td>
+          <td>0.0 kWh</td>
+          <td class="text-danger">29</td>
+        </tr>
+        <tr>
+          <td><strong>Red Sea</strong></td>
+          <td>211</td>
+          <td>48</td>
+          <td class="avail-bad">74.11%</td>
+          <td>1</td>
+          <td>673</td>
+          <td>6635</td>
+          <td>2567.7 L</td>
+          <td>139.8 kWh</td>
+          <td class="text-danger">21</td>
+        </tr>
+        <tr>
+          <td><strong>Unknown</strong></td>
+          <td>292</td>
+          <td>64</td>
+          <td class="avail-bad">82.26%</td>
+          <td>2</td>
+          <td>0</td>
+          <td>216</td>
+          <td>0.0 L</td>
+          <td>1186.8 kWh</td>
+          <td class="text-danger">47</td>
+        </tr></tbody>
+    </table>
+  </div>
+
+  <!-- TOP OFFENDERS -->
+  <div class="section-title">🚨 Top Priority Offenders (Gold &amp; Silver First)</div>
+  <div class="table-card">
+    <table>
+      <thead>
+        <tr>
+          <th>Grade</th><th>Site ID</th><th>Site Name</th><th>Region</th>
+          <th>Subregion</th><th>Avail %</th><th>Outage Dur.</th>
+          <th>DG Starts</th><th>Bat. Disc.</th><th>Risk Flags</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><span class="grade-badge grade-gold">Gold</span></td>
+          <td class="site-id">7298AL</td>
+          <td class="site-name">West-DES-REP-1</td>
+          <td>Alex</td>
+          <td>Unknown</td>
+          <td class="avail-bad">0.0%</td>
+          <td>168.0h</td>
+          <td>-</td>
+          <td>22</td>
+          <td><span class="badge badge-danger">Full Outage</span></td>
+        </tr>
+        <tr>
+          <td><span class="grade-badge grade-gold">Gold</span></td>
+          <td class="site-id">7300AL</td>
+          <td class="site-name">West-DES-REP-3</td>
+          <td>Alex</td>
+          <td>Unknown</td>
+          <td class="avail-bad">0.0%</td>
+          <td>168.0h</td>
+          <td>-</td>
+          <td>10</td>
+          <td><span class="badge badge-danger">Full Outage</span></td>
+        </tr>
+        <tr>
+          <td><span class="grade-badge grade-gold">Gold</span></td>
+          <td class="site-id">4068CA</td>
+          <td class="site-name">NEW-CAIRO-12</td>
+          <td>Cairo</td>
+          <td>Cairo East</td>
+          <td class="avail-bad">63.8%</td>
+          <td>12.8h</td>
+          <td>-</td>
+          <td>0</td>
+          <td><span class="badge badge-danger">⚠ No Recorded Backup</span></td>
+        </tr>
+        <tr>
+          <td><span class="grade-badge grade-gold">Gold</span></td>
+          <td class="site-id">0341UP</td>
+          <td class="site-name">0341UP</td>
+          <td>Upper Egypt</td>
+          <td>North Upper</td>
+          <td class="avail-bad">94.0%</td>
+          <td>10.0h</td>
+          <td>-</td>
+          <td>6</td>
+          <td></td>
+        </tr>
+        <tr>
+          <td><span class="grade-badge grade-gold">Gold</span></td>
+          <td class="site-id">0058AL</td>
+          <td class="site-name">3P-MM-MR18-QASABA</td>
+          <td>Alex</td>
+          <td>North Coast</td>
+          <td class="avail-warn">95.9%</td>
+          <td>7.3h</td>
+          <td>-</td>
+          <td>25</td>
+          <td></td>
+        </tr>
+        <tr>
+          <td><span class="grade-badge grade-gold">Gold</span></td>
+          <td class="site-id">0801AL</td>
+          <td class="site-name">MM-70-ROAD</td>
+          <td>Alex</td>
+          <td>North Coast</td>
+          <td class="avail-warn">96.1%</td>
+          <td>6.6h</td>
+          <td>-</td>
+          <td>3</td>
+          <td></td>
+        </tr>
+        <tr>
+          <td><span class="grade-badge grade-gold">Gold</span></td>
+          <td class="site-id">4238UP</td>
+          <td class="site-name">4238UP</td>
+          <td>Upper Egypt</td>
+          <td>South Upper</td>
+          <td class="avail-warn">96.1%</td>
+          <td>6.5h</td>
+          <td>-</td>
+          <td>7</td>
+          <td></td>
+        </tr>
+        <tr>
+          <td><span class="grade-badge grade-gold">Gold</span></td>
+          <td class="site-id">0380AL</td>
+          <td class="site-name">ARD-BANGER</td>
+          <td>Alex</td>
+          <td>North Coast</td>
+          <td class="avail-bad">83.1%</td>
+          <td>4.3h</td>
+          <td>-</td>
+          <td>9</td>
+          <td></td>
+        </tr>
+        <tr>
+          <td><span class="grade-badge grade-gold">Gold</span></td>
+          <td class="site-id">0817DE</td>
+          <td class="site-name">0817DE</td>
+          <td>Delta</td>
+          <td>Delta North</td>
+          <td class="avail-warn">97.5%</td>
+          <td>4.2h</td>
+          <td>-</td>
+          <td>16</td>
+          <td></td>
+        </tr>
+        <tr>
+          <td><span class="grade-badge grade-gold">Gold</span></td>
+          <td class="site-id">0512AL</td>
+          <td class="site-name">0512AL</td>
+          <td>Alex</td>
+          <td>Alex</td>
+          <td class="avail-warn">97.6%</td>
+          <td>4.1h</td>
+          <td>-</td>
+          <td>11</td>
+          <td></td>
+        </tr>
+        <tr>
+          <td><span class="grade-badge grade-gold">Gold</span></td>
+          <td class="site-id">0437DE</td>
+          <td class="site-name">0437DE</td>
+          <td>Delta</td>
+          <td>Delta South</td>
+          <td class="avail-warn">98.0%</td>
+          <td>3.4h</td>
+          <td>-</td>
+          <td>2</td>
+          <td></td>
+        </tr>
+        <tr>
+          <td><span class="grade-badge grade-gold">Gold</span></td>
+          <td class="site-id">0154DE</td>
+          <td class="site-name">0154DE</td>
+          <td>Delta</td>
+          <td>Delta North</td>
+          <td class="avail-warn">98.1%</td>
+          <td>3.4h</td>
+          <td>-</td>
+          <td>0</td>
+          <td><span class="badge badge-danger">⚠ No Recorded Backup</span></td>
+        </tr>
+        <tr>
+          <td><span class="grade-badge grade-gold">Gold</span></td>
+          <td class="site-id">3204AL</td>
+          <td class="site-name">MM-ALAMIEN-4</td>
+          <td>Alex</td>
+          <td>North Coast</td>
+          <td class="avail-warn">98.4%</td>
+          <td>2.7h</td>
+          <td>-</td>
+          <td>8</td>
+          <td></td>
+        </tr>
+        <tr>
+          <td><span class="grade-badge grade-gold">Gold</span></td>
+          <td class="site-id">M014AL</td>
+          <td class="site-name">MS-MM-SLVRSND</td>
+          <td>Alex</td>
+          <td>North Coast</td>
+          <td class="avail-warn">98.4%</td>
+          <td>2.7h</td>
+          <td>-</td>
+          <td>5292</td>
+          <td></td>
+        </tr>
+        <tr>
+          <td><span class="grade-badge grade-gold">Gold</span></td>
+          <td class="site-id">0174UP</td>
+          <td class="site-name">0174UP</td>
+          <td>Upper Egypt</td>
+          <td>South Upper</td>
+          <td class="avail-warn">98.5%</td>
+          <td>2.6h</td>
+          <td>-</td>
+          <td>7</td>
+          <td></td>
+        </tr></tbody>
+    </table>
+  </div>
+
+  <!-- FOOTER -->
+  <div class="report-footer">
+    <span class="trc-badge">TRC</span> · Technology Report Center ·
+    Orange Egypt – Energy Operations ·
+    Report Period: 2026-03-16 - 2026-03-22 · Generated 2026-03-26 17:38
+  </div>
+</div>
+
+<script>
+const regions = ['Cairo', 'Alex', 'Delta', 'Upper Egypt', 'Sinai', 'Red Sea', 'Unknown'];
+const availVals = [86.9, 85.35, 86.35, 77.74, 80.84, 74.11, 82.26];
+const outageVals = [391, 247, 298, 192, 61, 48, 64];
+const dgVals = [372, 8, 2, 724, 389, 673, 0];
+const batVals = [21079, 54944, 99538, 20138, 6627, 6635, 216];
+const fuelVals = [2337.8, 0.0, 0.0, 730.6, 704.8, 2567.7, 0.0];
+
+const ORANGE = '#FF7900';
+const NAVY   = '#1A1A2E';
+const RED    = '#C0392B';
+const BLUE   = '#2980B9';
+const GREEN  = '#27AE60';
+const AMBER  = '#F39C12';
+
+Chart.defaults.font.family = "'Segoe UI', Arial, sans-serif";
+Chart.defaults.font.size = 11;
+Chart.defaults.color = '#666';
+
+// Availability chart
+const availMin = availVals.length ? Math.max(0, Math.floor(Math.min(...availVals) / 5) * 5 - 5) : 0;
+new Chart(document.getElementById('availChart'), {
+  type: 'bar',
+  data: {
+    labels: regions,
+    datasets: [{
+      label: 'Availability %',
+      data: availVals,
+      backgroundColor: availVals.map(v =>
+        v >= 99 ? 'rgba(39,174,96,0.75)' :
+        v >= 95 ? 'rgba(243,156,18,0.75)' : 'rgba(192,57,43,0.75)'
+      ),
+      borderRadius: 4, borderSkipped: false,
+    }]
+  },
+  options: {
+    plugins: { legend: { display: false },
+      tooltip: { callbacks: { label: ctx => ` ${ctx.parsed.y}%` } } },
+    scales: {
+      y: { min: availMin, max: 100, ticks: { callback: v => v+'%' } },
+      x: { grid: { display: false } }
+    }
+  }
+});
+
+// Activity chart (DG + Battery)
+new Chart(document.getElementById('activityChart'), {
+  type: 'bar',
+  data: {
+    labels: regions,
+    datasets: [
+      { label: 'DG Starts',  data: dgVals,  backgroundColor: 'rgba(41,128,185,0.8)', borderRadius: 3 },
+      { label: 'Bat. Disc.', data: batVals, backgroundColor: 'rgba(255,121,0,0.75)', borderRadius: 3 },
+    ]
+  },
+  options: {
+    plugins: { legend: { position: 'top' } },
+    scales: { x: { stacked: false, grid: { display: false } }, y: { stacked: false } }
+  }
+});
+
+// Outage chart
+new Chart(document.getElementById('outageChart'), {
+  type: 'bar',
+  data: {
+    labels: regions,
+    datasets: [{ label: 'Sites w/ Outage', data: outageVals,
+      backgroundColor: 'rgba(192,57,43,0.75)', borderRadius: 4, borderSkipped: false }]
+  },
+  options: {
+    plugins: { legend: { display: false } },
+    scales: { x: { grid: { display: false } } }
+  }
+});
+
+// Fuel chart
+new Chart(document.getElementById('fuelChart'), {
+  type: 'bar',
+  data: {
+    labels: regions,
+    datasets: [{ label: 'Fuel Consumed (L)', data: fuelVals,
+      backgroundColor: 'rgba(243,156,18,0.8)', borderRadius: 4, borderSkipped: false }]
+  },
+  options: {
+    plugins: { legend: { display: false },
+      tooltip: { callbacks: { label: ctx => ` ${ctx.parsed.y} L` } } },
+    scales: { x: { grid: { display: false } } }
+  }
+});
+</script>
+</body>
+</html>

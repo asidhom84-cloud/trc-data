@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Daily Power Alarms — W13-2026</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4/dist/chart.umd.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2/dist/chartjs-plugin-datalabels.min.js"></script>
+<style>
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:'Segoe UI',Arial,sans-serif;background:#F0F2F7;color:#12203A}
+  .topbar{background:#0F1C2E;padding:16px 28px;display:flex;align-items:center;gap:16px}
+  .topbar h1{color:#fff;font-size:18px;font-weight:700;letter-spacing:-.3px}
+  .topbar .badge{background:#FF6600;color:#fff;font-size:11px;font-weight:700;
+    padding:3px 10px;border-radius:20px;letter-spacing:1px}
+  .main{padding:24px;display:grid;gap:20px}
+  .card{background:#fff;border-radius:12px;padding:20px;box-shadow:0 2px 12px rgba(0,0,0,.07)}
+  .card h2{font-size:14px;font-weight:700;color:#12203A;margin-bottom:16px;
+    padding-bottom:10px;border-bottom:2px solid #FF6600}
+  .kpi-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:12px;margin-bottom:20px}
+  .kpi{background:#fff;border-radius:10px;padding:14px 18px;
+    box-shadow:0 2px 8px rgba(0,0,0,.06);border-left:4px solid #FF6600}
+  .kpi .val{font-size:26px;font-weight:700;color:#FF6600;font-family:monospace}
+  .kpi .lbl{font-size:11px;color:#8B949E;margin-top:3px;font-weight:500}
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+  .grid3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:20px}
+  canvas{max-height:340px}
+  .top20-canvas{max-height:500px!important}
+  @media(max-width:768px){.grid2,.grid3{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<div class="topbar">
+  <span class="badge">TRC</span>
+  <h1>Daily Power Alarms Dashboard — W13-2026</h1>
+  <span style="margin-left:auto;color:rgba(255,255,255,.5);font-size:12px">
+    2026-03-22 → 2026-03-28
+  </span>
+</div>
+<div class="main">
+
+<!-- KPI row -->
+<div class="kpi-row">
+  <div class="kpi"><div class="val">18,159</div><div class="lbl">Total Power Alarms</div></div>
+  <div class="kpi" style="border-color:#22c55e"><div class="val" style="color:#22c55e">16,265</div><div class="lbl">0–1 Hr (&lt;1h)</div></div>
+  <div class="kpi" style="border-color:#f59e0b"><div class="val" style="color:#f59e0b">791</div><div class="lbl">1–2 Hr</div></div>
+  <div class="kpi" style="border-color:#ef4444"><div class="val" style="color:#ef4444">1,103</div><div class="lbl">2 Hr+ (severe)</div></div>
+  <div class="kpi" style="border-color:#6366f1"><div class="val" style="color:#6366f1">20</div><div class="lbl">Sites in Top 20</div></div>
+</div>
+
+<!-- Daily alarms chart -->
+<div class="card">
+  <h2>Power Alarms / Day — W13-2026</h2>
+  <canvas id="chartDaily"></canvas>
+</div>
+
+<!-- % stacked -->
+<div class="card">
+  <h2>% Duration Distribution per Day</h2>
+  <canvas id="chartPct"></canvas>
+</div>
+
+<!-- Hourly per-day + Weekly trend -->
+<div class="grid2">
+  <div class="card">
+    <h2>Hourly Power Alarms by Day</h2>
+    <canvas id="chartHourly"></canvas>
+  </div>
+  <div class="card">
+    <h2>Power Alarms by Area — Weekly Trend</h2>
+    <canvas id="chartWeekly"></canvas>
+  </div>
+</div>
+
+<!-- Top 20 sites bar chart -->
+<div class="card">
+  <h2>Top 20 Sites by Longest Single Alarm Duration</h2>
+  <canvas id="chartTop20" class="top20-canvas"></canvas>
+</div>
+
+</div>
+<script>
+Chart.register(ChartDataLabels);
+const ORANGE='#FF6600', GRAY1='#94A3B8', GRAY2='#CBD5E1', RED='#ef4444', AMBER='#f59e0b', GREEN='#22c55e';
+const dates=["03-22", "03-23", "03-24", "03-25", "03-26", "03-27", "03-28"];
+
+// Chart 1 – Daily stacked bar + total line
+new Chart(document.getElementById('chartDaily'),{
+  data:{
+    labels:dates,
+    datasets:[
+      {type:'bar',label:'0-1 Hr',data:[1771, 1581, 2288, 3666, 2704, 1956, 2299],backgroundColor:ORANGE,stack:'s'},
+      {type:'bar',label:'1-2 Hr',data:[41, 57, 87, 282, 157, 79, 88],backgroundColor:GRAY1,stack:'s'},
+      {type:'bar',label:'2-3 Hr',data:[41, 33, 44, 133, 59, 31, 38],backgroundColor:RED,stack:'s'},
+      {type:'bar',label:'>3 Hrs',data:[101, 55, 52, 270, 128, 63, 55],backgroundColor:'#3b82f6',stack:'s'},
+      {type:'line',label:'Total',data:[1954, 1726, 2471, 4351, 3048, 2129, 2480],borderColor:'#000',
+        borderWidth:2,pointRadius:5,fill:false,datalabels:{anchor:'end',align:'top',
+        color:'#000',font:{weight:'bold',size:11}}}
+    ]
+  },
+  options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'bottom'},
+    datalabels:{display:false}},
+    scales:{x:{stacked:true},y:{stacked:true,beginAtZero:true}}
+  }
+});
+
+// Chart 2 – % stacked bar
+new Chart(document.getElementById('chartPct'),{
+  type:'bar',
+  data:{
+    labels:dates,
+    datasets:[
+      {label:'0-1 Hr',data:[90.6, 91.6, 92.6, 84.3, 88.7, 91.9, 92.7],backgroundColor:ORANGE,stack:'s'},
+      {label:'1-2 Hr',data:[2.1, 3.3, 3.5, 6.5, 5.2, 3.7, 3.5],backgroundColor:GRAY1,stack:'s'},
+      {label:'2-3 Hr',data:[2.1, 1.9, 1.8, 3.1, 1.9, 1.5, 1.5],backgroundColor:RED,stack:'s'},
+      {label:'>3 Hrs',data:[5.2, 3.2, 2.1, 6.2, 4.2, 3.0, 2.2],backgroundColor:'#3b82f6',stack:'s'}
+    ]
+  },
+  options:{responsive:true,maintainAspectRatio:false,
+    plugins:{legend:{position:'bottom'},
+      datalabels:{formatter:v=>v>1?v.toFixed(1)+'%':'',color:'#fff',font:{size:9,weight:'bold'}}},
+    scales:{x:{stacked:true},y:{stacked:true,min:80,max:102,
+      ticks:{callback:v=>v+'%'}}}
+  }
+});
+
+// Chart 3 – Hourly multi-line (one line per day)
+new Chart(document.getElementById('chartHourly'),{
+  type:'line',
+  data:{
+    labels:[...Array(24).keys()],
+    datasets:[{"label": "03-22", "data": [52, 48, 50, 71, 82, 56, 67, 95, 95, 104, 164, 110, 99, 116, 121, 109, 81, 66, 83, 76, 52, 58, 72, 27], "borderColor": "#FF6600", "backgroundColor": "#FF660033", "borderWidth": 2, "pointRadius": 3, "fill": false, "tension": 0.3}, {"label": "03-23", "data": [52, 27, 36, 35, 78, 55, 72, 37, 43, 42, 62, 70, 55, 70, 94, 84, 73, 85, 110, 104, 103, 109, 119, 111], "borderColor": "#22c55e", "backgroundColor": "#22c55e33", "borderWidth": 2, "pointRadius": 3, "fill": false, "tension": 0.3}, {"label": "03-24", "data": [136, 108, 38, 58, 65, 55, 60, 77, 128, 146, 136, 168, 183, 126, 135, 137, 134, 132, 126, 66, 71, 70, 56, 61], "borderColor": "#3b82f6", "backgroundColor": "#3b82f633", "borderWidth": 2, "pointRadius": 3, "fill": false, "tension": 0.3}, {"label": "03-25", "data": [33, 82, 49, 53, 73, 73, 134, 143, 208, 291, 232, 290, 311, 338, 248, 230, 265, 257, 241, 236, 193, 148, 100, 123], "borderColor": "#ef4444", "backgroundColor": "#ef444433", "borderWidth": 2, "pointRadius": 3, "fill": false, "tension": 0.3}, {"label": "03-26", "data": [78, 50, 76, 87, 77, 92, 93, 136, 113, 155, 177, 215, 201, 195, 180, 163, 212, 197, 146, 101, 75, 68, 80, 81], "borderColor": "#f59e0b", "backgroundColor": "#f59e0b33", "borderWidth": 2, "pointRadius": 3, "fill": false, "tension": 0.3}, {"label": "03-27", "data": [39, 32, 51, 29, 47, 48, 67, 76, 63, 68, 89, 92, 77, 145, 190, 192, 175, 145, 109, 115, 72, 81, 73, 54], "borderColor": "#8b5cf6", "backgroundColor": "#8b5cf633", "borderWidth": 2, "pointRadius": 3, "fill": false, "tension": 0.3}, {"label": "03-28", "data": [36, 20, 29, 20, 23, 50, 53, 36, 46, 122, 298, 275, 234, 172, 212, 170, 144, 93, 91, 87, 62, 54, 98, 55], "borderColor": "#06b6d4", "backgroundColor": "#06b6d433", "borderWidth": 2, "pointRadius": 3, "fill": false, "tension": 0.3}]
+  },
+  options:{responsive:true,maintainAspectRatio:false,
+    plugins:{legend:{position:'bottom'},datalabels:{display:false}},
+    scales:{
+      x:{title:{display:true,text:'Hour'}},
+      y:{beginAtZero:true}
+    }
+  }
+});
+
+// Chart 4 – Weekly trend stacked bar + All total line
+new Chart(document.getElementById('chartWeekly'),{
+  data:{
+    labels:["W03-2026", "W04-2026", "W05-2026", "W06-2026", "W07-2026", "W08-2026", "W09-2026", "W10-2026", "W11-2026", "W12-2026", "W13-2026"],
+    datasets:[
+      {type:'bar',label:'Alex',data:[1474, 1785, 235, 1466, 1377, 205, 680, 2843, 1383, 1295, 1269],backgroundColor:'#FF6600',stack:'s'},
+      {type:'bar',label:'Cairo',data:[4022, 3529, 3661, 4321, 3029, 2817, 1651, 1801, 2000, 1492, 2397],backgroundColor:'#3b82f6',stack:'s'},
+      {type:'bar',label:'Delta',data:[7084, 3445, 4988, 4356, 2872, 2440, 5235, 6302, 7196, 4245, 8332],backgroundColor:'#22c55e',stack:'s'},
+      {type:'bar',label:'North Coast',data:[2424, 1851, 2020, 1926, 2568, 1354, 1749, 1596, 1775, 1677, 2062],backgroundColor:'#f59e0b',stack:'s'},
+      {type:'bar',label:'Sinai & Red Sea',data:[1974, 1455, 1401, 1517, 1923, 1306, 1127, 1019, 1271, 1526, 1765],backgroundColor:'#8b5cf6',stack:'s'},
+      {type:'bar',label:'Upper',data:[1604, 1786, 1980, 1991, 2229, 2157, 1986, 2490, 2225, 1896, 2334],backgroundColor:'#06b6d4',stack:'s'},
+      {type:'line',label:'All',data:[18582, 13851, 14285, 15577, 13998, 10279, 12428, 16051, 15850, 12131, 18159],borderColor:'#000',
+        borderWidth:2,pointRadius:4,fill:false,datalabels:{anchor:'end',align:'top',
+        color:'#000',font:{weight:'bold',size:9}}}
+    ]
+  },
+  options:{responsive:true,maintainAspectRatio:false,
+    plugins:{legend:{position:'bottom'},datalabels:{display:false}},
+    scales:{x:{stacked:true},y:{stacked:true,beginAtZero:true}}
+  }
+});
+
+// Chart 5 – Top 20 sites horizontal bar (duration in hours)
+new Chart(document.getElementById('chartTop20'),{
+  type:'bar',
+  data:{
+    labels:["SRAN_LWG_S_DM-OM-ELREZK_4072DE", "03939_S_3061AL_MHWR-DABA-10", "U_S_0980CA_KHOSOUS-NTH", "SRAN_LWG_TDD_S_Ql-BANHA-VLAL2_4882DE", "SRAN_LWG_TDD_S_BH-HORRIA_3928DE", "U_V_4223UP_3P-6OCT-GRDN-HILL", "SRAN_LWG_S_BH-BATORAS_3950DE", "02075_S_0294AL_MM-OBAYED-OIL", "02895_S_3206CA_ELGABAL-EST", "SRAN_LWG_TDD_S_MF-SHAQANQERE_3131DE", "SRAN_LWG_S_DK-SHRKA2-VLG_3751DE", "U_S_4050UP_TEBBIN2", "SRAN_LWG_TDD_S_KARMOZ-3_0759AL", "SRAN_LWG_S_AT-ORASCOM-ELC_4292UP", "SRAN_LWG_TDD_D_SK-SAADA_3829DE", "U_S_0415RE_SZ-AIN-BAY-2", "0491_S_M-SPORTING_2916AL", "SRAN_LWG_TDD_S_DK-SHAHA_4000DE", "U_S_4468CA_GZ-DERABOSEFEN", "SRAN_LWG_S_M-AUDI-SMOUHA_2860AL"],
+    datasets:[{
+      label:'Duration (hrs)',
+      data:[38.35, 39.04, 41.54, 43.62, 52.15, 53.37, 54.9, 54.99, 57.8, 58.29, 59.16, 67.85, 68.69, 74.28, 76.13, 77.87, 84.63, 85.99, 102.92, 107.82],
+      backgroundColor:ORANGE,
+      borderRadius:3
+    }]
+  },
+  options:{
+    indexAxis:'y',
+    responsive:true,
+    maintainAspectRatio:false,
+    plugins:{
+      legend:{display:false},
+      datalabels:{
+        anchor:'end',align:'end',
+        color:'#333',font:{size:9,weight:'bold'},
+        formatter:(v,ctx)=>{
+          const durs=["38:20:43", "39:02:20", "41:32:11", "43:37:08", "52:08:56", "53:22:06", "54:53:56", "54:59:21", "57:48:04", "58:17:41", "59:09:43", "67:50:49", "68:41:38", "74:16:51", "76:07:54", "77:52:19", "84:37:56", "85:59:12", "102:55:07", "107:49:20"];
+          return durs[ctx.dataIndex];
+        }
+      }
+    },
+    scales:{x:{beginAtZero:true,title:{display:true,text:'Hours'}}}
+  }
+});
+</script>
+</body></html>
