@@ -6,8 +6,8 @@
   "frequency": "daily",
   "is_automated": true,
   "template_type": "daily",
-  "created_at": "2026-04-02T18:29:47Z",
-  "updated_at": "2026-04-02T18:29:47Z",
+  "created_at": "2026-04-06T17:44:44Z",
+  "updated_at": "2026-04-06T17:44:44Z",
   "team": {
     "id": 1,
     "name": "Energy Operations",
@@ -23,6 +23,20 @@
     {
       "id": 1,
       "version_number": 4,
+      "period_label": "W14-2026",
+      "status": "ready",
+      "original_filename": "Weekly W14-2026.xlsx",
+      "html_url": "https://asidhom84-cloud.github.io/trc-data/files/daily/Daily_W14-2026.html",
+      "excel_url": "https://asidhom84-cloud.github.io/trc-data/files/daily/Daily_W14-2026.xlsx",
+      "uploaded_by": "TRC System",
+      "processing_started_at": null,
+      "processing_finished_at": "2026-04-06 15:23:23",
+      "generation_log": null,
+      "created_at": "2026-04-06 15:23:23"
+    },
+    {
+      "id": 2,
+      "version_number": 3,
       "period_label": "W13-2026",
       "status": "ready",
       "original_filename": "Weekly W13-2026.xlsx",
@@ -35,8 +49,8 @@
       "created_at": "2026-03-29 15:15:28"
     },
     {
-      "id": 2,
-      "version_number": 3,
+      "id": 3,
+      "version_number": 2,
       "period_label": "W12-2026",
       "status": "ready",
       "original_filename": "Weekly W12-2026.xlsx",
@@ -49,8 +63,8 @@
       "created_at": "2026-03-22 00:10:43"
     },
     {
-      "id": 3,
-      "version_number": 2,
+      "id": 4,
+      "version_number": 1,
       "period_label": "W11-2026",
       "status": "ready",
       "original_filename": "Weekly W11-2026.xlsx",
@@ -61,20 +75,6 @@
       "processing_finished_at": "2026-03-21 23:05:53",
       "generation_log": null,
       "created_at": "2026-03-21 23:05:53"
-    },
-    {
-      "id": 4,
-      "version_number": 1,
-      "period_label": "W10-2026",
-      "status": "ready",
-      "original_filename": "Weekly W10-2026.xlsx",
-      "html_url": "https://asidhom84-cloud.github.io/trc-data/files/daily/Daily_W10-2026.html",
-      "excel_url": "https://asidhom84-cloud.github.io/trc-data/files/daily/Daily_W10-2026.xlsx",
-      "uploaded_by": "TRC System",
-      "processing_started_at": null,
-      "processing_finished_at": "2026-03-21 23:01:51",
-      "generation_log": null,
-      "created_at": "2026-03-21 23:01:51"
     }
   ]
 }

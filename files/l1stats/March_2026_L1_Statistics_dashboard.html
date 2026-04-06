@@ -1,0 +1,1254 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>L1 Statistics Dashboard</title>
+<link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+<style>
+  :root {
+    --bg: #0a0e1a; --surface: #111827; --surface2: #1a2235; --surface3: #1e2d45;
+    --border: #1e3a5f; --accent: #00c8ff; --accent2: #ff6b35;
+    --accent3: #4ade80; --accent4: #f59e0b;
+    --hua: #ef4444; --nokia: #3b82f6;
+    --text: #ffffff; --text-dim: #e8f0ff; --text-faint: #9bbcd8;
+    --red: #ef4444; --green: #22d3ee;
+  }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { font-family:'IBM Plex Sans',sans-serif; background:var(--bg); color:var(--text); min-height:100vh; overflow-x:hidden; }
+
+  .header { background:linear-gradient(135deg,#0d1626,#0a1929,#0d1e2e); border-bottom:1px solid var(--border); padding:0 32px; position:sticky; top:0; z-index:100; display:flex; align-items:center; gap:24px; box-shadow:0 4px 32px rgba(0,0,0,.5); }
+  .header-logo { font-family:'Rajdhani',sans-serif; font-size:22px; font-weight:700; color:var(--accent); letter-spacing:3px; text-transform:uppercase; padding:16px 0; white-space:nowrap; }
+  .header-logo span { color:#fff; }
+  .header-divider { width:1px; height:32px; background:var(--border); }
+  .header-subtitle { font-size:14px; color:#e8f0ff; letter-spacing:2px; text-transform:uppercase; font-weight:600; }
+  .header-file { font-size:13px; color:var(--text-faint); font-family:'IBM Plex Mono',monospace; margin-left:auto; }
+
+  .tabs-bar { background:var(--surface); border-bottom:1px solid var(--border); display:flex; overflow-x:auto; scrollbar-width:thin; scrollbar-color:var(--border) transparent; padding:0 24px; gap:2px; }
+  .tabs-bar::-webkit-scrollbar { height:3px; }
+  .tabs-bar::-webkit-scrollbar-thumb { background:var(--border); }
+  .tab-btn { padding:14px 20px; font-family:'IBM Plex Mono',monospace; font-size:13px; font-weight:700; letter-spacing:1px; color:#fff; background:transparent; border:none; border-bottom:2px solid transparent; cursor:pointer; white-space:nowrap; transition:all .2s; text-transform:uppercase; opacity:0.75; }
+  .tab-btn:hover { color:#fff; background:var(--surface2); opacity:1; }
+  .tab-btn.active { color:var(--accent); border-bottom-color:var(--accent); background:rgba(0,200,255,.05); opacity:1; }
+
+  .main { padding:28px 32px; max-width:1600px; margin:0 auto; }
+  .tab-panel { display:none; }
+  .tab-panel.active { display:block; }
+
+  .month-header { display:flex; align-items:center; gap:16px; margin-bottom:24px; }
+  .month-title { font-family:'Rajdhani',sans-serif; font-size:38px; font-weight:700; letter-spacing:2px; color:#fff; }
+  .month-badge { background:rgba(0,200,255,.1); border:1px solid rgba(0,200,255,.3); color:var(--accent); font-family:'IBM Plex Mono',monospace; font-size:13px; padding:5px 14px; border-radius:2px; letter-spacing:1px; font-weight:700; }
+
+  .kpi-row { display:grid; grid-template-columns:repeat(auto-fit,minmax(170px,1fr)); gap:16px; margin-bottom:24px; }
+  .kpi-card { background:var(--surface); border:1px solid var(--border); border-radius:6px; padding:20px; position:relative; overflow:hidden; transition:border-color .2s; }
+  .kpi-card::before { content:''; position:absolute; top:0; left:0; right:0; height:2px; }
+  .kpi-card.hua::before { background:var(--hua); }
+  .kpi-card.nokia::before { background:var(--nokia); }
+  .kpi-card.total::before { background:var(--accent3); }
+  .kpi-card.region::before { background:var(--accent4); }
+  .kpi-label { font-size:13px; font-weight:700; letter-spacing:1.5px; text-transform:uppercase; color:#fff; margin-bottom:8px; }
+  .kpi-value { font-family:'Rajdhani',sans-serif; font-size:44px; font-weight:700; line-height:1; margin-bottom:4px; }
+  .kpi-card.hua .kpi-value { color:var(--hua); }
+  .kpi-card.nokia .kpi-value { color:var(--nokia); }
+  .kpi-card.total .kpi-value { color:var(--accent3); }
+  .kpi-card.region .kpi-value { color:var(--accent4); }
+  .kpi-sub { font-size:13px; color:#e8f0ff; font-weight:600; }
+
+  .grid-2 { display:grid; grid-template-columns:1fr 1fr; gap:20px; margin-bottom:20px; }
+  @media(max-width:800px){.grid-2{grid-template-columns:1fr;}}
+
+  .card { background:var(--surface); border:1px solid var(--border); border-radius:6px; overflow:hidden; margin-bottom:20px; }
+  .card-header { padding:14px 20px; border-bottom:1px solid var(--border); display:flex; align-items:center; gap:10px; background:var(--surface2); }
+  .card-dot { width:6px; height:6px; border-radius:50%; background:var(--accent); flex-shrink:0; }
+  .card-dot.orange { background:var(--nokia); }
+  .card-dot.green  { background:var(--accent3); }
+  .card-dot.yellow { background:var(--accent4); }
+  .card-title { font-family:'Rajdhani',sans-serif; font-size:16px; font-weight:700; letter-spacing:1.5px; text-transform:uppercase; color:#fff; }
+  .card-body { padding:20px; }
+
+  .data-table { width:100%; border-collapse:collapse; font-size:14px; }
+  .data-table th { text-align:left; font-family:'IBM Plex Mono',monospace; font-size:12px; font-weight:700; letter-spacing:1.5px; text-transform:uppercase; color:#fff; padding:8px 12px; border-bottom:1px solid var(--border); }
+  .data-table td { padding:10px 12px; border-bottom:1px solid rgba(30,58,95,.4); color:var(--text); font-size:14px; }
+  .data-table tr:last-child td { border-bottom:none; }
+  .data-table tr:hover td { background:rgba(239,68,68,.03); }
+  .data-table .num { font-family:'IBM Plex Mono',monospace; font-weight:600; text-align:right; }
+  .vendor-hua { color:var(--hua); font-weight:700; }
+  .vendor-nokia { color:var(--nokia); font-weight:700; }
+  .total-row td { border-top:1px solid var(--border); color:#fff; font-weight:700; background:rgba(255,255,255,.03); }
+
+  .bar-group { display:flex; flex-direction:column; gap:10px; }
+  .bar-item { display:flex; align-items:center; gap:10px; }
+  .bar-label { font-family:'IBM Plex Mono',monospace; font-size:13px; color:#fff; width:120px; flex-shrink:0; text-align:right; font-weight:600; }
+  .bar-track { flex:1; height:24px; background:var(--surface2); border-radius:2px; overflow:hidden; }
+  .bar-fill { height:100%; border-radius:2px; position:relative; min-width:2px; }
+  .bar-fill::after { content:attr(data-val); position:absolute; right:8px; top:50%; transform:translateY(-50%); font-family:'IBM Plex Mono',monospace; font-size:12px; font-weight:700; color:rgba(255,255,255,.95); white-space:nowrap; }
+  .bar-fill.hua   { background:linear-gradient(90deg,#a30000,#ef4444); }
+  .bar-fill.nokia { background:linear-gradient(90deg,#1a4fa3,#3b82f6); }
+  .bar-fill.green { background:linear-gradient(90deg,#0f5e3b,#4ade80); }
+  .bar-fill.yellow{ background:linear-gradient(90deg,#92400e,#f59e0b); }
+
+  .hw-row { display:flex; gap:24px; align-items:flex-start; flex-wrap:wrap; }
+  .hw-item { flex:1; min-width:150px; }
+  .hw-vendor-name { font-size:13px; letter-spacing:1px; text-transform:uppercase; color:#fff; margin-bottom:10px; font-weight:700; }
+  .hw-val { font-family:'Rajdhani',sans-serif; font-size:36px; font-weight:700; }
+  .hw-val.hw    { color:var(--red); }
+  .hw-val.no-hw { color:var(--green); }
+  .hw-pct-bar { height:6px; background:var(--surface2); border-radius:3px; margin-top:6px; overflow:hidden; }
+  .hw-pct-fill { height:100%; border-radius:3px; }
+
+  .chips { display:flex; flex-wrap:wrap; gap:8px; margin-bottom:16px; }
+  .chip { background:var(--surface2); border:1px solid var(--border); border-radius:3px; padding:6px 12px; display:flex; align-items:center; gap:8px; }
+  .chip-name { font-size:14px; font-weight:600; }
+  .chip-count { font-family:'IBM Plex Mono',monospace; font-size:14px; font-weight:700; }
+  .chip.hua   .chip-count { color:var(--hua); }
+  .chip.nokia .chip-count { color:var(--nokia); }
+
+  .inner-tabs { display:flex; gap:0; margin-bottom:20px; border-bottom:1px solid var(--border); }
+  .inner-tab { padding:10px 20px; font-size:13px; font-family:'IBM Plex Mono',monospace; letter-spacing:1px; text-transform:uppercase; color:#fff; opacity:0.7; cursor:pointer; border-bottom:2px solid transparent; background:none; border-top:none; border-left:none; border-right:none; transition:all .2s; font-weight:700; }
+  .inner-tab.active { color:var(--accent); border-bottom-color:var(--accent); opacity:1; }
+  .inner-tab:hover { color:#fff; opacity:1; }
+  .inner-panel { display:none; }
+  .inner-panel.active { display:block; }
+
+  .tag { display:inline-block; padding:2px 8px; border-radius:2px; font-size:12px; font-family:'IBM Plex Mono',monospace; font-weight:600; letter-spacing:1px; }
+  .tag.hua   { background:rgba(239,68,68,.1); color:var(--hua); border:1px solid rgba(239,68,68,.3); }
+  .tag.nokia { background:rgba(59,130,246,.1); color:var(--nokia); border:1px solid rgba(59,130,246,.3); }
+  .tag.peak  { background:rgba(245,158,11,.1); color:var(--accent4); border:1px solid rgba(245,158,11,.3); }
+
+  .footer { margin-top:40px; padding:20px 32px; border-top:1px solid var(--border); font-size:13px; color:var(--text-faint); display:flex; justify-content:space-between; font-family:'IBM Plex Mono',monospace; }
+</style>
+
+</head>
+<body>
+
+<div class="header">
+  <div class="header-logo">L1<span> Statistics</span></div>
+  <div class="header-divider"></div>
+  <div class="header-subtitle">Telecom Field Maintenance Dashboard</div>
+
+</div>
+
+<div class="tabs-bar">
+  <button class="tab-btn active" onclick="switchTab(this,'annual')">📊 Annual</button>
+<button class="tab-btn" onclick="switchTab(this,'Jan_2026')">Jan 2026</button>
+<button class="tab-btn" onclick="switchTab(this,'Feb_2026')">Feb 2026</button>
+<button class="tab-btn" onclick="switchTab(this,'March_2026')">Mar 2026</button>
+
+</div>
+
+<div class="main">
+  <div class="tab-panel active" id="panel-annual">
+    <div class="month-header">
+      <div class="month-title">Annual Overview</div>
+      <div class="month-badge">3 MONTHS — FULL TREND</div>
+    </div>
+    <div class="kpi-row">
+      <div class="kpi-card total">
+        <div class="kpi-label">YTD Combined Cases</div>
+        <div class="kpi-value">3,162</div>
+        <div class="kpi-sub">All months combined</div>
+      </div>
+      <div class="kpi-card hua">
+        <div class="kpi-label">YTD Huawei Cases</div>
+        <div class="kpi-value">1,386</div>
+        <div class="kpi-sub">Huawei full period</div>
+      </div>
+      <div class="kpi-card nokia">
+        <div class="kpi-label">YTD Nokia Cases</div>
+        <div class="kpi-value">1,776</div>
+        <div class="kpi-sub">Nokia full period</div>
+      </div>
+      <div class="kpi-card region">
+        <div class="kpi-label">Peak Month</div>
+        <div class="kpi-value" style="font-size:28px">Mar 2026</div>
+        <div class="kpi-sub">1,233 cases</div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-header">
+        <div class="card-dot"></div>
+        <div class="card-title">Monthly Case Volume — HUA vs Nokia</div>
+        <div style="margin-left:auto;display:flex;gap:16px;align-items:center">
+          <span style="font-size:13px;font-weight:600;color:#e8f0ff;display:flex;align-items:center;gap:6px">
+            <span style="width:10px;height:10px;background:var(--hua);display:inline-block;border-radius:2px"></span>HUA
+          </span>
+          <span style="font-size:13px;font-weight:600;color:#e8f0ff;display:flex;align-items:center;gap:6px">
+            <span style="width:10px;height:10px;background:var(--nokia);display:inline-block;border-radius:2px"></span>Nokia
+          </span>
+        </div>
+      </div>
+      <div class="card-body">
+        <div style="margin-bottom:8px">
+          <div style="font-family:'IBM Plex Mono',monospace;font-size:13px;font-weight:700;color:#e8f0ff;margin-bottom:3px;letter-spacing:1px">JAN 2026</div>
+          <div style="display:flex;gap:6px;align-items:center">
+            <div style="width:55px;font-family:'IBM Plex Mono',monospace;font-size:13px;font-weight:700;color:var(--hua);text-align:right">HUA</div>
+            <div class="bar-track" style="flex:1">
+              <div class="bar-fill hua" style="width:39%" data-val="486"></div>
+            </div>
+            <div style="width:6px"></div>
+            <div style="width:55px;font-family:'IBM Plex Mono',monospace;font-size:13px;font-weight:700;color:var(--nokia);text-align:right">Nokia</div>
+            <div class="bar-track" style="flex:1">
+              <div class="bar-fill nokia" style="width:44%" data-val="537"></div>
+            </div>
+          </div>
+        </div>
+        <div style="margin-bottom:8px">
+          <div style="font-family:'IBM Plex Mono',monospace;font-size:13px;font-weight:700;color:#e8f0ff;margin-bottom:3px;letter-spacing:1px">FEB 2026</div>
+          <div style="display:flex;gap:6px;align-items:center">
+            <div style="width:55px;font-family:'IBM Plex Mono',monospace;font-size:13px;font-weight:700;color:var(--hua);text-align:right">HUA</div>
+            <div class="bar-track" style="flex:1">
+              <div class="bar-fill hua" style="width:31%" data-val="381"></div>
+            </div>
+            <div style="width:6px"></div>
+            <div style="width:55px;font-family:'IBM Plex Mono',monospace;font-size:13px;font-weight:700;color:var(--nokia);text-align:right">Nokia</div>
+            <div class="bar-track" style="flex:1">
+              <div class="bar-fill nokia" style="width:43%" data-val="525"></div>
+            </div>
+          </div>
+        </div>
+        <div style="margin-bottom:8px">
+          <div style="font-family:'IBM Plex Mono',monospace;font-size:13px;font-weight:700;color:#e8f0ff;margin-bottom:3px;letter-spacing:1px">MAR 2026</div>
+          <div style="display:flex;gap:6px;align-items:center">
+            <div style="width:55px;font-family:'IBM Plex Mono',monospace;font-size:13px;font-weight:700;color:var(--hua);text-align:right">HUA</div>
+            <div class="bar-track" style="flex:1">
+              <div class="bar-fill hua" style="width:42%" data-val="519"></div>
+            </div>
+            <div style="width:6px"></div>
+            <div style="width:55px;font-family:'IBM Plex Mono',monospace;font-size:13px;font-weight:700;color:var(--nokia);text-align:right">Nokia</div>
+            <div class="bar-track" style="flex:1">
+              <div class="bar-fill nokia" style="width:58%" data-val="714"></div>
+            </div>
+          </div>
+        </div></div>
+    </div>
+
+    <div class="card">
+      <div class="card-header"><div class="card-dot yellow"></div><div class="card-title">Monthly Summary Table</div></div>
+      <div class="card-body">
+        <div style="overflow-x:auto">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>Month</th>
+                <th class="num">HUA Cases</th>
+                <th class="num">Nokia Cases</th>
+                <th class="num">Combined</th>
+                <th class="num">Field Cases</th>
+                <th>Peak Region</th>
+              </tr>
+            </thead>
+            <tbody><tr>
+          <td>Jan 2026 </td>
+          <td class="num vendor-hua">486</td>
+          <td class="num vendor-nokia">537</td>
+          <td class="num" style="">1,023</td>
+          <td class="num">1,023</td>
+          <td>Alex (278)</td>
+        </tr><tr>
+          <td>Feb 2026 </td>
+          <td class="num vendor-hua">381</td>
+          <td class="num vendor-nokia">525</td>
+          <td class="num" style="">906</td>
+          <td class="num">906</td>
+          <td>Delta (307)</td>
+        </tr><tr>
+          <td>Mar 2026 <span class="tag peak">PEAK</span></td>
+          <td class="num vendor-hua">519</td>
+          <td class="num vendor-nokia">714</td>
+          <td class="num" style="color:var(--accent4);font-weight:700">1,233</td>
+          <td class="num">1,233</td>
+          <td>Delta (391)</td>
+        </tr><tr class="total-row">
+      <td>FULL YEAR</td>
+      <td class="num">1,386</td>
+      <td class="num">1,776</td>
+      <td class="num">3,162</td>
+      <td class="num">3,162</td>
+      <td>—</td>
+    </tr></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+    </div>
+  <div class="tab-panel" id="panel-Jan_2026">
+    <div class="month-header">
+      <div class="month-title">Jan 2026</div>
+      <div class="month-badge">MONTH 01 / 3</div>
+    </div>
+
+    <!-- KPI CARDS -->
+    <div class="kpi-row">
+      <div class="kpi-card hua">
+        <div class="kpi-label">Huawei Cases</div>
+        <div class="kpi-value">486</div>
+        <div class="kpi-sub">Total reported</div>
+      </div>
+      <div class="kpi-card nokia">
+        <div class="kpi-label">Nokia Cases</div>
+        <div class="kpi-value">537</div>
+        <div class="kpi-sub">Total reported</div>
+      </div>
+      <div class="kpi-card total">
+        <div class="kpi-label">Combined Total</div>
+        <div class="kpi-value">1,023</div>
+        <div class="kpi-sub">Both vendors</div>
+      </div>
+      <div class="kpi-card hua">
+        <div class="kpi-label">HUA 1st Visit Rate</div>
+        <div class="kpi-value" style="font-size:32px">84%</div>
+        <div class="kpi-sub">1st-visit resolution</div>
+      </div>
+      <div class="kpi-card nokia">
+        <div class="kpi-label">Nokia 1st Visit Rate</div>
+        <div class="kpi-value" style="font-size:32px">96%</div>
+        <div class="kpi-sub">1st-visit resolution</div>
+      </div>
+    </div>
+
+    <!-- INNER TABS -->
+    <div class="inner-tabs">
+      <button class="inner-tab active" onclick="sw(this,'Jan_2026','summary')">Summary</button>
+      <button class="inner-tab" onclick="sw(this,'Jan_2026','visits')">Visit Analysis</button>
+      <button class="inner-tab" onclick="sw(this,'Jan_2026','regions')">Regions</button>
+      <button class="inner-tab" onclick="sw(this,'Jan_2026','modules')">Top Modules</button>
+      <button class="inner-tab" onclick="sw(this,'Jan_2026','maint')">Maintenance Detail</button>
+    </div>
+
+    <!-- SUMMARY -->
+    <div class="inner-panel active" id="Jan_2026-summary">
+      <div class="grid-2">
+        <div class="card">
+          <div class="card-header"><div class="card-dot"></div><div class="card-title">Vendor Volume</div></div>
+          <div class="card-body">
+            
+<div style="position:relative">
+  <!-- Floating HTML tooltip -->
+  <div id="tip_pa6936969" style="
+    display:none; position:fixed; pointer-events:none; z-index:9999;
+    background:#0d1626; border:1px solid #1e3a5f; border-radius:6px;
+    padding:10px 14px; min-width:130px; box-shadow:0 4px 20px rgba(0,0,0,.6);">
+    <div id="tip_pa6936969_label" style="font-size:12px;font-weight:700;color:#e8f0ff;letter-spacing:1px;margin-bottom:4px"></div>
+    <div id="tip_pa6936969_count" style="font-family:'Rajdhani',sans-serif;font-size:26px;font-weight:700;line-height:1"></div>
+    <div id="tip_pa6936969_pct"   style="font-size:11px;color:#9bbcd8;margin-top:2px"></div>
+  </div>
+  <!-- SVG pie -->
+  <svg viewBox="0 0 290 180" xmlns="http://www.w3.org/2000/svg"
+       style="width:100%;max-width:340px;display:block;margin:0 auto">
+    <path d="M90,90 L90.00,15.00 A75,75 0 0,1 99.40,164.41 Z" fill="#ef4444" stroke="#111827" stroke-width="2" cursor="pointer" style="transition:opacity .15s" onmouseenter="showTip_pa6936969(event,'HUA',486,48,'#ef4444')" onmousemove="moveTip_pa6936969(event)" onmouseleave="hideTip_pa6936969()"/>
+    <path d="M90,90 L99.40,164.41 A75,75 0 1,1 90.00,15.00 Z" fill="#3b82f6" stroke="#111827" stroke-width="2" cursor="pointer" style="transition:opacity .15s" onmouseenter="showTip_pa6936969(event,'Nokia',537,52,'#3b82f6')" onmousemove="moveTip_pa6936969(event)" onmouseleave="hideTip_pa6936969()"/>
+    <circle cx="90" cy="90" r="30" fill="#111827" pointer-events="none"/>
+    <text x="90" y="87" text-anchor="middle" font-family="Rajdhani,sans-serif"
+          font-size="13" font-weight="700" fill="white" pointer-events="none">1,023</text>
+    <text x="90" y="102" text-anchor="middle" font-family="IBM Plex Sans,sans-serif"
+          font-size="8" fill="#9bbcd8" pointer-events="none">TOTAL</text>
+    <!-- Legend -->
+    <rect x="185" y="40" width="12" height="12" rx="2" fill="#ef4444"/>
+    <text x="202" y="51" font-family="IBM Plex Sans,sans-serif" font-size="12" font-weight="600" fill="#e8f0ff">HUA</text>
+    <text x="202" y="68" font-family="Rajdhani,sans-serif" font-size="20" font-weight="700" fill="#ef4444">486</text>
+    <text x="202" y="81" font-family="IBM Plex Sans,sans-serif" font-size="11" fill="#9bbcd8">48%</text>
+    <rect x="185" y="100" width="12" height="12" rx="2" fill="#3b82f6"/>
+    <text x="202" y="111" font-family="IBM Plex Sans,sans-serif" font-size="12" font-weight="600" fill="#e8f0ff">Nokia</text>
+    <text x="202" y="128" font-family="Rajdhani,sans-serif" font-size="20" font-weight="700" fill="#3b82f6">537</text>
+    <text x="202" y="141" font-family="IBM Plex Sans,sans-serif" font-size="11" fill="#9bbcd8">52%</text>
+  </svg>
+</div>
+<script>
+(function(){
+  var tip   = document.getElementById("tip_pa6936969");
+  var tlbl  = document.getElementById("tip_pa6936969_label");
+  var tcnt  = document.getElementById("tip_pa6936969_count");
+  var tpct  = document.getElementById("tip_pa6936969_pct");
+  function fmt(n){ return Number(n).toLocaleString(); }
+  window.showTip_pa6936969 = function(e, name, count, pct, color){
+    tlbl.textContent  = name + " Cases";
+    tcnt.textContent  = fmt(count);
+    tcnt.style.color  = color;
+    tpct.textContent  = pct + "% of total";
+    tip.style.display = "block";
+    window.moveTip_pa6936969(e);
+  };
+  window.moveTip_pa6936969 = function(e){
+    tip.style.left = (e.clientX + 14) + "px";
+    tip.style.top  = (e.clientY - 10) + "px";
+  };
+  window.hideTip_pa6936969 = function(){
+    tip.style.display = "none";
+  };
+})();
+</script>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-header"><div class="card-dot yellow"></div><div class="card-title">H/W Replacement Rate</div></div>
+          <div class="card-body">
+            <div class="hw-row">
+              
+    <div class="hw-item">
+      <div class="hw-vendor-name"><span class="tag hua">HUA</span></div>
+      <div style="display:flex;gap:20px">
+        <div>
+          <div style="font-size:13px;font-weight:700;color:#e8f0ff;letter-spacing:1px;margin-bottom:4px">H/W REPLACED</div>
+          <div class="hw-val hw">139</div>
+          <div class="hw-pct-bar"><div class="hw-pct-fill" style="width:33%;background:var(--red)"></div></div>
+        </div>
+        <div>
+          <div style="font-size:13px;font-weight:700;color:#e8f0ff;letter-spacing:1px;margin-bottom:4px">NO H/W</div>
+          <div class="hw-val no-hw">286</div>
+          <div class="hw-pct-bar"><div class="hw-pct-fill" style="width:67%;background:var(--green)"></div></div>
+        </div>
+      </div>
+      <div style="font-size:13px;font-weight:600;color:#e8f0ff;margin-top:8px">H/W Replacement Rate: 33%</div>
+    </div>
+              
+    <div class="hw-item">
+      <div class="hw-vendor-name"><span class="tag nokia">Nokia</span></div>
+      <div style="display:flex;gap:20px">
+        <div>
+          <div style="font-size:13px;font-weight:700;color:#e8f0ff;letter-spacing:1px;margin-bottom:4px">H/W REPLACED</div>
+          <div class="hw-val hw">189</div>
+          <div class="hw-pct-bar"><div class="hw-pct-fill" style="width:38%;background:var(--red)"></div></div>
+        </div>
+        <div>
+          <div style="font-size:13px;font-weight:700;color:#e8f0ff;letter-spacing:1px;margin-bottom:4px">NO H/W</div>
+          <div class="hw-val no-hw">304</div>
+          <div class="hw-pct-bar"><div class="hw-pct-fill" style="width:62%;background:var(--green)"></div></div>
+        </div>
+      </div>
+      <div style="font-size:13px;font-weight:600;color:#e8f0ff;margin-top:8px">H/W Replacement Rate: 38%</div>
+    </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-header"><div class="card-dot green"></div><div class="card-title">Maintenance — Solved vs Not Solved by Technology</div></div>
+        <div class="card-body">
+          <div style="overflow-x:auto">
+            <table class="data-table">
+              <thead><tr><th>Vendor</th><th class='num'>2G Solved</th><th class='num'>2G Not Solved</th><th class='num'>3G Solved</th><th class='num'>3G Not Solved</th><th class='num'>4G Solved</th><th class='num'>4G Not Solved</th><th class='num'>5G Solved</th><th class='num'>5G Not Solved</th><th class='num'>Nokia SRAN Solved</th><th class='num'>Nokia SRAN Not Solved</th><th class="num">Total Solved</th><th class="num">Total Not Solved</th></tr></thead>
+              <tbody><tr><td class='vendor-hua'>HUA</td><td class='num'>69</td><td class='num'>13</td><td class='num'>216</td><td class='num'>29</td><td class='num'>139</td><td class='num'>19</td><td class='num'>1</td><td class='num'>0</td><td class='num'>0</td><td class='num'>0</td><td class='num'>425</td><td class='num'>61</td></tr><tr><td class='vendor-nokia'>Nokia</td><td class='num'>9</td><td class='num'>1</td><td class='num'>25</td><td class='num'>2</td><td class='num'>80</td><td class='num'>12</td><td class='num'>62</td><td class='num'>3</td><td class='num'>317</td><td class='num'>25</td><td class='num'>493</td><td class='num'>43</td></tr><tr class='total-row'><td>Total</td><td class='num'>78</td><td class='num'>14</td><td class='num'>241</td><td class='num'>31</td><td class='num'>219</td><td class='num'>31</td><td class='num'>63</td><td class='num'>3</td><td class='num'>317</td><td class='num'>25</td><td class='num'>918</td><td class='num'>104</td></tr></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- VISIT ANALYSIS -->
+    <div class="inner-panel" id="Jan_2026-visits">
+      <div class="grid-2">
+        <div class="card">
+          <div class="card-header"><div class="card-dot"></div><div class="card-title">HUA — Visit Breakdown</div></div>
+          <div class="card-body">
+            <div class="bar-group">
+              <div class="bar-item"><div class="bar-label" style="width:110px">1st Visit Solved</div><div class="bar-track"><div class="bar-fill hua" style="width:72%" data-val="357"></div></div></div><div class="bar-item"><div class="bar-label" style="width:110px">2nd Visit Solved</div><div class="bar-track"><div class="bar-fill hua" style="width:7%;min-width:4px"></div></div><div style="font-family:'IBM Plex Mono',monospace;font-size:12px;font-weight:700;color:#e8f0ff;margin-left:8px;white-space:nowrap">35</div></div><div class="bar-item"><div class="bar-label" style="width:110px">Chronic (3rd)</div><div class="bar-track"><div class="bar-fill hua" style="width:1%;min-width:4px"></div></div><div style="font-family:'IBM Plex Mono',monospace;font-size:12px;font-weight:700;color:#e8f0ff;margin-left:8px;white-space:nowrap">7</div></div><div class="bar-item"><div class="bar-label" style="width:110px">Chronic (4th)</div><div class="bar-track"><div class="bar-fill hua" style="width:5%;min-width:4px"></div></div><div style="font-family:'IBM Plex Mono',monospace;font-size:12px;font-weight:700;color:#e8f0ff;margin-left:8px;white-space:nowrap">26</div></div><div class="bar-item"><div class="bar-label" style="width:110px">Total Solved</div><div class="bar-track"><div class="bar-fill hua" style="width:86%" data-val="425"></div></div></div>
+            </div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-header"><div class="card-dot orange"></div><div class="card-title">Nokia — Visit Breakdown</div></div>
+          <div class="card-body">
+            <div class="bar-group">
+              <div class="bar-item"><div class="bar-label" style="width:110px">1st Visit Solved</div><div class="bar-track"><div class="bar-fill nokia" style="width:96%" data-val="473"></div></div></div><div class="bar-item"><div class="bar-label" style="width:110px">2nd Visit Solved</div><div class="bar-track"><div class="bar-fill nokia" style="width:2%;min-width:4px"></div></div><div style="font-family:'IBM Plex Mono',monospace;font-size:12px;font-weight:700;color:#e8f0ff;margin-left:8px;white-space:nowrap">12</div></div><div class="bar-item"><div class="bar-label" style="width:110px">Chronic (3rd)</div><div class="bar-track"><div class="bar-fill nokia" style="width:2%;min-width:4px"></div></div><div style="font-family:'IBM Plex Mono',monospace;font-size:12px;font-weight:700;color:#e8f0ff;margin-left:8px;white-space:nowrap">8</div></div><div class="bar-item"><div class="bar-label" style="width:110px">Chronic (4th)</div><div class="bar-track"><div class="bar-fill nokia" style="width:0%;min-width:4px"></div></div><div style="font-family:'IBM Plex Mono',monospace;font-size:12px;font-weight:700;color:#e8f0ff;margin-left:8px;white-space:nowrap">0</div></div><div class="bar-item"><div class="bar-label" style="width:110px">Total Solved</div><div class="bar-track"><div class="bar-fill nokia" style="width:100%" data-val="493"></div></div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-header"><div class="card-dot green"></div><div class="card-title">Visit Comparison Table</div></div>
+        <div class="card-body">
+          <table class="data-table">
+            <thead><tr><th>Category</th><th class="num">HUA Count</th><th class="num">Nokia Count</th><th class="num">HUA %</th><th class="num">Nokia %</th></tr></thead>
+            <tbody><tr>
+          <td>1st Visit Solved</td>
+          <td class="num vendor-hua">357</td>
+          <td class="num vendor-nokia">473</td>
+          <td class="num">84%</td>
+          <td class="num">96%</td>
+        </tr><tr>
+          <td>2nd Visit Solved</td>
+          <td class="num vendor-hua">35</td>
+          <td class="num vendor-nokia">12</td>
+          <td class="num">8%</td>
+          <td class="num">2%</td>
+        </tr><tr>
+          <td>Chronic (3rd)</td>
+          <td class="num vendor-hua">7</td>
+          <td class="num vendor-nokia">8</td>
+          <td class="num">2%</td>
+          <td class="num">2%</td>
+        </tr><tr>
+          <td>Chronic (4th)</td>
+          <td class="num vendor-hua">26</td>
+          <td class="num vendor-nokia">0</td>
+          <td class="num">6%</td>
+          <td class="num">0%</td>
+        </tr><tr>
+          <td>Total Solved</td>
+          <td class="num vendor-hua">425</td>
+          <td class="num vendor-nokia">493</td>
+          <td class="num">100%</td>
+          <td class="num">100%</td>
+        </tr></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- REGIONS -->
+    <div class="inner-panel" id="Jan_2026-regions">
+      <div class="grid-2">
+        <div class="card">
+          <div class="card-header"><div class="card-dot yellow"></div><div class="card-title">Region Distribution</div></div>
+          <div class="card-body">
+            <div class="bar-group">
+              <div class="bar-item"><div class="bar-label" style="width:110px">Alex</div><div class="bar-track"><div class="bar-fill green" style="width:100%" data-val="278"></div></div></div><div class="bar-item"><div class="bar-label" style="width:110px">Delta</div><div class="bar-track"><div class="bar-fill green" style="width:96%" data-val="266"></div></div></div><div class="bar-item"><div class="bar-label" style="width:110px">UE</div><div class="bar-track"><div class="bar-fill green" style="width:85%" data-val="236"></div></div></div><div class="bar-item"><div class="bar-label" style="width:110px">Cairo</div><div class="bar-track"><div class="bar-fill green" style="width:64%" data-val="177"></div></div></div><div class="bar-item"><div class="bar-label" style="width:110px">RE</div><div class="bar-track"><div class="bar-fill green" style="width:14%;min-width:4px"></div></div><div style="font-family:'IBM Plex Mono',monospace;font-size:12px;font-weight:700;color:#e8f0ff;margin-left:8px;white-space:nowrap">39</div></div><div class="bar-item"><div class="bar-label" style="width:110px">Sinai</div><div class="bar-track"><div class="bar-fill green" style="width:10%;min-width:4px"></div></div><div style="font-family:'IBM Plex Mono',monospace;font-size:12px;font-weight:700;color:#e8f0ff;margin-left:8px;white-space:nowrap">27</div></div>
+            </div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-header"><div class="card-dot yellow"></div><div class="card-title">Region Case Table</div></div>
+          <div class="card-body">
+            <table class="data-table">
+              <thead><tr><th>Region</th><th class="num">Cases</th><th class="num">Share</th></tr></thead>
+              <tbody><tr><td>Alex</td><td class='num'>278</td><td class='num'>27%</td></tr><tr><td>Delta</td><td class='num'>266</td><td class='num'>26%</td></tr><tr><td>UE</td><td class='num'>236</td><td class='num'>23%</td></tr><tr><td>Cairo</td><td class='num'>177</td><td class='num'>17%</td></tr><tr><td>RE</td><td class='num'>39</td><td class='num'>4%</td></tr><tr><td>Sinai</td><td class='num'>27</td><td class='num'>3%</td></tr><tr class='total-row'><td>Total</td><td class='num'>1,023</td><td class='num'>100%</td></tr></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- MODULES -->
+    <div class="inner-panel" id="Jan_2026-modules">
+      <div class="grid-2">
+        <div class="card">
+          <div class="card-header"><div class="card-dot"></div><div class="card-title">HUA — Top Replaced Modules</div></div>
+          <div class="card-body">
+            <div class="chips"><div class="chip hua"><span class="chip-name">Jumper</span><span class="chip-count">21</span></div><div class="chip hua"><span class="chip-name">MRFU</span><span class="chip-count">7</span></div><div class="chip hua"><span class="chip-name">SFP</span><span class="chip-count">4</span></div><div class="chip hua"><span class="chip-name">RRU</span><span class="chip-count">3</span></div><div class="chip hua"><span class="chip-name">RET Cable</span><span class="chip-count">2</span></div><div class="chip hua"><span class="chip-name">Fiber</span><span class="chip-count">2</span></div><div class="chip hua"><span class="chip-name">UMPT</span><span class="chip-count">1</span></div></div>
+            <div class="bar-group"><div class="bar-item"><div class="bar-label" style="width:110px">Jumper</div><div class="bar-track"><div class="bar-fill hua" style="width:100%" data-val="21"></div></div></div>
+<div class="bar-item"><div class="bar-label" style="width:110px">MRFU</div><div class="bar-track"><div class="bar-fill hua" style="width:33%" data-val="7"></div></div></div>
+<div class="bar-item"><div class="bar-label" style="width:110px">SFP</div><div class="bar-track"><div class="bar-fill hua" style="width:19%" data-val="4"></div></div></div>
+<div class="bar-item"><div class="bar-label" style="width:110px">RRU</div><div class="bar-track"><div class="bar-fill hua" style="width:14%;min-width:4px"></div></div><div style="font-family:'IBM Plex Mono',monospace;font-size:12px;font-weight:700;color:#e8f0ff;margin-left:8px;white-space:nowrap">3</div></div>
+<div class="bar-item"><div class="bar-label" style="width:110px">RET Cable</div><div class="bar-track"><div class="bar-fill hua" style="width:10%;min-width:4px"></div></div><div style="font-family:'IBM Plex Mono',monospace;font-size:12px;font-weight:700;color:#e8f0ff;margin-left:8px;white-space:nowrap">2</div></div>
+<div class="bar-item"><div class="bar-label" style="width:110px">Fiber</div><div class="bar-track"><div class="bar-fill hua" style="width:10%;min-width:4px"></div></div><div style="font-family:'IBM Plex Mono',monospace;font-size:12px;font-weight:700;color:#e8f0ff;margin-left:8px;white-space:nowrap">2</div></div>
+<div class="bar-item"><div class="bar-label" style="width:110px">UMPT</div><div class="bar-track"><div class="bar-fill hua" style="width:5%;min-width:4px"></div></div><div style="font-family:'IBM Plex Mono',monospace;font-size:12px;font-weight:700;color:#e8f0ff;margin-left:8px;white-space:nowrap">1</div></div></div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-header"><div class="card-dot orange"></div><div class="card-title">Nokia — Top Replaced Modules</div></div>
+          <div class="card-body">
+            <div class="chips"><div class="chip nokia"><span class="chip-name">SRAN RF</span><span class="chip-count">30</span></div><div class="chip nokia"><span class="chip-name">SRAN SM</span><span class="chip-count">16</span></div><div class="chip nokia"><span class="chip-name">4G RF</span><span class="chip-count">7</span></div><div class="chip nokia"><span class="chip-name">4G SM</span><span class="chip-count">3</span></div><div class="chip nokia"><span class="chip-name">5G RF</span><span class="chip-count">3</span></div><div class="chip nokia"><span class="chip-name">3G SM</span><span class="chip-count">2</span></div><div class="chip nokia"><span class="chip-name">5G SM</span><span class="chip-count">2</span></div><div class="chip nokia"><span class="chip-name">2G RF</span><span class="chip-count">1</span></div><div class="chip nokia"><span class="chip-name">3G RF</span><span class="chip-count">1</span></div></div>
+            <div class="bar-group"><div class="bar-item"><div class="bar-label" style="width:110px">SRAN RF</div><div class="bar-track"><div class="bar-fill nokia" style="width:100%" data-val="30"></div></div></div>
+<div class="bar-item"><div class="bar-label" style="width:110px">SRAN SM</div><div class="bar-track"><div class="bar-fill nokia" style="width:53%" data-val="16"></div></div></div>
+<div class="bar-item"><div class="bar-label" style="width:110px">4G RF</div><div class="bar-track"><div class="bar-fill nokia" style="width:23%" data-val="7"></div></div></div>
+<div class="bar-item"><div class="bar-label" style="width:110px">4G SM</div><div class="bar-track"><div class="bar-fill nokia" style="width:10%;min-width:4px"></div></div><div style="font-family:'IBM Plex Mono',monospace;font-size:12px;font-weight:700;color:#e8f0ff;margin-left:8px;white-space:nowrap">3</div></div>
+<div class="bar-item"><div class="bar-label" style="width:110px">5G RF</div><div class="bar-track"><div class="bar-fill nokia" style="width:10%;min-width:4px"></div></div><div style="font-family:'IBM Plex Mono',monospace;font-size:12px;font-weight:700;color:#e8f0ff;margin-left:8px;white-space:nowrap">3</div></div>
+<div class="bar-item"><div class="bar-label" style="width:110px">3G SM</div><div class="bar-track"><div class="bar-fill nokia" style="width:7%;min-width:4px"></div></div><div style="font-family:'IBM Plex Mono',monospace;font-size:12px;font-weight:700;color:#e8f0ff;margin-left:8px;white-space:nowrap">2</div></div>
+<div class="bar-item"><div class="bar-label" style="width:110px">5G SM</div><div class="bar-track"><div class="bar-fill nokia" style="width:7%;min-width:4px"></div></div><div style="font-family:'IBM Plex Mono',monospace;font-size:12px;font-weight:700;color:#e8f0ff;margin-left:8px;white-space:nowrap">2</div></div>
+<div class="bar-item"><div class="bar-label" style="width:110px">2G RF</div><div class="bar-track"><div class="bar-fill nokia" style="width:3%;min-width:4px"></div></div><div style="font-family:'IBM Plex Mono',monospace;font-size:12px;font-weight:700;color:#e8f0ff;margin-left:8px;white-space:nowrap">1</div></div>
+<div class="bar-item"><div class="bar-label" style="width:110px">3G RF</div><div class="bar-track"><div class="bar-fill nokia" style="width:3%;min-width:4px"></div></div><div style="font-family:'IBM Plex Mono',monospace;font-size:12px;font-weight:700;color:#e8f0ff;margin-left:8px;white-space:nowrap">1</div></div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- MAINTENANCE DETAIL -->
+    <div class="inner-panel" id="Jan_2026-maint">
+      <div class="grid-2">
+        <div class="card">
+          <div class="card-header"><div class="card-dot"></div><div class="card-title">HUA — Technology Breakdown</div></div>
+          <div class="card-body">
+            <table class="data-table" style="margin-bottom:16px">
+              <thead><tr><th>Tech</th><th class="num">Solved</th><th class="num">Not Solved</th><th class="num">Total</th></tr></thead>
+              <tbody>
+                <tr><td>2G</td><td class="num">69</td><td class="num">13</td><td class="num">82</td></tr><tr><td>3G</td><td class="num">216</td><td class="num">29</td><td class="num">245</td></tr><tr><td>4G</td><td class="num">139</td><td class="num">19</td><td class="num">158</td></tr><tr><td>5G</td><td class="num">1</td><td class="num">0</td><td class="num">1</td></tr><tr><td>Nokia SRAN</td><td class="num">0</td><td class="num">0</td><td class="num">0</td></tr>
+                <tr class="total-row"><td>Total</td><td class="num">425</td><td class="num">61</td><td class="num">486</td></tr>
+              </tbody>
+            </table>
+            <div class="bar-group">
+              <div class="bar-item"><div class="bar-label" style="width:110px">2G Solved</div><div class="bar-track"><div class="bar-fill hua" style="width:32%" data-val="69"></div></div></div><div class="bar-item"><div class="bar-label" style="width:110px">3G Solved</div><div class="bar-track"><div class="bar-fill hua" style="width:100%" data-val="216"></div></div></div><div class="bar-item"><div class="bar-label" style="width:110px">4G Solved</div><div class="bar-track"><div class="bar-fill hua" style="width:64%" data-val="139"></div></div></div><div class="bar-item"><div class="bar-label" style="width:110px">5G Solved</div><div class="bar-track"><div class="bar-fill hua" style="width:0%;min-width:4px"></div></div><div style="font-family:'IBM Plex Mono',monospace;font-size:12px;font-weight:700;color:#e8f0ff;margin-left:8px;white-space:nowrap">1</div></div>
+            </div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-header"><div class="card-dot orange"></div><div class="card-title">Nokia — Technology Breakdown</div></div>
+          <div class="card-body">
+            <table class="data-table" style="margin-bottom:16px">
+              <thead><tr><th>Tech</th><th class="num">Solved</th><th class="num">Not Solved</th><th class="num">Total</th></tr></thead>
+              <tbody>
+                <tr><td>2G</td><td class="num">9</td><td class="num">1</td><td class="num">10</td></tr><tr><td>3G</td><td class="num">25</td><td class="num">2</td><td class="num">27</td></tr><tr><td>4G</td><td class="num">80</td><td class="num">12</td><td class="num">92</td></tr><tr><td>5G</td><td class="num">62</td><td class="num">3</td><td class="num">65</td></tr><tr><td>Nokia SRAN</td><td class="num">317</td><td class="num">25</td><td class="num">342</td></tr>
+                <tr class="total-row"><td>Total</td><td class="num">493</td><td class="num">43</td><td class="num">536</td></tr>
+              </tbody>
+            </table>
+            <div class="bar-group">
+              <div class="bar-item"><div class="bar-label" style="width:110px">2G Solved</div><div class="bar-track"><div class="bar-fill nokia" style="width:3%;min-width:4px"></div></div><div style="font-family:'IBM Plex Mono',monospace;font-size:12px;font-weight:700;color:#e8f0ff;margin-left:8px;white-space:nowrap">9</div></div><div class="bar-item"><div class="bar-label" style="width:110px">3G Solved</div><div class="bar-track"><div class="bar-fill nokia" style="width:8%;min-width:4px"></div></div><div style="font-family:'IBM Plex Mono',monospace;font-size:12px;font-weight:700;color:#e8f0ff;margin-left:8px;white-space:nowrap">25</div></div><div class="bar-item"><div class="bar-label" style="width:110px">4G Solved</div><div class="bar-track"><div class="bar-fill nokia" style="width:25%" data-val="80"></div></div></div><div class="bar-item"><div class="bar-label" style="width:110px">5G Solved</div><div class="bar-track"><div class="bar-fill nokia" style="width:20%" data-val="62"></div></div></div>
+              <div class="bar-item"><div class="bar-label" style="width:110px">Nokia SRAN Solved</div><div class="bar-track"><div class="bar-fill nokia" style="width:100%" data-val="317"></div></div></div><div class="bar-item"><div class="bar-label" style="width:110px">Nokia SRAN Not Solved</div><div class="bar-track"><div class="bar-fill nokia" style="width:8%;min-width:4px"></div></div><div style="font-family:'IBM Plex Mono',monospace;font-size:12px;font-weight:700;color:#e8f0ff;margin-left:8px;white-space:nowrap">25</div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    </div>
+<div class="tab-panel" id="panel-Feb_2026">
+    <div class="month-header">
+      <div class="month-title">Feb 2026</div>
+      <div class="month-badge">MONTH 02 / 3</div>
+    </div>
+
+    <!-- KPI CARDS -->
+    <div class="kpi-row">
+      <div class="kpi-card hua">
+        <div class="kpi-label">Huawei Cases</div>
+        <div class="kpi-value">381</div>
+        <div class="kpi-sub">Total reported</div>
+      </div>
+      <div class="kpi-card nokia">
+        <div class="kpi-label">Nokia Cases</div>
+        <div class="kpi-value">525</div>
+        <div class="kpi-sub">Total reported</div>
+      </div>
+      <div class="kpi-card total">
+        <div class="kpi-label">Combined Total</div>
+        <div class="kpi-value">906</div>
+        <div class="kpi-sub">Both vendors</div>
+      </div>
+      <div class="kpi-card hua">
+        <div class="kpi-label">HUA 1st Visit Rate</div>
+        <div class="kpi-value" style="font-size:32px">77%</div>
+        <div class="kpi-sub">1st-visit resolution</div>
+      </div>
+      <div class="kpi-card nokia">
+        <div class="kpi-label">Nokia 1st Visit Rate</div>
+        <div class="kpi-value" style="font-size:32px">96%</div>
+        <div class="kpi-sub">1st-visit resolution</div>
+      </div>
+    </div>
+
+    <!-- INNER TABS -->
+    <div class="inner-tabs">
+      <button class="inner-tab active" onclick="sw(this,'Feb_2026','summary')">Summary</button>
+      <button class="inner-tab" onclick="sw(this,'Feb_2026','visits')">Visit Analysis</button>
+      <button class="inner-tab" onclick="sw(this,'Feb_2026','regions')">Regions</button>
+      <button class="inner-tab" onclick="sw(this,'Feb_2026','modules')">Top Modules</button>
+      <button class="inner-tab" onclick="sw(this,'Feb_2026','maint')">Maintenance Detail</button>
+    </div>
+
+    <!-- SUMMARY -->
+    <div class="inner-panel active" id="Feb_2026-summary">
+      <div class="grid-2">
+        <div class="card">
+          <div class="card-header"><div class="card-dot"></div><div class="card-title">Vendor Volume</div></div>
+          <div class="card-body">
+            
+<div style="position:relative">
+  <!-- Floating HTML tooltip -->
+  <div id="tip_pfa084465" style="
+    display:none; position:fixed; pointer-events:none; z-index:9999;
+    background:#0d1626; border:1px solid #1e3a5f; border-radius:6px;
+    padding:10px 14px; min-width:130px; box-shadow:0 4px 20px rgba(0,0,0,.6);">
+    <div id="tip_pfa084465_label" style="font-size:12px;font-weight:700;color:#e8f0ff;letter-spacing:1px;margin-bottom:4px"></div>
+    <div id="tip_pfa084465_count" style="font-family:'Rajdhani',sans-serif;font-size:26px;font-weight:700;line-height:1"></div>
+    <div id="tip_pfa084465_pct"   style="font-size:11px;color:#9bbcd8;margin-top:2px"></div>
+  </div>
+  <!-- SVG pie -->
+  <svg viewBox="0 0 290 180" xmlns="http://www.w3.org/2000/svg"
+       style="width:100%;max-width:340px;display:block;margin:0 auto">
+    <path d="M90,90 L90.00,15.00 A75,75 0 0,1 126.13,155.72 Z" fill="#ef4444" stroke="#111827" stroke-width="2" cursor="pointer" style="transition:opacity .15s" onmouseenter="showTip_pfa084465(event,'HUA',381,42,'#ef4444')" onmousemove="moveTip_pfa084465(event)" onmouseleave="hideTip_pfa084465()"/>
+    <path d="M90,90 L126.13,155.72 A75,75 0 1,1 90.00,15.00 Z" fill="#3b82f6" stroke="#111827" stroke-width="2" cursor="pointer" style="transition:opacity .15s" onmouseenter="showTip_pfa084465(event,'Nokia',525,58,'#3b82f6')" onmousemove="moveTip_pfa084465(event)" onmouseleave="hideTip_pfa084465()"/>
+    <circle cx="90" cy="90" r="30" fill="#111827" pointer-events="none"/>
+    <text x="90" y="87" text-anchor="middle" font-family="Rajdhani,sans-serif"
+          font-size="13" font-weight="700" fill="white" pointer-events="none">906</text>
+    <text x="90" y="102" text-anchor="middle" font-family="IBM Plex Sans,sans-serif"
+          font-size="8" fill="#9bbcd8" pointer-events="none">TOTAL</text>
+    <!-- Legend -->
+    <rect x="185" y="40" width="12" height="12" rx="2" fill="#ef4444"/>
+    <text x="202" y="51" font-family="IBM Plex Sans,sans-serif" font-size="12" font-weight="600" fill="#e8f0ff">HUA</text>
+    <text x="202" y="68" font-family="Rajdhani,sans-serif" font-size="20" font-weight="700" fill="#ef4444">381</text>
+    <text x="202" y="81" font-family="IBM Plex Sans,sans-serif" font-size="11" fill="#9bbcd8">42%</text>
+    <rect x="185" y="100" width="12" height="12" rx="2" fill="#3b82f6"/>
+    <text x="202" y="111" font-family="IBM Plex Sans,sans-serif" font-size="12" font-weight="600" fill="#e8f0ff">Nokia</text>
+    <text x="202" y="128" font-family="Rajdhani,sans-serif" font-size="20" font-weight="700" fill="#3b82f6">525</text>
+    <text x="202" y="141" font-family="IBM Plex Sans,sans-serif" font-size="11" fill="#9bbcd8">58%</text>
+  </svg>
+</div>
+<script>
+(function(){
+  var tip   = document.getElementById("tip_pfa084465");
+  var tlbl  = document.getElementById("tip_pfa084465_label");
+  var tcnt  = document.getElementById("tip_pfa084465_count");
+  var tpct  = document.getElementById("tip_pfa084465_pct");
+  function fmt(n){ return Number(n).toLocaleString(); }
+  window.showTip_pfa084465 = function(e, name, count, pct, color){
+    tlbl.textContent  = name + " Cases";
+    tcnt.textContent  = fmt(count);
+    tcnt.style.color  = color;
+    tpct.textContent  = pct + "% of total";
+    tip.style.display = "block";
+    window.moveTip_pfa084465(e);
+  };
+  window.moveTip_pfa084465 = function(e){
+    tip.style.left = (e.clientX + 14) + "px";
+    tip.style.top  = (e.clientY - 10) + "px";
+  };
+  window.hideTip_pfa084465 = function(){
+    tip.style.display = "none";
+  };
+})();
+</script>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-header"><div class="card-dot yellow"></div><div class="card-title">H/W Replacement Rate</div></div>
+          <div class="card-body">
+            <div class="hw-row">
+              
+    <div class="hw-item">
+      <div class="hw-vendor-name"><span class="tag hua">HUA</span></div>
+      <div style="display:flex;gap:20px">
+        <div>
+          <div style="font-size:13px;font-weight:700;color:#e8f0ff;letter-spacing:1px;margin-bottom:4px">H/W REPLACED</div>
+          <div class="hw-val hw">82</div>
+          <div class="hw-pct-bar"><div class="hw-pct-fill" style="width:25%;background:var(--red)"></div></div>
+        </div>
+        <div>
+          <div style="font-size:13px;font-weight:700;color:#e8f0ff;letter-spacing:1px;margin-bottom:4px">NO H/W</div>
+          <div class="hw-val no-hw">246</div>
+          <div class="hw-pct-bar"><div class="hw-pct-fill" style="width:75%;background:var(--green)"></div></div>
+        </div>
+      </div>
+      <div style="font-size:13px;font-weight:600;color:#e8f0ff;margin-top:8px">H/W Replacement Rate: 25%</div>
+    </div>
+              
+    <div class="hw-item">
+      <div class="hw-vendor-name"><span class="tag nokia">Nokia</span></div>
+      <div style="display:flex;gap:20px">
+        <div>
+          <div style="font-size:13px;font-weight:700;color:#e8f0ff;letter-spacing:1px;margin-bottom:4px">H/W REPLACED</div>
+          <div class="hw-val hw">129</div>
+          <div class="hw-pct-bar"><div class="hw-pct-fill" style="width:25%;background:var(--red)"></div></div>
+        </div>
+        <div>
+          <div style="font-size:13px;font-weight:700;color:#e8f0ff;letter-spacing:1px;margin-bottom:4px">NO H/W</div>
+          <div class="hw-val no-hw">380</div>
+          <div class="hw-pct-bar"><div class="hw-pct-fill" style="width:75%;background:var(--green)"></div></div>
+        </div>
+      </div>
+      <div style="font-size:13px;font-weight:600;color:#e8f0ff;margin-top:8px">H/W Replacement Rate: 25%</div>
+    </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-header"><div class="card-dot green"></div><div class="card-title">Maintenance — Solved vs Not Solved by Technology</div></div>
+        <div class="card-body">
+          <div style="overflow-x:auto">
+            <table class="data-table">
+              <thead><tr><th>Vendor</th><th class='num'>2G Solved</th><th class='num'>2G Not Solved</th><th class='num'>3G Solved</th><th class='num'>3G Not Solved</th><th class='num'>4G Solved</th><th class='num'>4G Not Solved</th><th class='num'>5G Solved</th><th class='num'>5G Not Solved</th><th class='num'>Nokia SRAN Solved</th><th class='num'>Nokia SRAN Not Solved</th><th class="num">Total Solved</th><th class="num">Total Not Solved</th></tr></thead>
+              <tbody><tr><td class='vendor-hua'>HUA</td><td class='num'>64</td><td class='num'>10</td><td class='num'>153</td><td class='num'>23</td><td class='num'>108</td><td class='num'>20</td><td class='num'>3</td><td class='num'>0</td><td class='num'>0</td><td class='num'>0</td><td class='num'>328</td><td class='num'>53</td></tr><tr><td class='vendor-nokia'>Nokia</td><td class='num'>26</td><td class='num'>1</td><td class='num'>42</td><td class='num'>3</td><td class='num'>53</td><td class='num'>2</td><td class='num'>20</td><td class='num'>0</td><td class='num'>368</td><td class='num'>8</td><td class='num'>509</td><td class='num'>14</td></tr><tr class='total-row'><td>Total</td><td class='num'>90</td><td class='num'>11</td><td class='num'>195</td><td class='num'>26</td><td class='num'>161</td><td class='num'>22</td><td class='num'>23</td><td class='num'>0</td><td class='num'>368</td><td class='num'>8</td><td class='num'>837</td><td class='num'>67</td></tr></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- VISIT ANALYSIS -->
+    <div class="inner-panel" id="Feb_2026-visits">
+      <div class="grid-2">
+        <div class="card">
+          <div class="card-header"><div class="card-dot"></div><div class="card-title">HUA — Visit Breakdown</div></div>
+          <div class="card-body">
+            <div class="bar-group">
+              <div class="bar-item"><div class="bar-label" style="width:110px">1st Visit Solved</div><div class="bar-track"><div class="bar-fill hua" style="width:50%" data-val="254"></div></div></div><div class="bar-item"><div class="bar-label" style="width:110px">2nd Visit Solved</div><div class="bar-track"><div class="bar-fill hua" style="width:8%;min-width:4px"></div></div><div style="font-family:'IBM Plex Mono',monospace;font-size:12px;font-weight:700;color:#e8f0ff;margin-left:8px;white-space:nowrap">41</div></div><div class="bar-item"><div class="bar-label" style="width:110px">Chronic (3rd)</div><div class="bar-track"><div class="bar-fill hua" style="width:5%;min-width:4px"></div></div><div style="font-family:'IBM Plex Mono',monospace;font-size:12px;font-weight:700;color:#e8f0ff;margin-left:8px;white-space:nowrap">27</div></div><div class="bar-item"><div class="bar-label" style="width:110px">Chronic (4th)</div><div class="bar-track"><div class="bar-fill hua" style="width:1%;min-width:4px"></div></div><div style="font-family:'IBM Plex Mono',monospace;font-size:12px;font-weight:700;color:#e8f0ff;margin-left:8px;white-space:nowrap">6</div></div><div class="bar-item"><div class="bar-label" style="width:110px">Total Solved</div><div class="bar-track"><div class="bar-fill hua" style="width:64%" data-val="328"></div></div></div>
+            </div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-header"><div class="card-dot orange"></div><div class="card-title">Nokia — Visit Breakdown</div></div>
+          <div class="card-body">
+            <div class="bar-group">
+              <div class="bar-item"><div class="bar-label" style="width:110px">1st Visit Solved</div><div class="bar-track"><div class="bar-fill nokia" style="width:96%" data-val="488"></div></div></div><div class="bar-item"><div class="bar-label" style="width:110px">2nd Visit Solved</div><div class="bar-track"><div class="bar-fill nokia" style="width:3%;min-width:4px"></div></div><div style="font-family:'IBM Plex Mono',monospace;font-size:12px;font-weight:700;color:#e8f0ff;margin-left:8px;white-space:nowrap">16</div></div><div class="bar-item"><div class="bar-label" style="width:110px">Chronic (3rd)</div><div class="bar-track"><div class="bar-fill nokia" style="width:1%;min-width:4px"></div></div><div style="font-family:'IBM Plex Mono',monospace;font-size:12px;font-weight:700;color:#e8f0ff;margin-left:8px;white-space:nowrap">5</div></div><div class="bar-item"><div class="bar-label" style="width:110px">Chronic (4th)</div><div class="bar-track"><div class="bar-fill nokia" style="width:0%;min-width:4px"></div></div><div style="font-family:'IBM Plex Mono',monospace;font-size:12px;font-weight:700;color:#e8f0ff;margin-left:8px;white-space:nowrap">0</div></div><div class="bar-item"><div class="bar-label" style="width:110px">Total Solved</div><div class="bar-track"><div class="bar-fill nokia" style="width:100%" data-val="509"></div></div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-header"><div class="card-dot green"></div><div class="card-title">Visit Comparison Table</div></div>
+        <div class="card-body">
+          <table class="data-table">
+            <thead><tr><th>Category</th><th class="num">HUA Count</th><th class="num">Nokia Count</th><th class="num">HUA %</th><th class="num">Nokia %</th></tr></thead>
+            <tbody><tr>
+          <td>1st Visit Solved</td>
+          <td class="num vendor-hua">254</td>
+          <td class="num vendor-nokia">488</td>
+          <td class="num">77%</td>
+          <td class="num">96%</td>
+        </tr><tr>
+          <td>2nd Visit Solved</td>
+          <td class="num vendor-hua">41</td>
+          <td class="num vendor-nokia">16</td>
+          <td class="num">12%</td>
+          <td class="num">3%</td>
+        </tr><tr>
+          <td>Chronic (3rd)</td>
+          <td class="num vendor-hua">27</td>
+          <td class="num vendor-nokia">5</td>
+          <td class="num">8%</td>
+          <td class="num">1%</td>
+        </tr><tr>
+          <td>Chronic (4th)</td>
+          <td class="num vendor-hua">6</td>
+          <td class="num vendor-nokia">0</td>
+          <td class="num">2%</td>
+          <td class="num">0%</td>
+        </tr><tr>
+          <td>Total Solved</td>
+          <td class="num vendor-hua">328</td>
+          <td class="num vendor-nokia">509</td>
+          <td class="num">100%</td>
+          <td class="num">100%</td>
+        </tr></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- REGIONS -->
+    <div class="inner-panel" id="Feb_2026-regions">
+      <div class="grid-2">
+        <div class="card">
+          <div class="card-header"><div class="card-dot yellow"></div><div class="card-title">Region Distribution</div></div>
+          <div class="card-body">
+            <div class="bar-group">
+              <div class="bar-item"><div class="bar-label" style="width:110px">Delta</div><div class="bar-track"><div class="bar-fill green" style="width:100%" data-val="307"></div></div></div><div class="bar-item"><div class="bar-label" style="width:110px">Alex</div><div class="bar-track"><div class="bar-fill green" style="width:74%" data-val="226"></div></div></div><div class="bar-item"><div class="bar-label" style="width:110px">Cairo</div><div class="bar-track"><div class="bar-fill green" style="width:60%" data-val="183"></div></div></div><div class="bar-item"><div class="bar-label" style="width:110px">UE</div><div class="bar-track"><div class="bar-fill green" style="width:48%" data-val="146"></div></div></div><div class="bar-item"><div class="bar-label" style="width:110px">RS</div><div class="bar-track"><div class="bar-fill green" style="width:9%;min-width:4px"></div></div><div style="font-family:'IBM Plex Mono',monospace;font-size:12px;font-weight:700;color:#e8f0ff;margin-left:8px;white-space:nowrap">29</div></div><div class="bar-item"><div class="bar-label" style="width:110px">Sinai</div><div class="bar-track"><div class="bar-fill green" style="width:5%;min-width:4px"></div></div><div style="font-family:'IBM Plex Mono',monospace;font-size:12px;font-weight:700;color:#e8f0ff;margin-left:8px;white-space:nowrap">15</div></div>
+            </div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-header"><div class="card-dot yellow"></div><div class="card-title">Region Case Table</div></div>
+          <div class="card-body">
+            <table class="data-table">
+              <thead><tr><th>Region</th><th class="num">Cases</th><th class="num">Share</th></tr></thead>
+              <tbody><tr><td>Delta</td><td class='num'>307</td><td class='num'>34%</td></tr><tr><td>Alex</td><td class='num'>226</td><td class='num'>25%</td></tr><tr><td>Cairo</td><td class='num'>183</td><td class='num'>20%</td></tr><tr><td>UE</td><td class='num'>146</td><td class='num'>16%</td></tr><tr><td>RS</td><td class='num'>29</td><td class='num'>3%</td></tr><tr><td>Sinai</td><td class='num'>15</td><td class='num'>2%</td></tr><tr class='total-row'><td>Total</td><td class='num'>906</td><td class='num'>100%</td></tr></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- MODULES -->
+    <div class="inner-panel" id="Feb_2026-modules">
+      <div class="grid-2">
+        <div class="card">
+          <div class="card-header"><div class="card-dot"></div><div class="card-title">HUA — Top Replaced Modules</div></div>
+          <div class="card-body">
+            <div class="chips"><div class="chip hua"><span class="chip-name">Jumper</span><span class="chip-count">17</span></div><div class="chip hua"><span class="chip-name">MRFU</span><span class="chip-count">15</span></div><div class="chip hua"><span class="chip-name">SFP</span><span class="chip-count">7</span></div><div class="chip hua"><span class="chip-name">RET cable</span><span class="chip-count">4</span></div><div class="chip hua"><span class="chip-name">RRU</span><span class="chip-count">2</span></div><div class="chip hua"><span class="chip-name">Antenna</span><span class="chip-count">2</span></div><div class="chip hua"><span class="chip-name">FAN</span><span class="chip-count">1</span></div></div>
+            <div class="bar-group"><div class="bar-item"><div class="bar-label" style="width:110px">Jumper</div><div class="bar-track"><div class="bar-fill hua" style="width:100%" data-val="17"></div></div></div>
+<div class="bar-item"><div class="bar-label" style="width:110px">MRFU</div><div class="bar-track"><div class="bar-fill hua" style="width:88%" data-val="15"></div></div></div>
+<div class="bar-item"><div class="bar-label" style="width:110px">SFP</div><div class="bar-track"><div class="bar-fill hua" style="width:41%" data-val="7"></div></div></div>
+<div class="bar-item"><div class="bar-label" style="width:110px">RET cable</div><div class="bar-track"><div class="bar-fill hua" style="width:24%" data-val="4"></div></div></div>
+<div class="bar-item"><div class="bar-label" style="width:110px">RRU</div><div class="bar-track"><div class="bar-fill hua" style="width:12%;min-width:4px"></div></div><div style="font-family:'IBM Plex Mono',monospace;font-size:12px;font-weight:700;color:#e8f0ff;margin-left:8px;white-space:nowrap">2</div></div>
+<div class="bar-item"><div class="bar-label" style="width:110px">Antenna</div><div class="bar-track"><div class="bar-fill hua" style="width:12%;min-width:4px"></div></div><div style="font-family:'IBM Plex Mono',monospace;font-size:12px;font-weight:700;color:#e8f0ff;margin-left:8px;white-space:nowrap">2</div></div>
+<div class="bar-item"><div class="bar-label" style="width:110px">FAN</div><div class="bar-track"><div class="bar-fill hua" style="width:6%;min-width:4px"></div></div><div style="font-family:'IBM Plex Mono',monospace;font-size:12px;font-weight:700;color:#e8f0ff;margin-left:8px;white-space:nowrap">1</div></div></div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-header"><div class="card-dot orange"></div><div class="card-title">Nokia — Top Replaced Modules</div></div>
+          <div class="card-body">
+            <div class="chips"><div class="chip nokia"><span class="chip-name">SRAN SM</span><span class="chip-count">7</span></div><div class="chip nokia"><span class="chip-name">3G RF</span><span class="chip-count">6</span></div><div class="chip nokia"><span class="chip-name">4G SM</span><span class="chip-count">6</span></div><div class="chip nokia"><span class="chip-name">2G RF</span><span class="chip-count">5</span></div><div class="chip nokia"><span class="chip-name">3G SM</span><span class="chip-count">5</span></div><div class="chip nokia"><span class="chip-name">4G RF</span><span class="chip-count">4</span></div><div class="chip nokia"><span class="chip-name">5G RF</span><span class="chip-count">4</span></div></div>
+            <div class="bar-group"><div class="bar-item"><div class="bar-label" style="width:110px">SRAN SM</div><div class="bar-track"><div class="bar-fill nokia" style="width:100%" data-val="7"></div></div></div>
+<div class="bar-item"><div class="bar-label" style="width:110px">3G RF</div><div class="bar-track"><div class="bar-fill nokia" style="width:86%" data-val="6"></div></div></div>
+<div class="bar-item"><div class="bar-label" style="width:110px">4G SM</div><div class="bar-track"><div class="bar-fill nokia" style="width:86%" data-val="6"></div></div></div>
+<div class="bar-item"><div class="bar-label" style="width:110px">2G RF</div><div class="bar-track"><div class="bar-fill nokia" style="width:71%" data-val="5"></div></div></div>
+<div class="bar-item"><div class="bar-label" style="width:110px">3G SM</div><div class="bar-track"><div class="bar-fill nokia" style="width:71%" data-val="5"></div></div></div>
+<div class="bar-item"><div class="bar-label" style="width:110px">4G RF</div><div class="bar-track"><div class="bar-fill nokia" style="width:57%" data-val="4"></div></div></div>
+<div class="bar-item"><div class="bar-label" style="width:110px">5G RF</div><div class="bar-track"><div class="bar-fill nokia" style="width:57%" data-val="4"></div></div></div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- MAINTENANCE DETAIL -->
+    <div class="inner-panel" id="Feb_2026-maint">
+      <div class="grid-2">
+        <div class="card">
+          <div class="card-header"><div class="card-dot"></div><div class="card-title">HUA — Technology Breakdown</div></div>
+          <div class="card-body">
+            <table class="data-table" style="margin-bottom:16px">
+              <thead><tr><th>Tech</th><th class="num">Solved</th><th class="num">Not Solved</th><th class="num">Total</th></tr></thead>
+              <tbody>
+                <tr><td>2G</td><td class="num">64</td><td class="num">10</td><td class="num">74</td></tr><tr><td>3G</td><td class="num">153</td><td class="num">23</td><td class="num">176</td></tr><tr><td>4G</td><td class="num">108</td><td class="num">20</td><td class="num">128</td></tr><tr><td>5G</td><td class="num">3</td><td class="num">0</td><td class="num">3</td></tr><tr><td>Nokia SRAN</td><td class="num">0</td><td class="num">0</td><td class="num">0</td></tr>
+                <tr class="total-row"><td>Total</td><td class="num">328</td><td class="num">53</td><td class="num">381</td></tr>
+              </tbody>
+            </table>
+            <div class="bar-group">
+              <div class="bar-item"><div class="bar-label" style="width:110px">2G Solved</div><div class="bar-track"><div class="bar-fill hua" style="width:42%" data-val="64"></div></div></div><div class="bar-item"><div class="bar-label" style="width:110px">3G Solved</div><div class="bar-track"><div class="bar-fill hua" style="width:100%" data-val="153"></div></div></div><div class="bar-item"><div class="bar-label" style="width:110px">4G Solved</div><div class="bar-track"><div class="bar-fill hua" style="width:71%" data-val="108"></div></div></div><div class="bar-item"><div class="bar-label" style="width:110px">5G Solved</div><div class="bar-track"><div class="bar-fill hua" style="width:2%;min-width:4px"></div></div><div style="font-family:'IBM Plex Mono',monospace;font-size:12px;font-weight:700;color:#e8f0ff;margin-left:8px;white-space:nowrap">3</div></div>
+            </div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-header"><div class="card-dot orange"></div><div class="card-title">Nokia — Technology Breakdown</div></div>
+          <div class="card-body">
+            <table class="data-table" style="margin-bottom:16px">
+              <thead><tr><th>Tech</th><th class="num">Solved</th><th class="num">Not Solved</th><th class="num">Total</th></tr></thead>
+              <tbody>
+                <tr><td>2G</td><td class="num">26</td><td class="num">1</td><td class="num">27</td></tr><tr><td>3G</td><td class="num">42</td><td class="num">3</td><td class="num">45</td></tr><tr><td>4G</td><td class="num">53</td><td class="num">2</td><td class="num">55</td></tr><tr><td>5G</td><td class="num">20</td><td class="num">0</td><td class="num">20</td></tr><tr><td>Nokia SRAN</td><td class="num">368</td><td class="num">8</td><td class="num">376</td></tr>
+                <tr class="total-row"><td>Total</td><td class="num">509</td><td class="num">14</td><td class="num">523</td></tr>
+              </tbody>
+            </table>
+            <div class="bar-group">
+              <div class="bar-item"><div class="bar-label" style="width:110px">2G Solved</div><div class="bar-track"><div class="bar-fill nokia" style="width:7%;min-width:4px"></div></div><div style="font-family:'IBM Plex Mono',monospace;font-size:12px;font-weight:700;color:#e8f0ff;margin-left:8px;white-space:nowrap">26</div></div><div class="bar-item"><div class="bar-label" style="width:110px">3G Solved</div><div class="bar-track"><div class="bar-fill nokia" style="width:11%;min-width:4px"></div></div><div style="font-family:'IBM Plex Mono',monospace;font-size:12px;font-weight:700;color:#e8f0ff;margin-left:8px;white-space:nowrap">42</div></div><div class="bar-item"><div class="bar-label" style="width:110px">4G Solved</div><div class="bar-track"><div class="bar-fill nokia" style="width:14%;min-width:4px"></div></div><div style="font-family:'IBM Plex Mono',monospace;font-size:12px;font-weight:700;color:#e8f0ff;margin-left:8px;white-space:nowrap">53</div></div><div class="bar-item"><div class="bar-label" style="width:110px">5G Solved</div><div class="bar-track"><div class="bar-fill nokia" style="width:5%;min-width:4px"></div></div><div style="font-family:'IBM Plex Mono',monospace;font-size:12px;font-weight:700;color:#e8f0ff;margin-left:8px;white-space:nowrap">20</div></div>
+              <div class="bar-item"><div class="bar-label" style="width:110px">Nokia SRAN Solved</div><div class="bar-track"><div class="bar-fill nokia" style="width:100%" data-val="368"></div></div></div><div class="bar-item"><div class="bar-label" style="width:110px">Nokia SRAN Not Solved</div><div class="bar-track"><div class="bar-fill nokia" style="width:2%;min-width:4px"></div></div><div style="font-family:'IBM Plex Mono',monospace;font-size:12px;font-weight:700;color:#e8f0ff;margin-left:8px;white-space:nowrap">8</div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    </div>
+<div class="tab-panel" id="panel-March_2026">
+    <div class="month-header">
+      <div class="month-title">Mar 2026</div>
+      <div class="month-badge">MONTH 03 / 3</div>
+    </div>
+
+    <!-- KPI CARDS -->
+    <div class="kpi-row">
+      <div class="kpi-card hua">
+        <div class="kpi-label">Huawei Cases</div>
+        <div class="kpi-value">519</div>
+        <div class="kpi-sub">Total reported</div>
+      </div>
+      <div class="kpi-card nokia">
+        <div class="kpi-label">Nokia Cases</div>
+        <div class="kpi-value">714</div>
+        <div class="kpi-sub">Total reported</div>
+      </div>
+      <div class="kpi-card total">
+        <div class="kpi-label">Combined Total</div>
+        <div class="kpi-value">1,233</div>
+        <div class="kpi-sub">Both vendors</div>
+      </div>
+      <div class="kpi-card hua">
+        <div class="kpi-label">HUA 1st Visit Rate</div>
+        <div class="kpi-value" style="font-size:32px">85%</div>
+        <div class="kpi-sub">1st-visit resolution</div>
+      </div>
+      <div class="kpi-card nokia">
+        <div class="kpi-label">Nokia 1st Visit Rate</div>
+        <div class="kpi-value" style="font-size:32px">97%</div>
+        <div class="kpi-sub">1st-visit resolution</div>
+      </div>
+    </div>
+
+    <!-- INNER TABS -->
+    <div class="inner-tabs">
+      <button class="inner-tab active" onclick="sw(this,'March_2026','summary')">Summary</button>
+      <button class="inner-tab" onclick="sw(this,'March_2026','visits')">Visit Analysis</button>
+      <button class="inner-tab" onclick="sw(this,'March_2026','regions')">Regions</button>
+      <button class="inner-tab" onclick="sw(this,'March_2026','modules')">Top Modules</button>
+      <button class="inner-tab" onclick="sw(this,'March_2026','maint')">Maintenance Detail</button>
+    </div>
+
+    <!-- SUMMARY -->
+    <div class="inner-panel active" id="March_2026-summary">
+      <div class="grid-2">
+        <div class="card">
+          <div class="card-header"><div class="card-dot"></div><div class="card-title">Vendor Volume</div></div>
+          <div class="card-body">
+            
+<div style="position:relative">
+  <!-- Floating HTML tooltip -->
+  <div id="tip_pb47d312f" style="
+    display:none; position:fixed; pointer-events:none; z-index:9999;
+    background:#0d1626; border:1px solid #1e3a5f; border-radius:6px;
+    padding:10px 14px; min-width:130px; box-shadow:0 4px 20px rgba(0,0,0,.6);">
+    <div id="tip_pb47d312f_label" style="font-size:12px;font-weight:700;color:#e8f0ff;letter-spacing:1px;margin-bottom:4px"></div>
+    <div id="tip_pb47d312f_count" style="font-family:'Rajdhani',sans-serif;font-size:26px;font-weight:700;line-height:1"></div>
+    <div id="tip_pb47d312f_pct"   style="font-size:11px;color:#9bbcd8;margin-top:2px"></div>
+  </div>
+  <!-- SVG pie -->
+  <svg viewBox="0 0 290 180" xmlns="http://www.w3.org/2000/svg"
+       style="width:100%;max-width:340px;display:block;margin:0 auto">
+    <path d="M90,90 L90.00,15.00 A75,75 0 0,1 126.13,155.72 Z" fill="#ef4444" stroke="#111827" stroke-width="2" cursor="pointer" style="transition:opacity .15s" onmouseenter="showTip_pb47d312f(event,'HUA',519,42,'#ef4444')" onmousemove="moveTip_pb47d312f(event)" onmouseleave="hideTip_pb47d312f()"/>
+    <path d="M90,90 L126.13,155.72 A75,75 0 1,1 90.00,15.00 Z" fill="#3b82f6" stroke="#111827" stroke-width="2" cursor="pointer" style="transition:opacity .15s" onmouseenter="showTip_pb47d312f(event,'Nokia',714,58,'#3b82f6')" onmousemove="moveTip_pb47d312f(event)" onmouseleave="hideTip_pb47d312f()"/>
+    <circle cx="90" cy="90" r="30" fill="#111827" pointer-events="none"/>
+    <text x="90" y="87" text-anchor="middle" font-family="Rajdhani,sans-serif"
+          font-size="13" font-weight="700" fill="white" pointer-events="none">1,233</text>
+    <text x="90" y="102" text-anchor="middle" font-family="IBM Plex Sans,sans-serif"
+          font-size="8" fill="#9bbcd8" pointer-events="none">TOTAL</text>
+    <!-- Legend -->
+    <rect x="185" y="40" width="12" height="12" rx="2" fill="#ef4444"/>
+    <text x="202" y="51" font-family="IBM Plex Sans,sans-serif" font-size="12" font-weight="600" fill="#e8f0ff">HUA</text>
+    <text x="202" y="68" font-family="Rajdhani,sans-serif" font-size="20" font-weight="700" fill="#ef4444">519</text>
+    <text x="202" y="81" font-family="IBM Plex Sans,sans-serif" font-size="11" fill="#9bbcd8">42%</text>
+    <rect x="185" y="100" width="12" height="12" rx="2" fill="#3b82f6"/>
+    <text x="202" y="111" font-family="IBM Plex Sans,sans-serif" font-size="12" font-weight="600" fill="#e8f0ff">Nokia</text>
+    <text x="202" y="128" font-family="Rajdhani,sans-serif" font-size="20" font-weight="700" fill="#3b82f6">714</text>
+    <text x="202" y="141" font-family="IBM Plex Sans,sans-serif" font-size="11" fill="#9bbcd8">58%</text>
+  </svg>
+</div>
+<script>
+(function(){
+  var tip   = document.getElementById("tip_pb47d312f");
+  var tlbl  = document.getElementById("tip_pb47d312f_label");
+  var tcnt  = document.getElementById("tip_pb47d312f_count");
+  var tpct  = document.getElementById("tip_pb47d312f_pct");
+  function fmt(n){ return Number(n).toLocaleString(); }
+  window.showTip_pb47d312f = function(e, name, count, pct, color){
+    tlbl.textContent  = name + " Cases";
+    tcnt.textContent  = fmt(count);
+    tcnt.style.color  = color;
+    tpct.textContent  = pct + "% of total";
+    tip.style.display = "block";
+    window.moveTip_pb47d312f(e);
+  };
+  window.moveTip_pb47d312f = function(e){
+    tip.style.left = (e.clientX + 14) + "px";
+    tip.style.top  = (e.clientY - 10) + "px";
+  };
+  window.hideTip_pb47d312f = function(){
+    tip.style.display = "none";
+  };
+})();
+</script>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-header"><div class="card-dot yellow"></div><div class="card-title">H/W Replacement Rate</div></div>
+          <div class="card-body">
+            <div class="hw-row">
+              
+    <div class="hw-item">
+      <div class="hw-vendor-name"><span class="tag hua">HUA</span></div>
+      <div style="display:flex;gap:20px">
+        <div>
+          <div style="font-size:13px;font-weight:700;color:#e8f0ff;letter-spacing:1px;margin-bottom:4px">H/W REPLACED</div>
+          <div class="hw-val hw">60</div>
+          <div class="hw-pct-bar"><div class="hw-pct-fill" style="width:14%;background:var(--red)"></div></div>
+        </div>
+        <div>
+          <div style="font-size:13px;font-weight:700;color:#e8f0ff;letter-spacing:1px;margin-bottom:4px">NO H/W</div>
+          <div class="hw-val no-hw">362</div>
+          <div class="hw-pct-bar"><div class="hw-pct-fill" style="width:86%;background:var(--green)"></div></div>
+        </div>
+      </div>
+      <div style="font-size:13px;font-weight:600;color:#e8f0ff;margin-top:8px">H/W Replacement Rate: 14%</div>
+    </div>
+              
+    <div class="hw-item">
+      <div class="hw-vendor-name"><span class="tag nokia">Nokia</span></div>
+      <div style="display:flex;gap:20px">
+        <div>
+          <div style="font-size:13px;font-weight:700;color:#e8f0ff;letter-spacing:1px;margin-bottom:4px">H/W REPLACED</div>
+          <div class="hw-val hw">238</div>
+          <div class="hw-pct-bar"><div class="hw-pct-fill" style="width:36%;background:var(--red)"></div></div>
+        </div>
+        <div>
+          <div style="font-size:13px;font-weight:700;color:#e8f0ff;letter-spacing:1px;margin-bottom:4px">NO H/W</div>
+          <div class="hw-val no-hw">424</div>
+          <div class="hw-pct-bar"><div class="hw-pct-fill" style="width:64%;background:var(--green)"></div></div>
+        </div>
+      </div>
+      <div style="font-size:13px;font-weight:600;color:#e8f0ff;margin-top:8px">H/W Replacement Rate: 36%</div>
+    </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-header"><div class="card-dot green"></div><div class="card-title">Maintenance — Solved vs Not Solved by Technology</div></div>
+        <div class="card-body">
+          <div style="overflow-x:auto">
+            <table class="data-table">
+              <thead><tr><th>Vendor</th><th class='num'>2G Solved</th><th class='num'>2G Not Solved</th><th class='num'>3G Solved</th><th class='num'>3G Not Solved</th><th class='num'>4G Solved</th><th class='num'>4G Not Solved</th><th class='num'>5G Solved</th><th class='num'>5G Not Solved</th><th class='num'>Nokia SRAN Solved</th><th class='num'>Nokia SRAN Not Solved</th><th class="num">Total Solved</th><th class="num">Total Not Solved</th></tr></thead>
+              <tbody><tr><td class='vendor-hua'>HUA</td><td class='num'>105</td><td class='num'>23</td><td class='num'>149</td><td class='num'>43</td><td class='num'>167</td><td class='num'>31</td><td class='num'>1</td><td class='num'>0</td><td class='num'>0</td><td class='num'>0</td><td class='num'>422</td><td class='num'>97</td></tr><tr><td class='vendor-nokia'>Nokia</td><td class='num'>24</td><td class='num'>3</td><td class='num'>46</td><td class='num'>4</td><td class='num'>156</td><td class='num'>10</td><td class='num'>8</td><td class='num'>0</td><td class='num'>428</td><td class='num'>22</td><td class='num'>662</td><td class='num'>39</td></tr><tr class='total-row'><td>Total</td><td class='num'>129</td><td class='num'>26</td><td class='num'>195</td><td class='num'>47</td><td class='num'>323</td><td class='num'>41</td><td class='num'>9</td><td class='num'>0</td><td class='num'>428</td><td class='num'>22</td><td class='num'>1,084</td><td class='num'>136</td></tr></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- VISIT ANALYSIS -->
+    <div class="inner-panel" id="March_2026-visits">
+      <div class="grid-2">
+        <div class="card">
+          <div class="card-header"><div class="card-dot"></div><div class="card-title">HUA — Visit Breakdown</div></div>
+          <div class="card-body">
+            <div class="bar-group">
+              <div class="bar-item"><div class="bar-label" style="width:110px">1st Visit Solved</div><div class="bar-track"><div class="bar-fill hua" style="width:54%" data-val="358"></div></div></div><div class="bar-item"><div class="bar-label" style="width:110px">2nd Visit Solved</div><div class="bar-track"><div class="bar-fill hua" style="width:8%;min-width:4px"></div></div><div style="font-family:'IBM Plex Mono',monospace;font-size:12px;font-weight:700;color:#e8f0ff;margin-left:8px;white-space:nowrap">51</div></div><div class="bar-item"><div class="bar-label" style="width:110px">Chronic (3rd)</div><div class="bar-track"><div class="bar-fill hua" style="width:2%;min-width:4px"></div></div><div style="font-family:'IBM Plex Mono',monospace;font-size:12px;font-weight:700;color:#e8f0ff;margin-left:8px;white-space:nowrap">10</div></div><div class="bar-item"><div class="bar-label" style="width:110px">Chronic (4th)</div><div class="bar-track"><div class="bar-fill hua" style="width:0%;min-width:4px"></div></div><div style="font-family:'IBM Plex Mono',monospace;font-size:12px;font-weight:700;color:#e8f0ff;margin-left:8px;white-space:nowrap">3</div></div><div class="bar-item"><div class="bar-label" style="width:110px">Total Solved</div><div class="bar-track"><div class="bar-fill hua" style="width:64%" data-val="422"></div></div></div>
+            </div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-header"><div class="card-dot orange"></div><div class="card-title">Nokia — Visit Breakdown</div></div>
+          <div class="card-body">
+            <div class="bar-group">
+              <div class="bar-item"><div class="bar-label" style="width:110px">1st Visit Solved</div><div class="bar-track"><div class="bar-fill nokia" style="width:97%" data-val="643"></div></div></div><div class="bar-item"><div class="bar-label" style="width:110px">2nd Visit Solved</div><div class="bar-track"><div class="bar-fill nokia" style="width:2%;min-width:4px"></div></div><div style="font-family:'IBM Plex Mono',monospace;font-size:12px;font-weight:700;color:#e8f0ff;margin-left:8px;white-space:nowrap">15</div></div><div class="bar-item"><div class="bar-label" style="width:110px">Chronic (3rd)</div><div class="bar-track"><div class="bar-fill nokia" style="width:1%;min-width:4px"></div></div><div style="font-family:'IBM Plex Mono',monospace;font-size:12px;font-weight:700;color:#e8f0ff;margin-left:8px;white-space:nowrap">4</div></div><div class="bar-item"><div class="bar-label" style="width:110px">Chronic (4th)</div><div class="bar-track"><div class="bar-fill nokia" style="width:0%;min-width:4px"></div></div><div style="font-family:'IBM Plex Mono',monospace;font-size:12px;font-weight:700;color:#e8f0ff;margin-left:8px;white-space:nowrap">0</div></div><div class="bar-item"><div class="bar-label" style="width:110px">Total Solved</div><div class="bar-track"><div class="bar-fill nokia" style="width:100%" data-val="662"></div></div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-header"><div class="card-dot green"></div><div class="card-title">Visit Comparison Table</div></div>
+        <div class="card-body">
+          <table class="data-table">
+            <thead><tr><th>Category</th><th class="num">HUA Count</th><th class="num">Nokia Count</th><th class="num">HUA %</th><th class="num">Nokia %</th></tr></thead>
+            <tbody><tr>
+          <td>1st Visit Solved</td>
+          <td class="num vendor-hua">358</td>
+          <td class="num vendor-nokia">643</td>
+          <td class="num">85%</td>
+          <td class="num">97%</td>
+        </tr><tr>
+          <td>2nd Visit Solved</td>
+          <td class="num vendor-hua">51</td>
+          <td class="num vendor-nokia">15</td>
+          <td class="num">12%</td>
+          <td class="num">2%</td>
+        </tr><tr>
+          <td>Chronic (3rd)</td>
+          <td class="num vendor-hua">10</td>
+          <td class="num vendor-nokia">4</td>
+          <td class="num">2%</td>
+          <td class="num">1%</td>
+        </tr><tr>
+          <td>Chronic (4th)</td>
+          <td class="num vendor-hua">3</td>
+          <td class="num vendor-nokia">0</td>
+          <td class="num">1%</td>
+          <td class="num">0%</td>
+        </tr><tr>
+          <td>Total Solved</td>
+          <td class="num vendor-hua">422</td>
+          <td class="num vendor-nokia">662</td>
+          <td class="num">100%</td>
+          <td class="num">100%</td>
+        </tr></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- REGIONS -->
+    <div class="inner-panel" id="March_2026-regions">
+      <div class="grid-2">
+        <div class="card">
+          <div class="card-header"><div class="card-dot yellow"></div><div class="card-title">Region Distribution</div></div>
+          <div class="card-body">
+            <div class="bar-group">
+              <div class="bar-item"><div class="bar-label" style="width:110px">Delta</div><div class="bar-track"><div class="bar-fill green" style="width:100%" data-val="391"></div></div></div><div class="bar-item"><div class="bar-label" style="width:110px">Cairo</div><div class="bar-track"><div class="bar-fill green" style="width:69%" data-val="268"></div></div></div><div class="bar-item"><div class="bar-label" style="width:110px">Alex</div><div class="bar-track"><div class="bar-fill green" style="width:61%" data-val="237"></div></div></div><div class="bar-item"><div class="bar-label" style="width:110px">UE</div><div class="bar-track"><div class="bar-fill green" style="width:57%" data-val="222"></div></div></div><div class="bar-item"><div class="bar-label" style="width:110px">Sinai</div><div class="bar-track"><div class="bar-fill green" style="width:20%" data-val="78"></div></div></div><div class="bar-item"><div class="bar-label" style="width:110px">RE</div><div class="bar-track"><div class="bar-fill green" style="width:9%;min-width:4px"></div></div><div style="font-family:'IBM Plex Mono',monospace;font-size:12px;font-weight:700;color:#e8f0ff;margin-left:8px;white-space:nowrap">37</div></div>
+            </div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-header"><div class="card-dot yellow"></div><div class="card-title">Region Case Table</div></div>
+          <div class="card-body">
+            <table class="data-table">
+              <thead><tr><th>Region</th><th class="num">Cases</th><th class="num">Share</th></tr></thead>
+              <tbody><tr><td>Delta</td><td class='num'>391</td><td class='num'>32%</td></tr><tr><td>Cairo</td><td class='num'>268</td><td class='num'>22%</td></tr><tr><td>Alex</td><td class='num'>237</td><td class='num'>19%</td></tr><tr><td>UE</td><td class='num'>222</td><td class='num'>18%</td></tr><tr><td>Sinai</td><td class='num'>78</td><td class='num'>6%</td></tr><tr><td>RE</td><td class='num'>37</td><td class='num'>3%</td></tr><tr class='total-row'><td>Total</td><td class='num'>1,233</td><td class='num'>100%</td></tr></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- MODULES -->
+    <div class="inner-panel" id="March_2026-modules">
+      <div class="grid-2">
+        <div class="card">
+          <div class="card-header"><div class="card-dot"></div><div class="card-title">HUA — Top Replaced Modules</div></div>
+          <div class="card-body">
+            <div class="chips"><div class="chip hua"><span class="chip-name">Jumper</span><span class="chip-count">24</span></div><div class="chip hua"><span class="chip-name">MRFU</span><span class="chip-count">16</span></div><div class="chip hua"><span class="chip-name">SFP</span><span class="chip-count">8</span></div><div class="chip hua"><span class="chip-name">Antenna</span><span class="chip-count">3</span></div><div class="chip hua"><span class="chip-name">MRRU</span><span class="chip-count">2</span></div><div class="chip hua"><span class="chip-name">UMPT</span><span class="chip-count">1</span></div><div class="chip hua"><span class="chip-name">UBBP</span><span class="chip-count">1</span></div></div>
+            <div class="bar-group"><div class="bar-item"><div class="bar-label" style="width:110px">Jumper</div><div class="bar-track"><div class="bar-fill hua" style="width:100%" data-val="24"></div></div></div>
+<div class="bar-item"><div class="bar-label" style="width:110px">MRFU</div><div class="bar-track"><div class="bar-fill hua" style="width:67%" data-val="16"></div></div></div>
+<div class="bar-item"><div class="bar-label" style="width:110px">SFP</div><div class="bar-track"><div class="bar-fill hua" style="width:33%" data-val="8"></div></div></div>
+<div class="bar-item"><div class="bar-label" style="width:110px">Antenna</div><div class="bar-track"><div class="bar-fill hua" style="width:12%;min-width:4px"></div></div><div style="font-family:'IBM Plex Mono',monospace;font-size:12px;font-weight:700;color:#e8f0ff;margin-left:8px;white-space:nowrap">3</div></div>
+<div class="bar-item"><div class="bar-label" style="width:110px">MRRU</div><div class="bar-track"><div class="bar-fill hua" style="width:8%;min-width:4px"></div></div><div style="font-family:'IBM Plex Mono',monospace;font-size:12px;font-weight:700;color:#e8f0ff;margin-left:8px;white-space:nowrap">2</div></div>
+<div class="bar-item"><div class="bar-label" style="width:110px">UMPT</div><div class="bar-track"><div class="bar-fill hua" style="width:4%;min-width:4px"></div></div><div style="font-family:'IBM Plex Mono',monospace;font-size:12px;font-weight:700;color:#e8f0ff;margin-left:8px;white-space:nowrap">1</div></div>
+<div class="bar-item"><div class="bar-label" style="width:110px">UBBP</div><div class="bar-track"><div class="bar-fill hua" style="width:4%;min-width:4px"></div></div><div style="font-family:'IBM Plex Mono',monospace;font-size:12px;font-weight:700;color:#e8f0ff;margin-left:8px;white-space:nowrap">1</div></div></div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-header"><div class="card-dot orange"></div><div class="card-title">Nokia — Top Replaced Modules</div></div>
+          <div class="card-body">
+            <div class="chips"><div class="chip nokia"><span class="chip-name">SRAN RF</span><span class="chip-count">47</span></div><div class="chip nokia"><span class="chip-name">SRAN SM</span><span class="chip-count">32</span></div><div class="chip nokia"><span class="chip-name">4G RF</span><span class="chip-count">25</span></div><div class="chip nokia"><span class="chip-name">3G SM</span><span class="chip-count">12</span></div><div class="chip nokia"><span class="chip-name">4G SM</span><span class="chip-count">10</span></div><div class="chip nokia"><span class="chip-name">3G RF</span><span class="chip-count">2</span></div><div class="chip nokia"><span class="chip-name">2G RF</span><span class="chip-count">1</span></div></div>
+            <div class="bar-group"><div class="bar-item"><div class="bar-label" style="width:110px">SRAN RF</div><div class="bar-track"><div class="bar-fill nokia" style="width:100%" data-val="47"></div></div></div>
+<div class="bar-item"><div class="bar-label" style="width:110px">SRAN SM</div><div class="bar-track"><div class="bar-fill nokia" style="width:68%" data-val="32"></div></div></div>
+<div class="bar-item"><div class="bar-label" style="width:110px">4G RF</div><div class="bar-track"><div class="bar-fill nokia" style="width:53%" data-val="25"></div></div></div>
+<div class="bar-item"><div class="bar-label" style="width:110px">3G SM</div><div class="bar-track"><div class="bar-fill nokia" style="width:26%" data-val="12"></div></div></div>
+<div class="bar-item"><div class="bar-label" style="width:110px">4G SM</div><div class="bar-track"><div class="bar-fill nokia" style="width:21%" data-val="10"></div></div></div>
+<div class="bar-item"><div class="bar-label" style="width:110px">3G RF</div><div class="bar-track"><div class="bar-fill nokia" style="width:4%;min-width:4px"></div></div><div style="font-family:'IBM Plex Mono',monospace;font-size:12px;font-weight:700;color:#e8f0ff;margin-left:8px;white-space:nowrap">2</div></div>
+<div class="bar-item"><div class="bar-label" style="width:110px">2G RF</div><div class="bar-track"><div class="bar-fill nokia" style="width:2%;min-width:4px"></div></div><div style="font-family:'IBM Plex Mono',monospace;font-size:12px;font-weight:700;color:#e8f0ff;margin-left:8px;white-space:nowrap">1</div></div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- MAINTENANCE DETAIL -->
+    <div class="inner-panel" id="March_2026-maint">
+      <div class="grid-2">
+        <div class="card">
+          <div class="card-header"><div class="card-dot"></div><div class="card-title">HUA — Technology Breakdown</div></div>
+          <div class="card-body">
+            <table class="data-table" style="margin-bottom:16px">
+              <thead><tr><th>Tech</th><th class="num">Solved</th><th class="num">Not Solved</th><th class="num">Total</th></tr></thead>
+              <tbody>
+                <tr><td>2G</td><td class="num">105</td><td class="num">23</td><td class="num">128</td></tr><tr><td>3G</td><td class="num">149</td><td class="num">43</td><td class="num">192</td></tr><tr><td>4G</td><td class="num">167</td><td class="num">31</td><td class="num">198</td></tr><tr><td>5G</td><td class="num">1</td><td class="num">0</td><td class="num">1</td></tr><tr><td>Nokia SRAN</td><td class="num">0</td><td class="num">0</td><td class="num">0</td></tr>
+                <tr class="total-row"><td>Total</td><td class="num">422</td><td class="num">97</td><td class="num">519</td></tr>
+              </tbody>
+            </table>
+            <div class="bar-group">
+              <div class="bar-item"><div class="bar-label" style="width:110px">2G Solved</div><div class="bar-track"><div class="bar-fill hua" style="width:63%" data-val="105"></div></div></div><div class="bar-item"><div class="bar-label" style="width:110px">3G Solved</div><div class="bar-track"><div class="bar-fill hua" style="width:89%" data-val="149"></div></div></div><div class="bar-item"><div class="bar-label" style="width:110px">4G Solved</div><div class="bar-track"><div class="bar-fill hua" style="width:100%" data-val="167"></div></div></div><div class="bar-item"><div class="bar-label" style="width:110px">5G Solved</div><div class="bar-track"><div class="bar-fill hua" style="width:1%;min-width:4px"></div></div><div style="font-family:'IBM Plex Mono',monospace;font-size:12px;font-weight:700;color:#e8f0ff;margin-left:8px;white-space:nowrap">1</div></div>
+            </div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-header"><div class="card-dot orange"></div><div class="card-title">Nokia — Technology Breakdown</div></div>
+          <div class="card-body">
+            <table class="data-table" style="margin-bottom:16px">
+              <thead><tr><th>Tech</th><th class="num">Solved</th><th class="num">Not Solved</th><th class="num">Total</th></tr></thead>
+              <tbody>
+                <tr><td>2G</td><td class="num">24</td><td class="num">3</td><td class="num">27</td></tr><tr><td>3G</td><td class="num">46</td><td class="num">4</td><td class="num">50</td></tr><tr><td>4G</td><td class="num">156</td><td class="num">10</td><td class="num">166</td></tr><tr><td>5G</td><td class="num">8</td><td class="num">0</td><td class="num">8</td></tr><tr><td>Nokia SRAN</td><td class="num">428</td><td class="num">22</td><td class="num">450</td></tr>
+                <tr class="total-row"><td>Total</td><td class="num">662</td><td class="num">39</td><td class="num">701</td></tr>
+              </tbody>
+            </table>
+            <div class="bar-group">
+              <div class="bar-item"><div class="bar-label" style="width:110px">2G Solved</div><div class="bar-track"><div class="bar-fill nokia" style="width:6%;min-width:4px"></div></div><div style="font-family:'IBM Plex Mono',monospace;font-size:12px;font-weight:700;color:#e8f0ff;margin-left:8px;white-space:nowrap">24</div></div><div class="bar-item"><div class="bar-label" style="width:110px">3G Solved</div><div class="bar-track"><div class="bar-fill nokia" style="width:11%;min-width:4px"></div></div><div style="font-family:'IBM Plex Mono',monospace;font-size:12px;font-weight:700;color:#e8f0ff;margin-left:8px;white-space:nowrap">46</div></div><div class="bar-item"><div class="bar-label" style="width:110px">4G Solved</div><div class="bar-track"><div class="bar-fill nokia" style="width:36%" data-val="156"></div></div></div><div class="bar-item"><div class="bar-label" style="width:110px">5G Solved</div><div class="bar-track"><div class="bar-fill nokia" style="width:2%;min-width:4px"></div></div><div style="font-family:'IBM Plex Mono',monospace;font-size:12px;font-weight:700;color:#e8f0ff;margin-left:8px;white-space:nowrap">8</div></div>
+              <div class="bar-item"><div class="bar-label" style="width:110px">Nokia SRAN Solved</div><div class="bar-track"><div class="bar-fill nokia" style="width:100%" data-val="428"></div></div></div><div class="bar-item"><div class="bar-label" style="width:110px">Nokia SRAN Not Solved</div><div class="bar-track"><div class="bar-fill nokia" style="width:5%;min-width:4px"></div></div><div style="font-family:'IBM Plex Mono',monospace;font-size:12px;font-weight:700;color:#e8f0ff;margin-left:8px;white-space:nowrap">22</div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    </div>
+
+</div>
+
+<div class="footer">
+  <span>L1 Statistics Dashboard — Auto-generated</span>
+  <span>3 months loaded</span>
+  <span>Generated by <strong style="color:#ff6b00">TRC</strong> <span style="color:var(--text-faint)">Technology Report Center</span> · v2.1.0</span>
+</div>
+
+
+<script>
+function switchTab(btn, id) {
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById('panel-' + id).classList.add('active');
+}
+function sw(btn, sid, tab) {
+  const panel = document.getElementById('panel-' + sid);
+  panel.querySelectorAll('.inner-tab').forEach(b => b.classList.remove('active'));
+  panel.querySelectorAll('.inner-panel').forEach(p => p.classList.remove('active'));
+  btn.classList.add('active');
+  const inner = document.getElementById(sid + '-' + tab);
+  if (inner) inner.classList.add('active');
+}
+</script>
+
+</body>
+</html>

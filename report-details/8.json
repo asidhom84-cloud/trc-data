@@ -6,8 +6,8 @@
   "frequency": "monthly",
   "is_automated": true,
   "template_type": "l1stats",
-  "created_at": "2026-04-02T18:29:47Z",
-  "updated_at": "2026-04-02T18:29:47Z",
+  "created_at": "2026-04-06T17:44:44Z",
+  "updated_at": "2026-04-06T17:44:44Z",
   "team": {
     "id": 2,
     "name": "RQA Operations",
@@ -23,16 +23,16 @@
     {
       "id": 1,
       "version_number": 2,
-      "period_label": "2",
+      "period_label": "3",
       "status": "ready",
-      "original_filename": "2026_L1_Statistics.xls",
-      "html_url": "https://asidhom84-cloud.github.io/trc-data/files/l1stats/2026_L1_Statistics_dashboard.html",
+      "original_filename": "March_2026_L1_Statistics.xlsx",
+      "html_url": "https://asidhom84-cloud.github.io/trc-data/files/l1stats/March_2026_L1_Statistics_dashboard.html",
       "excel_url": null,
       "uploaded_by": "TRC System",
       "processing_started_at": null,
-      "processing_finished_at": "2026-03-28 18:32:36",
+      "processing_finished_at": "2026-04-04 19:24:00",
       "generation_log": null,
-      "created_at": "2026-03-28 18:32:36"
+      "created_at": "2026-04-04 19:24:00"
     },
     {
       "id": 2,

@@ -6,8 +6,8 @@
   "frequency": "monthly",
   "is_automated": true,
   "template_type": "dashboard",
-  "created_at": "2026-04-02T18:29:47Z",
-  "updated_at": "2026-04-02T18:29:47Z",
+  "created_at": "2026-04-06T17:44:44Z",
+  "updated_at": "2026-04-06T17:44:44Z",
   "team": {
     "id": 1,
     "name": "Energy Operations",
