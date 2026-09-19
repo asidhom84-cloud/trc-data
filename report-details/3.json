@@ -6,8 +6,8 @@
   "frequency": "weekly",
   "is_automated": false,
   "template_type": "static_files",
-  "created_at": "2026-04-06T17:44:44Z",
-  "updated_at": "2026-04-06T17:44:44Z",
+  "created_at": "2026-09-19T10:07:34Z",
+  "updated_at": "2026-09-19T10:07:34Z",
   "team": {
     "id": 1,
     "name": "Energy Operations",
@@ -30,9 +30,9 @@
       "excel_url": "https://asidhom84-cloud.github.io/trc-data/files/power_outage_area/Power_Cuts_2026_Area_Summary.xlsx",
       "uploaded_by": "TRC System",
       "processing_started_at": null,
-      "processing_finished_at": "2026-04-06 15:36:12",
+      "processing_finished_at": "13 Sep 2026, 10:39",
       "generation_log": null,
-      "created_at": "2026-04-06 15:36:12"
+      "created_at": "13 Sep 2026, 10:39"
     }
   ]
 }

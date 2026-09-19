@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Daily Power Alarms Dashboard — W34-2026</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4/dist/chart.umd.min.js"></script>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap');
+  :root {
+    --o: #E8530A; --t: #0891B2; --p: #7C3AED; --r: #EF4444; --b: #3B82F6; --g: #22C55E;
+    --d: #0F1117; --d2: #1A1D27; --d3: #242837; --br: rgba(255,255,255,.07); --tx: #F1F5F9; --mu: #94A3B8;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'IBM Plex Sans', sans-serif; background: var(--d); color: var(--tx); min-height: 100vh; line-height: 1.5; }
+  
+  header {
+    background: var(--d2); border-bottom: 1px solid var(--br); padding: 0 24px; height: 60px;
+    display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 100;
+  }
+  .logo { display: flex; align-items: center; gap: 12px; }
+  .lb { width: 36px; height: 36px; background: var(--o); border-radius: 8px; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 14px; color: #fff; }
+  .lt { font-size: 15px; font-weight: 600; }
+  .ls { font-size: 10px; color: var(--mu); text-transform: uppercase; letter-spacing: 1px; }
+  
+  .hbadge {
+    display: flex; align-items: center; gap: 8px; background: rgba(232,83,10,.1); border: 1px solid rgba(232,83,10,.2);
+    border-radius: 20px; padding: 4px 14px; font-size: 11px; color: var(--o); font-weight: 600;
+  }
+
+  main { padding: 24px; max-width: 1400px; margin: 0 auto; display: flex; flex-direction: column; gap: 20px; }
+  
+  .kpis { display: grid; grid-template-columns: repeat(5, 1fr); gap: 16px; }
+  .kc { background: var(--d2); border: 1px solid var(--br); border-radius: 12px; padding: 18px; position: relative; overflow: hidden; }
+  .kc::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; border-radius: 12px 12px 0 0; }
+  .ko::before { background: var(--o); } .kg::before { background: var(--g); } .kb::before { background: var(--b); } .kr::before { background: var(--r); } .kp::before { background: var(--p); }
+  .kl { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: .8px; color: var(--mu); margin-bottom: 10px; }
+  .kv { font-size: 28px; font-weight: 700; font-family: 'IBM Plex Mono', monospace; line-height: 1; margin-bottom: 6px; color: var(--tx); }
+  .ko .kv { color: var(--o); } .kg .kv { color: var(--g); } .kb .kv { color: var(--b); } .kr .kv { color: var(--r); }
+  .ks { font-size: 11px; color: var(--mu); }
+
+  .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+  .grid3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+  .full { grid-column: 1 / -1; }
+  
+  .cc { background: var(--d2); border: 1px solid var(--br); border-radius: 12px; padding: 20px; display: flex; flex-direction: column; }
+  .ch { display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px; }
+  .ct { font-size: 13px; font-weight: 600; }
+  .cbg { font-size: 10px; font-family: 'IBM Plex Mono', monospace; font-weight: 600; padding: 2px 10px; border-radius: 20px; background: rgba(255,255,255,.07); color: var(--mu); }
+  
+  .cw { position: relative; height: 280px; width: 100%; }
+  .cw-tall { height: 450px; }
+
+  footer { background: var(--d2); border-top: 1px solid var(--br); padding: 16px 24px; display: flex; justify-content: space-between; font-size: 11px; color: var(--mu); margin-top: 40px; }
+  
+  @media (max-width: 1024px) { .kpis { grid-template-columns: repeat(3, 1fr); } .grid2, .grid3 { grid-template-columns: 1fr; } }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="logo">
+    <div class="lb">OE</div>
+    <div>
+      <div class="lt">Daily Power Alarms</div>
+      <div class="ls">Energy Operations — TRC v2.1</div>
+    </div>
+  </div>
+  <div class="hbadge">W34-2026</div>
+</header>
+
+<main>
+  <div class="kpis">
+    <div class="kc ko"><div class="kl">⚡ Total Alarms</div><div class="kv">13,165</div><div class="ks">Power alarms this week</div></div>
+    <div class="kc kg"><div class="kl">🌱 0–1 Hr Alarms</div><div class="kv">11,762</div><div class="ks">89.3% of total</div></div>
+    <div class="kc kb"><div class="kl">⏰ 1–2 Hr Alarms</div><div class="kv">543</div><div class="ks">4.1% of total</div></div>
+    <div class="kc kr"><div class="kl">🔥 2 Hr+ Alarms</div><div class="kv">860</div><div class="ks">Critical long duration</div></div>
+    <div class="kc kp"><div class="kl">📍 Top 20 Sites</div><div class="kv">20</div><div class="ks">Unique sites affected</div></div>
+  </div>
+
+  <div class="grid2">
+    <div class="cc">
+      <div class="ch"><div class="ct">Daily Power Alarms Volume</div><span class="cbg">WEEKLY VIEW</span></div>
+      <div class="cw"><canvas id="chartDaily"></canvas></div>
+    </div>
+    <div class="cc">
+      <div class="ch"><div class="ct">% Duration Distribution</div><span class="cbg">STAKED BY DAY</span></div>
+      <div class="cw"><canvas id="chartPct"></canvas></div>
+    </div>
+  </div>
+
+  <div class="grid2">
+    <div class="cc">
+      <div class="ch"><div class="ct">Hourly Distribution</div><span class="cbg">PER DAY LINE</span></div>
+      <div class="cw"><canvas id="chartHourly"></canvas></div>
+    </div>
+    <div class="cc">
+      <div class="ch"><div class="ct">Area Trend</div><span class="cbg">WEEK-OVER-WEEK</span></div>
+      <div class="cw"><canvas id="chartWeekly"></canvas></div>
+    </div>
+  </div>
+
+  <div class="cc">
+    <div class="ch"><div class="ct">Top 20 Critical Sites</div><span class="cbg">BY LONGEST SINGLE ALARM</span></div>
+    <div class="cw cw-tall"><canvas id="chartTop20"></canvas></div>
+  </div>
+
+  <div class="grid2">
+    <div class="cc">
+      <div class="ch"><div class="ct">Alarms by OZ</div><span class="cbg">ALL SITES</span></div>
+      <div class="cw"><canvas id="chartB2"></canvas></div>
+    </div>
+    <div class="cc">
+      <div class="ch"><div class="ct">Sites by OZ</div><span class="cbg">UNIQUE COUNT</span></div>
+      <div class="cw"><canvas id="chartB3"></canvas></div>
+    </div>
+  </div>
+
+  <div class="grid2">
+    <div class="cc">
+      <div class="ch"><div class="ct">Generator Alarms by OZ</div><span class="cbg">GEN SITES ONLY</span></div>
+      <div class="cw"><canvas id="chartB4"></canvas></div>
+    </div>
+    <div class="cc">
+      <div class="ch"><div class="ct">Generator Sites by OZ</div><span class="cbg">UNIQUE COUNT</span></div>
+      <div class="cw"><canvas id="chartB5"></canvas></div>
+    </div>
+  </div>
+</main>
+
+<footer>
+  <span>Orange Egypt · Energy Operations · <strong style="color:var(--o)">TRC Smart Engine</strong></span>
+  <span>Period: 2026-08-16 — 2026-08-22</span>
+</footer>
+
+<script>
+const GC = 'rgba(255,255,255,.07)';
+const TX = '#94A3B8';
+const dates = ["08-16", "08-17", "08-18", "08-19", "08-20", "08-21", "08-22"];
+
+Chart.defaults.color = TX;
+Chart.defaults.font.family = "'IBM Plex Sans', sans-serif";
+Chart.defaults.font.size = 11;
+
+// Helper for OZ charts
+function ozBar(id, labels, data, color) {
+  new Chart(document.getElementById(id), {
+    type: 'bar',
+    data: {
+      labels: labels,
+      datasets: [{
+        data: data,
+        backgroundColor: color + 'CC',
+        borderColor: color,
+        borderWidth: 1,
+        borderRadius: 4
+      }]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: { legend: { display: false } },
+      scales: {
+        x: { grid: { display: false }, ticks: { font: { size: 9 } } },
+        y: { grid: { color: GC }, beginAtZero: true }
+      }
+    }
+  });
+}
+
+// 1. Daily Volume
+new Chart(document.getElementById('chartDaily'), {
+  data: {
+    labels: dates,
+    datasets: [
+      { type: 'bar', label: '0-1 Hr', data: [1788, 1754, 1784, 1820, 1830, 1412, 1374], backgroundColor: '#E8530A', stack: 's' },
+      { type: 'bar', label: '1-2 Hr', data: [92, 90, 88, 86, 80, 49, 58], backgroundColor: '#94A3B8', stack: 's' },
+      { type: 'bar', label: '2-3 Hr', data: [56, 61, 79, 50, 47, 26, 40], backgroundColor: '#EF4444', stack: 's' },
+      { type: 'bar', label: '>3 Hrs', data: [78, 84, 80, 95, 61, 50, 53], backgroundColor: '#3B82F6', stack: 's' },
+      { type: 'line', label: 'Total', data: [2014, 1989, 2031, 2051, 2018, 1537, 1525], borderColor: '#F1F5F9', borderWidth: 2, pointRadius: 4, tension: 0.2 }
+    ]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    plugins: { legend: { position: 'bottom', labels: { boxWidth: 12, padding: 15 } } },
+    scales: { x: { stacked: true, grid: { display: false } }, y: { stacked: true, grid: { color: GC }, beginAtZero: true } }
+  }
+});
+
+// 2. % Stacked
+new Chart(document.getElementById('chartPct'), {
+  type: 'bar',
+  data: {
+    labels: dates,
+    datasets: [
+      { label: '0-1 Hr', data: [88.8, 88.2, 87.8, 88.7, 90.7, 91.9, 90.1], backgroundColor: '#E8530A', stack: 's' },
+      { label: '1-2 Hr', data: [4.6, 4.5, 4.3, 4.2, 4.0, 3.2, 3.8], backgroundColor: '#94A3B8', stack: 's' },
+      { label: '2-3 Hr', data: [2.8, 3.1, 3.9, 2.4, 2.3, 1.7, 2.6], backgroundColor: '#EF4444', stack: 's' },
+      { label: '>3 Hrs', data: [3.9, 4.2, 3.9, 4.6, 3.0, 3.3, 3.5], backgroundColor: '#3B82F6', stack: 's' }
+    ]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    plugins: { legend: { position: 'bottom', labels: { boxWidth: 12, padding: 15 } } },
+    scales: { x: { stacked: true, grid: { display: false } }, y: { stacked: true, min: 80, max: 100, grid: { color: GC }, ticks: { callback: v => v+'%' } } }
+  }
+});
+
+// 3. Hourly Distribution
+new Chart(document.getElementById('chartHourly'), {
+  type: 'line',
+  data: {
+    labels: [...Array(24).keys()],
+    datasets: [{"label": "08-16", "data": [53, 61, 64, 50, 24, 48, 76, 78, 54, 94, 137, 136, 145, 141, 109, 104, 97, 104, 102, 106, 68, 79, 39, 48], "borderColor": "#E8530A", "backgroundColor": "#E8530A33", "borderWidth": 2, "pointRadius": 3, "fill": false, "tension": 0.3}, {"label": "08-17", "data": [76, 53, 46, 32, 34, 19, 40, 46, 68, 117, 129, 165, 128, 121, 143, 117, 76, 127, 94, 91, 73, 81, 57, 61], "borderColor": "#22C55E", "backgroundColor": "#22C55E33", "borderWidth": 2, "pointRadius": 3, "fill": false, "tension": 0.3}, {"label": "08-18", "data": [39, 57, 66, 51, 39, 42, 43, 47, 75, 112, 140, 142, 132, 143, 108, 103, 105, 98, 101, 119, 75, 63, 82, 49], "borderColor": "#3B82F6", "backgroundColor": "#3B82F633", "borderWidth": 2, "pointRadius": 3, "fill": false, "tension": 0.3}, {"label": "08-19", "data": [31, 55, 25, 47, 43, 50, 55, 51, 67, 88, 115, 123, 164, 150, 111, 103, 84, 93, 121, 153, 125, 71, 55, 71], "borderColor": "#EF4444", "backgroundColor": "#EF444433", "borderWidth": 2, "pointRadius": 3, "fill": false, "tension": 0.3}, {"label": "08-20", "data": [50, 68, 59, 72, 43, 55, 64, 66, 64, 85, 142, 157, 134, 105, 99, 91, 100, 70, 83, 91, 90, 58, 49, 123], "borderColor": "#F59E0B", "backgroundColor": "#F59E0B33", "borderWidth": 2, "pointRadius": 3, "fill": false, "tension": 0.3}, {"label": "08-21", "data": [144, 70, 65, 46, 25, 42, 64, 47, 68, 62, 71, 87, 93, 72, 57, 68, 62, 72, 70, 77, 52, 38, 42, 43], "borderColor": "#7C3AED", "backgroundColor": "#7C3AED33", "borderWidth": 2, "pointRadius": 3, "fill": false, "tension": 0.3}, {"label": "08-22", "data": [38, 60, 54, 41, 35, 40, 35, 48, 72, 87, 72, 107, 84, 93, 109, 62, 69, 67, 77, 88, 65, 35, 37, 50], "borderColor": "#0891B2", "backgroundColor": "#0891B233", "borderWidth": 2, "pointRadius": 3, "fill": false, "tension": 0.3}]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    plugins: { legend: { position: 'bottom', labels: { boxWidth: 10, font: { size: 9 } } } },
+    scales: { x: { grid: { color: GC } }, y: { grid: { color: GC }, beginAtZero: true } }
+  }
+});
+
+// 4. Weekly Trend
+new Chart(document.getElementById('chartWeekly'), {
+  data: {
+    labels: ["W24-2026", "W25-2026", "W26-2026", "W27-2026", "W28-2026", "W29-2026", "W30-2026", "W31-2026", "W32-2026", "W33-2026", "W34-2026"],
+    datasets: [
+      { type: 'bar', label: 'Alex', data: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1552], backgroundColor: '#E8530A', stack: 's' },
+      { type: 'bar', label: 'Cairo', data: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4131], backgroundColor: '#3B82F6', stack: 's' },
+      { type: 'bar', label: 'Delta', data: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2266], backgroundColor: '#22C55E', stack: 's' },
+      { type: 'bar', label: 'Northcoast', data: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1878], backgroundColor: '#F59E0B', stack: 's' },
+      { type: 'bar', label: 'Sinai&Redsea', data: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1327], backgroundColor: '#7C3AED', stack: 's' },
+      { type: 'bar', label: 'Upper', data: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2011], backgroundColor: '#0891B2', stack: 's' },
+      { type: 'line', label: 'Total', data: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 13165], borderColor: '#F1F5F9', borderWidth: 2, pointRadius: 3 }
+    ]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    plugins: { legend: { position: 'bottom', labels: { boxWidth: 10, font: { size: 9 } } } },
+    scales: { x: { stacked: true, grid: { display: false } }, y: { stacked: true, grid: { color: GC } } }
+  }
+});
+
+// 5. Top 20 Sites
+new Chart(document.getElementById('chartTop20'), {
+  type: 'bar',
+  data: {
+    labels: ["SRAN_G_S_DM-M-EZBT-BRG_2066DE", "SRAN_LWG_S_SK-MNSH-ELAMIR_3942DE", "SRAN_LWG_TDD_G_GH-SUNBAT_0640DE", "SRAN_LWG_TDD_SK-ASHRAF-RD1_0762DE", "SRAN_LWG_S_MF-HORIN_0684DE", "U_S_4373CA_ORABI-SHAMS3", "03006_S_3996CA_KFR-ALLOU3", "SRAN_LWG_S_BH-BATORAS_3950DE", "901_V_QN-ABU-MANAA-BCF1_0637UP", "SRAN_LWG_O_GH-TNTA-WTR-CO_4896DE", "01347_Y_3556CA_EKHLAS-ST", "U_S_3154UP_GZ-TAHMA", "SRAN_LWG_TDD_S_SK-MNSHT-SHBRA_3500DE", "U_G_4691UP_6OCT-ROYAL-3", "SRAN_LWG_TDD_S_MF-TILWANA_0916DE", "SRAN_LWG_TDD_S_Ql-BANHA-VLAL2_4882DE", "U_D_0433DE_IS-SALHIYA-RD", "SRAN_LWG_S_AS-ATMOUR-NR_3392UP", "U_V_1051RE_RS-I-NW-HR-APT", "U_V_1243CA_I-APT-T3-NB1"],
+    datasets: [{
+      data: [43.11, 46.7, 49.24, 53.28, 54.46, 57.07, 59.21, 64.85, 66.93, 66.99, 69.69, 72.87, 85.13, 86.88, 122.74, 129.5, 131.07, 131.63, 137.71, 153.53],
+      backgroundColor: 'rgba(232,83,10,.2)',
+      borderColor: '#E8530A',
+      borderWidth: 1,
+      borderRadius: 4
+    }]
+  },
+  options: {
+    indexAxis: 'y',
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: { legend: { display: false } },
+    scales: {
+      x: { grid: { color: GC }, title: { display: true, text: 'Hours' } },
+      y: { grid: { display: false }, ticks: { font: { size: 9 } } }
+    }
+  }
+});
+
+// OZ Charts
+const ozLabels = ["Alex", "Cairo East", "Cairo North", "Cairo South", "Delta North", "Delta South", "Giza", "North Coast", "North Upper", "Red Sea", "Sinai", "South Upper"];
+ozBar('chartB2', ozLabels, [1552, 1123, 1560, 1025, 861, 1368, 363, 1878, 1280, 693, 634, 692], '#E8530A');
+ozBar('chartB3', ozLabels, [65, 188, 274, 250, 196, 283, 108, 256, 335, 176, 136, 160], '#3B82F6');
+ozBar('chartB4', ozLabels, [25, 592, 30, 61, 79, 177, 157, 196, 96, 329, 113, 88], '#E8530A');
+ozBar('chartB5', ozLabels, [3, 46, 16, 22, 23, 33, 33, 47, 34, 64, 33, 16], '#3B82F6');
+</script>
+</body></html>

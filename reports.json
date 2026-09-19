@@ -14,10 +14,10 @@
     "latest_version": {
       "id": 1,
       "version_number": 4,
-      "period_label": "W14-2026",
+      "period_label": "W37-2026",
       "status": "ready",
-      "html_url": "https://asidhom84-cloud.github.io/trc-data/files/weekly/Weekly%20W14-2026_email_preview.html",
-      "excel_url": "https://asidhom84-cloud.github.io/trc-data/files/weekly/Weekly%20W14-2026.xlsx",
+      "html_url": "https://asidhom84-cloud.github.io/trc-data/files/weekly/Weekly%20W37-2026_email_preview.html",
+      "excel_url": "https://asidhom84-cloud.github.io/trc-data/files/weekly/Weekly%20W37-2026.xlsx",
       "uploaded_by": "TRC System",
       "created_at": ""
     },
@@ -38,14 +38,14 @@
     "latest_version": {
       "id": 1,
       "version_number": 4,
-      "period_label": "W14-2026",
+      "period_label": "W37-2026",
       "status": "ready",
-      "html_url": "https://asidhom84-cloud.github.io/trc-data/files/daily/Daily_W14-2026.html",
-      "excel_url": "https://asidhom84-cloud.github.io/trc-data/files/daily/Daily_W14-2026.xlsx",
+      "html_url": "https://asidhom84-cloud.github.io/trc-data/files/daily/Daily_W37-2026.html",
+      "excel_url": "https://asidhom84-cloud.github.io/trc-data/files/daily/Daily_W37-2026.xlsx",
       "uploaded_by": "TRC System",
-      "created_at": "2026-04-06 15:23:23"
+      "created_at": "2026-09-13 10:23:37"
     },
-    "last_updated": "2026-04-06 15:23:23"
+    "last_updated": "2026-09-13 10:23:37"
   },
   {
     "id": 3,
@@ -67,9 +67,9 @@
       "html_url": "https://asidhom84-cloud.github.io/trc-data/files/power_outage_area/Power_Cuts_2026_Area_Summary.html",
       "excel_url": "https://asidhom84-cloud.github.io/trc-data/files/power_outage_area/Power_Cuts_2026_Area_Summary.xlsx",
       "uploaded_by": "TRC System",
-      "created_at": "2026-04-06 15:36:12"
+      "created_at": "13 Sep 2026, 10:39"
     },
-    "last_updated": "2026-04-06 15:36:12"
+    "last_updated": "13 Sep 2026, 10:39"
   },
   {
     "id": 4,
@@ -85,15 +85,15 @@
     },
     "latest_version": {
       "id": 1,
-      "version_number": 1,
-      "period_label": "March 2026",
+      "version_number": 7,
+      "period_label": "August 2026",
       "status": "ready",
-      "html_url": "https://asidhom84-cloud.github.io/trc-data/files/energy_dashboard/energy_dashboard_March_2026.html",
-      "excel_url": "https://asidhom84-cloud.github.io/trc-data/files/energy_dashboard/energy_dashboard_March_2026.xlsx",
+      "html_url": "https://asidhom84-cloud.github.io/trc-data/files/energy_dashboard/energy_dashboard_August_2026.html",
+      "excel_url": "https://asidhom84-cloud.github.io/trc-data/files/energy_dashboard/energy_dashboard_August_2026.xlsx",
       "uploaded_by": "TRC System",
-      "created_at": "2026-04-01 23:44:47"
+      "created_at": "2026-09-09 17:51:49"
     },
-    "last_updated": "2026-04-01 23:44:47"
+    "last_updated": "2026-09-09 17:51:49"
   },
   {
     "id": 5,
@@ -110,14 +110,14 @@
     "latest_version": {
       "id": 1,
       "version_number": 1,
-      "period_label": "W01-W14",
+      "period_label": "W01-W37",
       "status": "ready",
-      "html_url": "https://asidhom84-cloud.github.io/trc-data/files/alarm_dashboard/Weekly_Alarm_Dashboard_W01-W14_TRC.html",
+      "html_url": "https://asidhom84-cloud.github.io/trc-data/files/alarm_dashboard/Weekly_Alarm_Dashboard_W01-W37_TRC.html",
       "excel_url": null,
       "uploaded_by": "TRC System",
-      "created_at": "2026-04-06T17:44:44Z"
+      "created_at": "2026-09-19T10:07:34Z"
     },
-    "last_updated": "2026-04-06T17:44:44Z"
+    "last_updated": "2026-09-19T10:07:34Z"
   },
   {
     "id": 8,
@@ -133,14 +133,14 @@
     },
     "latest_version": {
       "id": 1,
-      "version_number": 2,
-      "period_label": "3",
+      "version_number": 6,
+      "period_label": "July_2026_L1_Statistics_Dashboard_dashboard.html",
       "status": "ready",
-      "html_url": "https://asidhom84-cloud.github.io/trc-data/files/l1stats/March_2026_L1_Statistics_dashboard.html",
+      "html_url": "https://asidhom84-cloud.github.io/trc-data/files/l1stats/July_2026_L1_Statistics_Dashboard_dashboard.html",
       "excel_url": null,
       "uploaded_by": "TRC System",
-      "created_at": "2026-04-04 19:24:00"
+      "created_at": "2026-08-06 13:15:44"
     },
-    "last_updated": "2026-04-04 19:24:00"
+    "last_updated": "2026-08-06 13:15:44"
   }
 ]

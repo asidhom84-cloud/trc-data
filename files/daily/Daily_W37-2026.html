@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Daily Power Alarms Dashboard — W14-2026</title>
+<title>Daily Power Alarms Dashboard — W37-2026</title>
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4/dist/chart.umd.min.js"></script>
 <style>
   @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap');
@@ -66,15 +66,15 @@
       <div class="ls">Energy Operations — TRC v2.1</div>
     </div>
   </div>
-  <div class="hbadge">W14-2026</div>
+  <div class="hbadge">W37-2026</div>
 </header>
 
 <main>
   <div class="kpis">
-    <div class="kc ko"><div class="kl">⚡ Total Alarms</div><div class="kv">20,834</div><div class="ks">Power alarms this week</div></div>
-    <div class="kc kg"><div class="kl">🌱 0–1 Hr Alarms</div><div class="kv">18,344</div><div class="ks">88.0% of total</div></div>
-    <div class="kc kb"><div class="kl">⏰ 1–2 Hr Alarms</div><div class="kv">973</div><div class="ks">4.7% of total</div></div>
-    <div class="kc kr"><div class="kl">🔥 2 Hr+ Alarms</div><div class="kv">1,517</div><div class="ks">Critical long duration</div></div>
+    <div class="kc ko"><div class="kl">⚡ Total Alarms</div><div class="kv">15,011</div><div class="ks">Power alarms this week</div></div>
+    <div class="kc kg"><div class="kl">🌱 0–1 Hr Alarms</div><div class="kv">13,647</div><div class="ks">90.9% of total</div></div>
+    <div class="kc kb"><div class="kl">⏰ 1–2 Hr Alarms</div><div class="kv">531</div><div class="ks">3.5% of total</div></div>
+    <div class="kc kr"><div class="kl">🔥 2 Hr+ Alarms</div><div class="kv">833</div><div class="ks">Critical long duration</div></div>
     <div class="kc kp"><div class="kl">📍 Top 20 Sites</div><div class="kv">20</div><div class="ks">Unique sites affected</div></div>
   </div>
 
@@ -130,13 +130,13 @@
 
 <footer>
   <span>Orange Egypt · Energy Operations · <strong style="color:var(--o)">TRC Smart Engine</strong></span>
-  <span>Period: 2026-03-29 — 2026-04-04</span>
+  <span>Period: 2026-09-06 — 2026-09-12</span>
 </footer>
 
 <script>
 const GC = 'rgba(255,255,255,.07)';
 const TX = '#94A3B8';
-const dates = ["03-29", "03-30", "03-31", "04-01", "04-02", "04-03", "04-04"];
+const dates = ["09-06", "09-07", "09-08", "09-09", "09-10", "09-11", "09-12"];
 
 Chart.defaults.color = TX;
 Chart.defaults.font.family = "'IBM Plex Sans', sans-serif";
@@ -173,11 +173,11 @@ new Chart(document.getElementById('chartDaily'), {
   data: {
     labels: dates,
     datasets: [
-      { type: 'bar', label: '0-1 Hr', data: [2834, 2205, 2920, 3215, 3427, 1886, 1857], backgroundColor: '#E8530A', stack: 's' },
-      { type: 'bar', label: '1-2 Hr', data: [154, 106, 133, 206, 196, 75, 103], backgroundColor: '#94A3B8', stack: 's' },
-      { type: 'bar', label: '2-3 Hr', data: [74, 66, 48, 87, 97, 41, 57], backgroundColor: '#EF4444', stack: 's' },
-      { type: 'bar', label: '>3 Hrs', data: [163, 95, 92, 181, 350, 97, 69], backgroundColor: '#3B82F6', stack: 's' },
-      { type: 'line', label: 'Total', data: [3225, 2472, 3193, 3689, 4070, 2099, 2086], borderColor: '#F1F5F9', borderWidth: 2, pointRadius: 4, tension: 0.2 }
+      { type: 'bar', label: '0-1 Hr', data: [2117, 2182, 1995, 2132, 2003, 1577, 1641], backgroundColor: '#E8530A', stack: 's' },
+      { type: 'bar', label: '1-2 Hr', data: [82, 102, 108, 81, 77, 37, 44], backgroundColor: '#94A3B8', stack: 's' },
+      { type: 'bar', label: '2-3 Hr', data: [58, 69, 57, 43, 41, 21, 41], backgroundColor: '#EF4444', stack: 's' },
+      { type: 'bar', label: '>3 Hrs', data: [79, 83, 74, 81, 71, 59, 56], backgroundColor: '#3B82F6', stack: 's' },
+      { type: 'line', label: 'Total', data: [2336, 2436, 2234, 2337, 2192, 1694, 1782], borderColor: '#F1F5F9', borderWidth: 2, pointRadius: 4, tension: 0.2 }
     ]
   },
   options: {
@@ -193,10 +193,10 @@ new Chart(document.getElementById('chartPct'), {
   data: {
     labels: dates,
     datasets: [
-      { label: '0-1 Hr', data: [87.9, 89.2, 91.5, 87.2, 84.2, 89.9, 89.0], backgroundColor: '#E8530A', stack: 's' },
-      { label: '1-2 Hr', data: [4.8, 4.3, 4.2, 5.6, 4.8, 3.6, 4.9], backgroundColor: '#94A3B8', stack: 's' },
-      { label: '2-3 Hr', data: [2.3, 2.7, 1.5, 2.4, 2.4, 2.0, 2.7], backgroundColor: '#EF4444', stack: 's' },
-      { label: '>3 Hrs', data: [5.1, 3.8, 2.9, 4.9, 8.6, 4.6, 3.3], backgroundColor: '#3B82F6', stack: 's' }
+      { label: '0-1 Hr', data: [90.6, 89.6, 89.3, 91.2, 91.4, 93.1, 92.1], backgroundColor: '#E8530A', stack: 's' },
+      { label: '1-2 Hr', data: [3.5, 4.2, 4.8, 3.5, 3.5, 2.2, 2.5], backgroundColor: '#94A3B8', stack: 's' },
+      { label: '2-3 Hr', data: [2.5, 2.8, 2.6, 1.8, 1.9, 1.2, 2.3], backgroundColor: '#EF4444', stack: 's' },
+      { label: '>3 Hrs', data: [3.4, 3.4, 3.3, 3.5, 3.2, 3.5, 3.1], backgroundColor: '#3B82F6', stack: 's' }
     ]
   },
   options: {
@@ -211,7 +211,7 @@ new Chart(document.getElementById('chartHourly'), {
   type: 'line',
   data: {
     labels: [...Array(24).keys()],
-    datasets: [{"label": "03-29", "data": [69, 68, 75, 133, 147, 146, 130, 144, 241, 138, 169, 192, 194, 295, 199, 153, 133, 138, 151, 84, 79, 44, 50, 56], "borderColor": "#E8530A", "backgroundColor": "#E8530A33", "borderWidth": 2, "pointRadius": 3, "fill": false, "tension": 0.3}, {"label": "03-30", "data": [64, 64, 46, 56, 70, 51, 109, 81, 143, 131, 155, 168, 170, 166, 146, 118, 164, 134, 127, 80, 54, 71, 51, 55], "borderColor": "#22C55E", "backgroundColor": "#22C55E33", "borderWidth": 2, "pointRadius": 3, "fill": false, "tension": 0.3}, {"label": "03-31", "data": [41, 37, 26, 53, 49, 51, 43, 60, 83, 223, 196, 317, 252, 282, 363, 258, 184, 116, 130, 131, 69, 94, 67, 68], "borderColor": "#3B82F6", "backgroundColor": "#3B82F633", "borderWidth": 2, "pointRadius": 3, "fill": false, "tension": 0.3}, {"label": "04-01", "data": [63, 71, 43, 47, 56, 80, 59, 150, 102, 161, 176, 192, 221, 192, 198, 166, 160, 241, 138, 124, 166, 266, 315, 302], "borderColor": "#EF4444", "backgroundColor": "#EF444433", "borderWidth": 2, "pointRadius": 3, "fill": false, "tension": 0.3}, {"label": "04-02", "data": [306, 264, 248, 205, 199, 109, 136, 122, 111, 182, 245, 220, 214, 190, 196, 156, 173, 140, 106, 122, 116, 135, 86, 90], "borderColor": "#F59E0B", "backgroundColor": "#F59E0B33", "borderWidth": 2, "pointRadius": 3, "fill": false, "tension": 0.3}, {"label": "04-03", "data": [82, 43, 80, 86, 57, 80, 83, 80, 81, 122, 144, 93, 88, 125, 125, 110, 119, 103, 79, 67, 49, 64, 70, 73], "borderColor": "#7C3AED", "backgroundColor": "#7C3AED33", "borderWidth": 2, "pointRadius": 3, "fill": false, "tension": 0.3}, {"label": "04-04", "data": [69, 31, 41, 67, 47, 39, 50, 62, 75, 122, 176, 208, 173, 176, 134, 79, 74, 107, 89, 61, 52, 42, 52, 62], "borderColor": "#0891B2", "backgroundColor": "#0891B233", "borderWidth": 2, "pointRadius": 3, "fill": false, "tension": 0.3}]
+    datasets: [{"label": "09-06", "data": [72, 64, 65, 51, 49, 67, 85, 72, 87, 177, 176, 144, 128, 112, 134, 143, 121, 113, 75, 78, 69, 66, 101, 88], "borderColor": "#E8530A", "backgroundColor": "#E8530A33", "borderWidth": 2, "pointRadius": 3, "fill": false, "tension": 0.3}, {"label": "09-07", "data": [90, 75, 76, 73, 62, 72, 90, 98, 70, 135, 164, 131, 163, 134, 174, 126, 103, 111, 99, 80, 88, 78, 68, 76], "borderColor": "#22C55E", "backgroundColor": "#22C55E33", "borderWidth": 2, "pointRadius": 3, "fill": false, "tension": 0.3}, {"label": "09-08", "data": [72, 85, 74, 48, 46, 76, 71, 85, 74, 82, 108, 150, 199, 158, 139, 117, 125, 91, 92, 89, 75, 47, 78, 53], "borderColor": "#3B82F6", "backgroundColor": "#3B82F633", "borderWidth": 2, "pointRadius": 3, "fill": false, "tension": 0.3}, {"label": "09-09", "data": [59, 69, 65, 56, 44, 53, 58, 65, 51, 71, 97, 162, 107, 139, 165, 158, 137, 112, 79, 133, 155, 139, 99, 66], "borderColor": "#EF4444", "backgroundColor": "#EF444433", "borderWidth": 2, "pointRadius": 3, "fill": false, "tension": 0.3}, {"label": "09-10", "data": [64, 67, 69, 54, 64, 49, 57, 79, 75, 85, 114, 135, 135, 135, 148, 143, 127, 108, 112, 104, 78, 77, 53, 60], "borderColor": "#F59E0B", "backgroundColor": "#F59E0B33", "borderWidth": 2, "pointRadius": 3, "fill": false, "tension": 0.3}, {"label": "09-11", "data": [43, 59, 52, 63, 60, 41, 104, 87, 85, 90, 73, 69, 58, 61, 98, 79, 74, 73, 60, 87, 81, 75, 71, 51], "borderColor": "#7C3AED", "backgroundColor": "#7C3AED33", "borderWidth": 2, "pointRadius": 3, "fill": false, "tension": 0.3}, {"label": "09-12", "data": [56, 54, 38, 64, 60, 51, 74, 76, 69, 86, 91, 106, 102, 90, 86, 199, 74, 59, 66, 47, 51, 48, 66, 69], "borderColor": "#0891B2", "backgroundColor": "#0891B233", "borderWidth": 2, "pointRadius": 3, "fill": false, "tension": 0.3}]
   },
   options: {
     responsive: true, maintainAspectRatio: false,
@@ -223,15 +223,15 @@ new Chart(document.getElementById('chartHourly'), {
 // 4. Weekly Trend
 new Chart(document.getElementById('chartWeekly'), {
   data: {
-    labels: ["W04-2026", "W05-2026", "W06-2026", "W07-2026", "W08-2026", "W09-2026", "W10-2026", "W11-2026", "W12-2026", "W13-2026", "W14-2026"],
+    labels: ["W27-2026", "W28-2026", "W29-2026", "W30-2026", "W31-2026", "W32-2026", "W33-2026", "W34-2026", "W35-2026", "W36-2026", "W37-2026"],
     datasets: [
-      { type: 'bar', label: 'Alex', data: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1312], backgroundColor: '#E8530A', stack: 's' },
-      { type: 'bar', label: 'Cairo', data: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3156], backgroundColor: '#3B82F6', stack: 's' },
-      { type: 'bar', label: 'Delta', data: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 6279], backgroundColor: '#22C55E', stack: 's' },
-      { type: 'bar', label: 'Northcoast', data: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3154], backgroundColor: '#F59E0B', stack: 's' },
-      { type: 'bar', label: 'Sinai&Redsea', data: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1903], backgroundColor: '#7C3AED', stack: 's' },
-      { type: 'bar', label: 'Upper', data: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 5030], backgroundColor: '#0891B2', stack: 's' },
-      { type: 'line', label: 'Total', data: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 20834], borderColor: '#F1F5F9', borderWidth: 2, pointRadius: 3 }
+      { type: 'bar', label: 'Alex', data: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1384], backgroundColor: '#E8530A', stack: 's' },
+      { type: 'bar', label: 'Cairo', data: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3906], backgroundColor: '#3B82F6', stack: 's' },
+      { type: 'bar', label: 'Delta', data: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4787], backgroundColor: '#22C55E', stack: 's' },
+      { type: 'bar', label: 'Northcoast', data: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1837], backgroundColor: '#F59E0B', stack: 's' },
+      { type: 'bar', label: 'Sinai&Redsea', data: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1430], backgroundColor: '#7C3AED', stack: 's' },
+      { type: 'bar', label: 'Upper', data: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1667], backgroundColor: '#0891B2', stack: 's' },
+      { type: 'line', label: 'Total', data: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 15011], borderColor: '#F1F5F9', borderWidth: 2, pointRadius: 3 }
     ]
   },
   options: {
@@ -245,9 +245,9 @@ new Chart(document.getElementById('chartWeekly'), {
 new Chart(document.getElementById('chartTop20'), {
   type: 'bar',
   data: {
-    labels: ["SRAN_LWG_TDD_S_BH-MHLT-KYL_3830DE", "U_G_3553CA_MADINATY-4", "SRAN_S_I-EXT-CAREFOUR_1060AL", "U_G_0087RE_RS-MR-BIR-QWAH", "SRAN_LWG_TDD_D_BH-MATAMIR-5_4598DE", "U_S_0562AL_PORTO-GLF-GATE", "SRAN_LWG_TDD_D_SK-MIT-SUHIL_3461DE", "SRAN_LWG_S_BH-QAMHA_3712DE", "U_O_3702UP_6OCT-ALEGRIA", "U_S_4221CA_REG-RING-RD7", "SRAN_LWG_TDD_S_SK-ZAHRIA_4033DE", "SRAN_LWG_TDD_S_SK-ARAB-YAMAN_3328DE", "SRAN_LWG_TDD_S_DK-SHAHA_4000DE", "SRAN_LG_S_SK-HK-HIGAZI_0F00DE", "SRAN_LWG_D_SK-SAMAENA_3530DE", "U_G_4944CA_GIU-NW-CPTL", "SRAN_LWG_S_DK-MIT-ASEM_3076DE", "SRAN_LWG_S_KS-CITY-NORTH2_4518DE", "SRAN_LWG_S_MF-KAFR-SADAT_3330DE", "SRAN_LWG_NR_S_MF-SHIBIN-4_4504DE"],
+    labels: ["SRAN_LWG_S_SK-MNSH-ELAMIR_3942DE", "SRAN_LWG_TDD_S_BH-BATORAS_3950DE", "U_O_1B09CA_I-CBE-NWCAPTL-BBU2", "U_O_1B09CA_I-CBE-NWCAPTL-BBU1", "SRAN_LWG_NR_O_SS-MR-BLUE-BAY_0096SI", "U_S_0G34CA_GARDINEA-8", "SRAN_LWG_O_M-SPRTNG-MALL_2A78AL", "U_N_3051CA_NAHDA3", "U_S_4952DE_MF-SADAT-NUR", "02456_V_1477CA_I-T3-APT-HTL", "SRAN_LWG_TDNR_S_LU-I-ETAP_1001UP", "SRAN_LWG_TDD_S_MS-ELHAZEK_M016AL", "SRAN_LWG_S_SS-RADISON-SAS-BR_0297SI", "SRAN_LWG_N_SK-IBRAHIMIYAH_0227DE", "03472_S_0022RE_SZ-SUEZ2", "00864_S_2314CA_M-MAADI-9ST", "SRAN_LWG_S_MF-HORIN_0684DE", "U_S_0B73CA_SUKHNA-RD-GAP2", "U_E_3739DE_QL-SADD", "SRAN_LWG_S_DK-NEW-MNSRA-2_4534DE"],
     datasets: [{
-      data: [60.5, 61.09, 67.03, 68.54, 68.78, 72.98, 77.62, 81.08, 82.31, 86.02, 86.68, 93.05, 94.2, 95.22, 98.97, 101.38, 122.24, 122.99, 130.99, 141.49],
+      data: [29.83, 33.99, 34.49, 34.5, 36.48, 38.52, 38.72, 39.99, 43.29, 48.4, 48.87, 53.61, 73.21, 74.09, 74.88, 75.42, 76.36, 84.82, 95.22, 112.67],
       backgroundColor: 'rgba(232,83,10,.2)',
       borderColor: '#E8530A',
       borderWidth: 1,
@@ -268,9 +268,9 @@ new Chart(document.getElementById('chartTop20'), {
 
 // OZ Charts
 const ozLabels = ["Alex", "Cairo East", "Cairo North", "Cairo South", "Delta North", "Delta South", "Giza", "North Coast", "North Upper", "Red Sea", "Sinai", "South Upper"];
-ozBar('chartB2', ozLabels, [1312, 725, 1203, 784, 3645, 2582, 437, 3154, 2767, 944, 959, 1145], '#E8530A');
-ozBar('chartB3', ozLabels, [99, 178, 304, 281, 318, 385, 132, 327, 467, 220, 155, 182], '#3B82F6');
-ozBar('chartB4', ozLabels, [35, 197, 78, 59, 101, 362, 129, 375, 473, 375, 189, 86], '#E8530A');
-ozBar('chartB5', ozLabels, [3, 44, 22, 16, 32, 41, 31, 60, 45, 68, 39, 16], '#3B82F6');
+ozBar('chartB2', ozLabels, [1384, 916, 1717, 663, 951, 3799, 510, 1837, 1152, 627, 803, 491], '#E8530A');
+ozBar('chartB3', ozLabels, [78, 173, 302, 251, 220, 292, 127, 249, 262, 164, 132, 131], '#3B82F6');
+ozBar('chartB4', ozLabels, [2, 522, 67, 65, 133, 174, 238, 168, 191, 193, 116, 32], '#E8530A');
+ozBar('chartB5', ozLabels, [2, 44, 19, 22, 27, 34, 34, 43, 31, 50, 28, 11], '#3B82F6');
 </script>
 </body></html>

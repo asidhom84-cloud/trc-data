@@ -6,8 +6,8 @@
   "frequency": "daily",
   "is_automated": true,
   "template_type": "daily",
-  "created_at": "2026-04-06T17:44:44Z",
-  "updated_at": "2026-04-06T17:44:44Z",
+  "created_at": "2026-09-19T10:07:34Z",
+  "updated_at": "2026-09-19T10:07:34Z",
   "team": {
     "id": 1,
     "name": "Energy Operations",
@@ -23,58 +23,58 @@
     {
       "id": 1,
       "version_number": 4,
-      "period_label": "W14-2026",
+      "period_label": "W37-2026",
       "status": "ready",
-      "original_filename": "Weekly W14-2026.xlsx",
-      "html_url": "https://asidhom84-cloud.github.io/trc-data/files/daily/Daily_W14-2026.html",
-      "excel_url": "https://asidhom84-cloud.github.io/trc-data/files/daily/Daily_W14-2026.xlsx",
+      "original_filename": "Weekly W37-2026.xlsx",
+      "html_url": "https://asidhom84-cloud.github.io/trc-data/files/daily/Daily_W37-2026.html",
+      "excel_url": "https://asidhom84-cloud.github.io/trc-data/files/daily/Daily_W37-2026.xlsx",
       "uploaded_by": "TRC System",
       "processing_started_at": null,
-      "processing_finished_at": "2026-04-06 15:23:23",
+      "processing_finished_at": "2026-09-13 10:23:37",
       "generation_log": null,
-      "created_at": "2026-04-06 15:23:23"
+      "created_at": "2026-09-13 10:23:37"
     },
     {
       "id": 2,
       "version_number": 3,
-      "period_label": "W13-2026",
+      "period_label": "W36-2026",
       "status": "ready",
-      "original_filename": "Weekly W13-2026.xlsx",
-      "html_url": "https://asidhom84-cloud.github.io/trc-data/files/daily/Daily_W13-2026.html",
-      "excel_url": "https://asidhom84-cloud.github.io/trc-data/files/daily/Daily_W13-2026.xlsx",
+      "original_filename": "Weekly W36-2026.xlsx",
+      "html_url": "https://asidhom84-cloud.github.io/trc-data/files/daily/Daily_W36-2026.html",
+      "excel_url": "https://asidhom84-cloud.github.io/trc-data/files/daily/Daily_W36-2026.xlsx",
       "uploaded_by": "TRC System",
       "processing_started_at": null,
-      "processing_finished_at": "2026-03-29 15:15:28",
+      "processing_finished_at": "2026-09-08 10:39:11",
       "generation_log": null,
-      "created_at": "2026-03-29 15:15:28"
+      "created_at": "2026-09-08 10:39:11"
     },
     {
       "id": 3,
       "version_number": 2,
-      "period_label": "W12-2026",
+      "period_label": "W35-2026",
       "status": "ready",
-      "original_filename": "Weekly W12-2026.xlsx",
-      "html_url": "https://asidhom84-cloud.github.io/trc-data/files/daily/Daily_W12-2026.html",
-      "excel_url": "https://asidhom84-cloud.github.io/trc-data/files/daily/Daily_W12-2026.xlsx",
+      "original_filename": "Weekly W35-2026.xlsx",
+      "html_url": "https://asidhom84-cloud.github.io/trc-data/files/daily/Daily_W35-2026.html",
+      "excel_url": "https://asidhom84-cloud.github.io/trc-data/files/daily/Daily_W35-2026.xlsx",
       "uploaded_by": "TRC System",
       "processing_started_at": null,
-      "processing_finished_at": "2026-03-22 00:10:43",
+      "processing_finished_at": "2026-09-08 10:36:31",
       "generation_log": null,
-      "created_at": "2026-03-22 00:10:43"
+      "created_at": "2026-09-08 10:36:31"
     },
     {
       "id": 4,
       "version_number": 1,
-      "period_label": "W11-2026",
+      "period_label": "W34-2026",
       "status": "ready",
-      "original_filename": "Weekly W11-2026.xlsx",
-      "html_url": "https://asidhom84-cloud.github.io/trc-data/files/daily/Daily_W11-2026.html",
-      "excel_url": "https://asidhom84-cloud.github.io/trc-data/files/daily/Daily_W11-2026.xlsx",
+      "original_filename": "Weekly W34-2026.xlsx",
+      "html_url": "https://asidhom84-cloud.github.io/trc-data/files/daily/Daily_W34-2026.html",
+      "excel_url": "https://asidhom84-cloud.github.io/trc-data/files/daily/Daily_W34-2026.xlsx",
       "uploaded_by": "TRC System",
       "processing_started_at": null,
-      "processing_finished_at": "2026-03-21 23:05:53",
+      "processing_finished_at": "2026-08-23 18:30:20",
       "generation_log": null,
-      "created_at": "2026-03-21 23:05:53"
+      "created_at": "2026-08-23 18:30:20"
     }
   ]
 }
