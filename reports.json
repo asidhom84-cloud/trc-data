@@ -115,9 +115,9 @@
       "html_url": "https://asidhom84-cloud.github.io/trc-data/files/alarm_dashboard/Weekly_Alarm_Dashboard_W01-W39_TRC.html",
       "excel_url": null,
       "uploaded_by": "TRC System",
-      "created_at": "2026-09-28T08:14:54Z"
+      "created_at": "2026-10-03T09:40:32Z"
     },
-    "last_updated": "2026-09-28T08:14:54Z"
+    "last_updated": "2026-10-03T09:40:32Z"
   },
   {
     "id": 8,
@@ -133,14 +133,14 @@
     },
     "latest_version": {
       "id": 1,
-      "version_number": 7,
-      "period_label": "August_2026_L1_Statistics_Dashboard_dashboard.html",
+      "version_number": 8,
+      "period_label": "September_2026_L1_Statistics_Dashboard_dashboard.html",
       "status": "ready",
-      "html_url": "https://asidhom84-cloud.github.io/trc-data/files/l1stats/August_2026_L1_Statistics_Dashboard_dashboard.html",
+      "html_url": "https://asidhom84-cloud.github.io/trc-data/files/l1stats/September_2026_L1_Statistics_Dashboard_dashboard.html",
       "excel_url": null,
       "uploaded_by": "TRC System",
-      "created_at": "2026-09-19 13:11:57"
+      "created_at": "2026-10-01 14:36:31"
     },
-    "last_updated": "2026-09-19 13:11:57"
+    "last_updated": "2026-10-01 14:36:31"
   }
 ]
