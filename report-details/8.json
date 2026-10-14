@@ -6,8 +6,8 @@
   "frequency": "monthly",
   "is_automated": true,
   "template_type": "l1stats",
-  "created_at": "2026-10-06T19:33:47Z",
-  "updated_at": "2026-10-06T19:33:47Z",
+  "created_at": "2026-10-14T11:51:29Z",
+  "updated_at": "2026-10-14T11:51:29Z",
   "team": {
     "id": 2,
     "name": "RQA Operations",
