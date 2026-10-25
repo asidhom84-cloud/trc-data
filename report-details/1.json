@@ -6,8 +6,8 @@
   "frequency": "weekly",
   "is_automated": true,
   "template_type": "weekly",
-  "created_at": "2026-10-20T10:02:14Z",
-  "updated_at": "2026-10-20T10:02:14Z",
+  "created_at": "2026-10-25T11:13:00Z",
+  "updated_at": "2026-10-25T11:13:00Z",
   "team": {
     "id": 1,
     "name": "Energy Operations",
@@ -23,6 +23,20 @@
     {
       "id": 1,
       "version_number": 4,
+      "period_label": "W43-2026",
+      "status": "ready",
+      "original_filename": "Weekly W43-2026.xlsx",
+      "html_url": "https://asidhom84-cloud.github.io/trc-data/files/weekly/Weekly%20W43-2026_email_preview.html",
+      "excel_url": "https://asidhom84-cloud.github.io/trc-data/files/weekly/Weekly%20W43-2026.xlsx",
+      "uploaded_by": "TRC System",
+      "processing_started_at": null,
+      "processing_finished_at": "",
+      "generation_log": "Power: 22,461  HT: 20,426  Down: 18,027  Unique sites: 6,693  (55.9s)",
+      "created_at": ""
+    },
+    {
+      "id": 2,
+      "version_number": 3,
       "period_label": "W42-2026",
       "status": "ready",
       "original_filename": "Weekly W42-2026.xlsx",
@@ -35,8 +49,8 @@
       "created_at": ""
     },
     {
-      "id": 2,
-      "version_number": 3,
+      "id": 3,
+      "version_number": 2,
       "period_label": "W41-2026",
       "status": "ready",
       "original_filename": "Weekly W41-2026.xlsx",
@@ -49,8 +63,8 @@
       "created_at": ""
     },
     {
-      "id": 3,
-      "version_number": 2,
+      "id": 4,
+      "version_number": 1,
       "period_label": "W40-2026",
       "status": "ready",
       "original_filename": "Weekly W40-2026.xlsx",
@@ -60,20 +74,6 @@
       "processing_started_at": null,
       "processing_finished_at": "",
       "generation_log": "Power: 9,818  HT: 13,915  Down: 17,875  Unique sites: 6,754  (44.87s)",
-      "created_at": ""
-    },
-    {
-      "id": 4,
-      "version_number": 1,
-      "period_label": "W39-2026",
-      "status": "ready",
-      "original_filename": "Weekly W39-2026.xlsx",
-      "html_url": "https://asidhom84-cloud.github.io/trc-data/files/weekly/Weekly%20W39-2026_email_preview.html",
-      "excel_url": "https://asidhom84-cloud.github.io/trc-data/files/weekly/Weekly%20W39-2026.xlsx",
-      "uploaded_by": "TRC System",
-      "processing_started_at": null,
-      "processing_finished_at": "",
-      "generation_log": "Power: 12,880  HT: 20,347  Down: 18,812  Unique sites: 6,708  (51.23s)",
       "created_at": ""
     }
   ]
