@@ -6,8 +6,8 @@
   "frequency": "weekly",
   "is_automated": true,
   "template_type": "alarm_dashboard",
-  "created_at": "2026-10-25T11:13:00Z",
-  "updated_at": "2026-10-25T11:13:00Z",
+  "created_at": "2026-11-09T17:41:30Z",
+  "updated_at": "2026-11-09T17:41:30Z",
   "team": {
     "id": 1,
     "name": "Energy Operations",
@@ -23,16 +23,16 @@
     {
       "id": 1,
       "version_number": 1,
-      "period_label": "W01-W42",
+      "period_label": "W01-W45",
       "status": "ready",
-      "original_filename": "Weekly_Alarm_Dashboard_W01-W42_TRC.html",
-      "html_url": "https://asidhom84-cloud.github.io/trc-data/files/alarm_dashboard/Weekly_Alarm_Dashboard_W01-W42_TRC.html",
+      "original_filename": "Weekly_Alarm_Dashboard_W01-W45_TRC.html",
+      "html_url": "https://asidhom84-cloud.github.io/trc-data/files/alarm_dashboard/Weekly_Alarm_Dashboard_W01-W45_TRC.html",
       "excel_url": null,
       "uploaded_by": "TRC System",
       "processing_started_at": null,
-      "processing_finished_at": "2026-10-25T11:13:00Z",
+      "processing_finished_at": "2026-11-09T17:41:30Z",
       "generation_log": null,
-      "created_at": "2026-10-25T11:13:00Z"
+      "created_at": "2026-11-09T17:41:30Z"
     }
   ]
 }

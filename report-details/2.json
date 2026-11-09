@@ -6,8 +6,8 @@
   "frequency": "daily",
   "is_automated": true,
   "template_type": "daily",
-  "created_at": "2026-10-25T11:13:00Z",
-  "updated_at": "2026-10-25T11:13:00Z",
+  "created_at": "2026-11-09T17:41:30Z",
+  "updated_at": "2026-11-09T17:41:30Z",
   "team": {
     "id": 1,
     "name": "Energy Operations",
@@ -23,6 +23,34 @@
     {
       "id": 1,
       "version_number": 4,
+      "period_label": "W45-2026",
+      "status": "ready",
+      "original_filename": "Weekly W45-2026.xlsx",
+      "html_url": "https://asidhom84-cloud.github.io/trc-data/files/daily/Daily_W45-2026.html",
+      "excel_url": "https://asidhom84-cloud.github.io/trc-data/files/daily/Daily_W45-2026.xlsx",
+      "uploaded_by": "TRC System",
+      "processing_started_at": null,
+      "processing_finished_at": "2026-11-09 10:50:46",
+      "generation_log": null,
+      "created_at": "2026-11-09 10:50:46"
+    },
+    {
+      "id": 2,
+      "version_number": 3,
+      "period_label": "W44-2026",
+      "status": "ready",
+      "original_filename": "Weekly W44-2026.xlsx",
+      "html_url": "https://asidhom84-cloud.github.io/trc-data/files/daily/Daily_W44-2026.html",
+      "excel_url": "https://asidhom84-cloud.github.io/trc-data/files/daily/Daily_W44-2026.xlsx",
+      "uploaded_by": "TRC System",
+      "processing_started_at": null,
+      "processing_finished_at": "2026-11-01 23:05:26",
+      "generation_log": null,
+      "created_at": "2026-11-01 23:05:26"
+    },
+    {
+      "id": 3,
+      "version_number": 2,
       "period_label": "W43-2026",
       "status": "ready",
       "original_filename": "Weekly W43-2026.xlsx",
@@ -35,8 +63,8 @@
       "created_at": "2026-10-25 14:12:27"
     },
     {
-      "id": 2,
-      "version_number": 3,
+      "id": 4,
+      "version_number": 1,
       "period_label": "W42-2026",
       "status": "ready",
       "original_filename": "Weekly W42-2026.xlsx",
@@ -47,34 +75,6 @@
       "processing_finished_at": "2026-10-20 13:00:16",
       "generation_log": null,
       "created_at": "2026-10-20 13:00:16"
-    },
-    {
-      "id": 3,
-      "version_number": 2,
-      "period_label": "W41-2026",
-      "status": "ready",
-      "original_filename": "Weekly W41-2026.xlsx",
-      "html_url": "https://asidhom84-cloud.github.io/trc-data/files/daily/Daily_W41-2026.html",
-      "excel_url": "https://asidhom84-cloud.github.io/trc-data/files/daily/Daily_W41-2026.xlsx",
-      "uploaded_by": "TRC System",
-      "processing_started_at": null,
-      "processing_finished_at": "2026-10-12 13:11:23",
-      "generation_log": null,
-      "created_at": "2026-10-12 13:11:23"
-    },
-    {
-      "id": 4,
-      "version_number": 1,
-      "period_label": "W40-2026",
-      "status": "ready",
-      "original_filename": "Weekly W40-2026.xlsx",
-      "html_url": "https://asidhom84-cloud.github.io/trc-data/files/daily/Daily_W40-2026.html",
-      "excel_url": "https://asidhom84-cloud.github.io/trc-data/files/daily/Daily_W40-2026.xlsx",
-      "uploaded_by": "TRC System",
-      "processing_started_at": null,
-      "processing_finished_at": "2026-10-04 13:00:33",
-      "generation_log": null,
-      "created_at": "2026-10-04 13:00:33"
     }
   ]
 }
